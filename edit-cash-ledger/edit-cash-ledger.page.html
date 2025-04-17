@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.EDIT CASH LEDGER' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-content>
+    <ion-card>
+    <ion-item>
+      <ion-label>{{'HEADER.LEDGER NAME' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="cash.ledger_name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.OPENING BALANCE' | translate}} : </ion-label>
+      <ion-input type="number" [(ngModel)]="cash.opening_balance"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.AS ON' | translate}} :</ion-label>
+      <ion-input type="date" [(ngModel)]="cash.as_on"></ion-input>
+    </ion-item>
+
+    <ion-button (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+ </ion-card>
+
+</ion-content>

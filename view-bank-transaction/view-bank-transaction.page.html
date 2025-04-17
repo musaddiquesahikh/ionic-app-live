@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="Mdissmiss()"></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">{{'HEADER.VIEW ALL TRANSACTION' | translate}}</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-label style="margin-left: 15px;">{{'HEADER.FROM' | translate}} :</ion-label>
+    <ion-input type="date" name="date" required="" [(ngModel)]="data1.start_date"></ion-input>
+    <ion-label style="margin-left: 15px;">{{'HEADER.TO' | translate}} :</ion-label>
+    <ion-input type="date" name="date" required="" [(ngModel)]="data1.end_date"></ion-input>
+    <ion-button style="margin-left: 15px" (click)="viewTransaction()">{{'HEADER.SEARCH' | translate}}</ion-button>
+    <ion-button fill="clear" *ngIf="length" (click)="exportexcel()">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+
+  <ion-list *ngFor="let item of bankData1">
+    <ion-item-sliding>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteTransaction(item)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item lines="none">
+        <div class="transaction_div">
+          <ion-card class="transaction_card" (click)="selectTransaction(item)">
+            <ion-row>
+              <ion-col>
+                <ion-label>{{'HEADER.DATE' | translate}} :{{item.date}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label>{{'HEADER.PARTICULARS' | translate}} :{{item.particular}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-label>{{'HEADER.NARRATION' | translate}} : {{item.narration}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label>{{'HEADER.BALANCE' | translate}} : {{item.bank_balance}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-label>{{'HEADER.CREDIT' | translate}} : {{item.credit}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label>{{'HEADER.DEBIT' | translate}} : {{item.debit}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+            </ion-row>
+          </ion-card>
+        </div>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
+  <table id="excel-table" style="visibility: hidden;">
+    <tr>
+      <th>Id</th>
+      <th>Date</th>
+      <th>Invoice No</th>
+      <th>Invoice Date</th>
+      <th>Particular</th>
+      <th>Narration</th>
+      <th>Debit</th>
+      <th>Creadit</th>
+      <th>Balance</th>
+      <th>Receipt Date</th>
+      <th>Receipt No</th>
+      <th>Received for id</th>
+      <th>Bank Balance</th>
+    </tr>
+    <tr *ngFor="let item of bankData1">
+      <td>{{item.id}}</td>
+      <td>{{item.date}}</td>
+      <td>{{item.invoice_no}}</td>
+      <td>{{item.invoice_date}}</td>
+      <td>{{item.particular}}</td>
+      <td>{{item.narration}}</td>
+      <td>{{item.debit}}</td>
+      <td>{{item.credit}}</td>
+      <td>{{item.balance}}</td>
+      <td>{{item.receipt_date}}</td>
+      <td>{{item.receipt_no}}</td>
+      <td>{{item.received_for_id}}</td>
+      <td>{{item.bank_balance}}</td>
+    </tr>
+  </table>
+</ion-content>

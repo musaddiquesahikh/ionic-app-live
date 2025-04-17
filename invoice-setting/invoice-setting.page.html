@@ -1,0 +1,237 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" auto-hide="false" (click)="modal.dismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Fields To Invoice</ion-title>
+    <!-- <ion-buttons slot="end" (click)="dismis()">
+      <ion-icon slot="icon-only" ios="close-outline" md="close-outline"></ion-icon>
+    </ion-buttons> -->
+    <ion-button slot="icon-only">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <!-- <ion-label>Add fields to input</ion-label> -->
+
+    <ion-item>
+      <ion-label>{{'HEADER.PO NUMBER' |translate}}</ion-label>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.po_number"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.eway_number"></ion-checkbox>
+      <ion-label>{{'HEADER.E-WAY BILL NUMBER' | translate}} </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.vehicle_number"></ion-checkbox>
+      <ion-label>{{'HEADER.VEHICLE NUMBER' | translate}}</ion-label>
+
+    </ion-item>
+    <ion-button fill="clear" (click)="ClickNewRow()">
+      + {{'HEADER.ADD ANOTHER CUSTOM FIELD' | translate}}
+    </ion-button>
+    <div *ngFor="let data of extraF;">
+
+      <ion-item *ngIf="formValue">
+        <ion-input style="background-color: #f4f0df;height: 30px; width:10px; border-radius:7px;"
+          [(ngModel)]="data.extra_fields"></ion-input>
+        <ion-icon name="trash-outline" (click)="deleteRow1(i)" style="font-size:20px; color:#ed6464;"></ion-icon>
+      </ion-item>
+    </div>
+  </ion-card>
+  <ion-item>
+    <ion-label>Invoice number settings</ion-label>
+  </ion-item>
+  <ion-card>
+
+    <ion-item>
+      <ion-checkbox [checked]="has_custom_series" color="primary" slot="start" [(ngModel)]="sett.has_custom_series"
+        (onClick)="toggleShow4()"></ion-checkbox>
+      <ion-label>Auto Increment Custom Invoice No. </ion-label>
+    </ion-item>
+    <div *ngIf="sett.has_custom_series">
+      <label style="padding: 69px;">Last sales Invoice Number</label><br>
+      <input type="number" [(ngModel)]="sett.last_inv_no" style="background: #b3d8ff;margin-left: 68px;">
+    </div>
+<!-- (click)="toggleShow3()"  -->
+    <ion-item>
+        <ion-checkbox  color="primary" slot="start" [(ngModel)]="sett.annual_reset"></ion-checkbox>
+        <ion-label>Invoice number reset <br>
+          on financial annuanal reset 
+          
+         </ion-label>
+        </ion-item>
+         <div style="text-align: end;color: blue;" *ngIf="sett.annual_reset" size="small" (click)="addFiscalYear()">
+          + Add Financial Year
+      </div>
+
+      <div *ngIf="sett.annual_reset">
+        <ion-row *ngFor="let p of presub.data;let h=index;">
+          <ion-col size="3.5">
+            <label>Financial</label>
+        <ion-select placeholder="select" [(ngModel)]="p.label" interface="popover"
+        style="border: solid 1px;height: 30px;background: #f4f0df;">
+          <ion-select-option *ngFor="let i of fiscalyears" [value]="i">{{i}}</ion-select-option>
+        </ion-select>
+        </ion-col>
+        <ion-col size="3.5">
+        <ion-label>Prefix</ion-label>
+        <ion-input style="background-color: #f4f0df;
+        height: 30px;
+        border: solid 1px;"
+        [(ngModel)]="p.prefix"></ion-input>
+      </ion-col>
+        <ion-col size="3.5">
+          <ion-label>Suffix</ion-label>
+          <ion-input style="background-color: #f4f0df;
+          height: 30px;
+          border: solid 1px;"
+          [(ngModel)]="p.suffix"></ion-input>
+        </ion-col>
+        <ion-col size="1.5">
+          <ion-icon name="trash-outline" style="font-size: x-large;
+          color: red;
+          padding-top: 20px;" (click)="removeRow(h)"></ion-icon>
+        </ion-col>
+        <div>
+          <ion-label>Output Eg.</ion-label>
+          <span style="white-space:nowrap;color:
+        seagreen;">{{p.prefix}}</span>
+          <span style="white-space:nowrap;    color:
+        blueviolet;">1001</span>
+          <span style="color: chocolate;">{{p.suffix}}</span>
+        </div>
+        </ion-row>
+     </div>
+<!--  -->
+<div *ngIf="!sett.annual_reset">
+    <ion-item >
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="prefix12" (ionChange)="invPrefix()">
+      </ion-checkbox>
+      <ion-label>{{'HEADER.SET UP INVOICE PREFIX'| translate}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="prefix12">
+      <ion-input style="background-color: #f4f0df;height: 30px; width:10px; border-radius:7px;"
+        [(ngModel)]="sett.prefix"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.has_suffix" (ionChange)="toggleShow1()"
+        [checked]="has_suffix"></ion-checkbox>
+      <ion-label>Set up Invoice Suffix</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="sett.has_suffix">
+      <ion-input style="background-color: #f4f0df;height: 30px; width:10px; border-radius:7px;"
+        [(ngModel)]="sett.suffix"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Output Eg.</ion-label>
+      <span style="white-space:nowrap;color:
+    seagreen;">{{sett.prefix}}</span>
+      <span style="white-space:nowrap;color:
+    blueviolet;">1001</span>
+      <span style="color: chocolate;">{{sett.suffix}}</span>
+    </ion-item>
+  </div>
+    <ion-item >
+      <input type="checkbox" [(ngModel)]="sett.name_against_signature">
+      <label for="Enable Auto Interest">Enable  Custom Input Above Signature</label>
+  </ion-item>
+ <ion-item *ngIf="sett.name_against_signature">
+      <input type="text" style="background: #b3d8ff;" [(ngModel)]="sett.custom_text_for_signature">
+  </ion-item>
+    <ion-item>
+      <input  type="checkbox" [(ngModel)]="sett.has_fixed_terms_and_conditions">
+      <label>Fixed Terms and Conditions</label>
+    </ion-item>
+   
+    <ion-item *ngIf="sett.has_fixed_terms_and_conditions">
+      <label>Terms and Conditions</label>
+    </ion-item>
+  <ion-item>
+    <textarea class="textarea1" *ngIf="sett.has_fixed_terms_and_conditions" [(ngModel)]="sett.terms_and_conditions" ></textarea>
+  </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.auto_interest_calculation"></ion-checkbox>
+      <ion-label>Enable Auto Interest on due <br>date of Sales Invoice</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Rate of Interest</ion-label>
+      <ion-input [(ngModel)]="sett.interest_pa" style="border: 1px solid;height: 21px;margin-left: 6px;"> <span style="border-right: solid 1px;
+          width: 28px;"><ion-label style="margin-left: 7px;">%</ion-label></span></ion-input>
+
+    </ion-item>
+    <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.gst_on_interest"></ion-checkbox>
+      <ion-label>Whether GST Applicable on Interest</ion-label>
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.dual_currency"></ion-checkbox>
+      <ion-label>Export Invoice has Dual Currency</ion-label>
+    </ion-item> -->
+
+    <ion-item>
+      <ion-checkbox color="primary" slot="start" [(ngModel)]="sett.enable_value_addition"></ion-checkbox>
+      <!-- <input class="form-check-input" type="checkbox" name="" id="" [(ngModel)]="sett.enable_value_addition"> -->
+      <label for="Enable Auto Interest">Enable  Value Addition For Items</label>
+    </ion-item>
+
+    <ion-item>
+      <ion-checkbox style="margin-left: 5px;" color="primary" slot="start" [(ngModel)]="sett.has_free_qty"></ion-checkbox>
+      <label class="ion-margin" style="margin-left: 0px;">Enable Free Quantity</label>
+    </ion-item>
+
+    <ion-row>
+
+      <ion-col size="6">
+        <ion-item>
+          <ion-checkbox style="margin: 0px;" color="primary" slot="start" [(ngModel)]="sett.show_value_add_rs"></ion-checkbox>
+          <label for="Enable Auto Interest">ValueAdd In Rs</label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+      <ion-item>
+        <ion-checkbox style="margin: 0px;" color="primary" slot="start" [(ngModel)]="sett.show_discount_rs"></ion-checkbox>
+        <label for="Enable Auto Interest">Discount In Rs</label>
+      </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card" style="padding:25px">
+              <div class="row">
+                  <div class="col-md-12">
+                      <input class="form-check-input" type="checkbox" name="" id="" [(ngModel)]="sett.has_upi">
+                      <label for="Enable Invoice UPI">Enable Invoice UPI QR Code</label>
+                  </div>
+              </div>
+              <div class="row" *ngIf="sett.has_upi">
+                  <div class="col-md-3">
+                      <ion-label for="Terms and Conditions" class="ion-margin">UPI ID</ion-label>
+                      <input type="text" name="" class="form-control" id="" [(ngModel)]="sett.upi_id"
+                      style="border: solid 1px;background: #b3d8ff;">
+                     
+                  </div>
+              </div>
+             
+          </div>
+      </div>
+  </div> 
+   
+
+  </ion-card>
+  <ion-button (click)="addExtraFeild()" expand="full">{{'HEADER.DONE'| translate}}</ion-button>
+</ion-content>

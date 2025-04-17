@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.EDIT JOURNAL VOUCHER' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+
+    <ion-item>
+      <ion-label>{{'HEADER.VOUCHER NO.' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input type="number" [(ngModel)]="Journal.voucher_no" #voucher_no="ngModel" required></ion-input>
+    </ion-item>
+
+
+    <ion-modal [isOpen]="isModalOpen" trigger="create-new-ledger" [breakpoints]="[0.1, 0.5, 1]"
+      [initialBreakpoint]="0.5">
+      <ng-template>
+        <app-create-new-ledger></app-create-new-ledger>
+      </ng-template>
+    </ion-modal>
+
+    <ion-item>
+      <ion-label>{{'HEADER.DATE' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input type="date" name="voucher_date" #voucher_date="ngModel" required [(ngModel)]="Journal.voucher_date">
+      </ion-input>
+    </ion-item>
+
+
+    <ion-card *ngFor="let data1 of ledgerData; let i=index" style="padding:10px">
+
+      <ion-label>{{'HEADER.LEDGER NAME' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input (keyup)="getVoucher(data1.ledger,i)" [(ngModel)]="data1.ledger" style="border:0.5px solid;border: 0.5px solid #aa8462;
+          border-radius: 7px;"></ion-input>
+      <div *ngIf="voucherlist[i]" class="list">
+        <ion-list *ngFor="let lc of ledger_List;" (click)="selectedJv(lc,i)">
+          {{lc.name}}
+        </ion-list>
+      </div>
+     
+      <ion-row>
+        <ion-col>
+          <ion-select [(ngModel)]="data1.voucher_type" interface="popover">
+            <ion-select-option value="1">{{'HEADER.DEBIT' | translate}}</ion-select-option>
+            <ion-select-option value="2">{{'HEADER.CREDIT' | translate}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col>
+          <ion-input style="background-color: #f4f0df;height: 30px; border-radius: 7px;text-align: 
+              right;" placeholder="Enter Amount" value="debit" type="number" [(ngModel)]="data1.amount"
+            autocomplete="on" (click)="$event.target.select()">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    
+    <ion-item>
+      <ion-button fill="clear" (click)="ClickNewRow()">
+        <ion-icon class="add1" name="add-circle-outline"></ion-icon> {{'HEADER.ADD ROW' | translate}}
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'HEADER.NARRATION' | translate}} :</ion-label>
+      <ion-textarea [(ngModel)]="Journal.narration"></ion-textarea>
+    </ion-item>
+    <ion-col >
+      <ion-button fill="outline" style="float: right;" (click)="addvoucher()">{{'HEADER.EDIT JOURNAL VOUCHER'| translate}}</ion-button>
+    </ion-col>
+  </ion-card>
+</ion-content>

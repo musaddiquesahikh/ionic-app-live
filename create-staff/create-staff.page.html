@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'MESSAGE.CREATE NEW STAFF' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item id="fName">
+      <ion-label position="floating">{{'HEADER.FIRST NAME' | translate}} : <span class="required">*</span></ion-label>
+      <ion-input type="text" [(ngModel)]="emp.first_name" name="first_name" #first_name="ngModel" required> </ion-input>
+    </ion-item>
+    <div *ngIf="first_name.touched && first_name.invalid" class="alert">
+      <div *ngIf="first_name.errors?.required">
+        {{'HEADER.FIRST NAME REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item id="lname">
+      <ion-label position="floating">{{'HEADER.LAST NAME' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input type="text" [(ngModel)]="emp.last_name" name="last_name" #last_name="ngModel" required> </ion-input>
+    </ion-item>
+    <div *ngIf="last_name.touched && last_name.invalid" class="alert">
+      <div *ngIf="last_name.errors?.required">
+        {{'HEADER.LAST NAME REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item id="num">
+      <ion-label>{{'HEADER.MOBILE NUMBER' | translate}} <span class="required">*</span></ion-label>
+      <ion-input name="mobNo" type="tel" [(ngModel)]="emp.mobile_num" required minlength="10" maxlength="10"
+        #mobile_num="ngModel">
+        &nbsp; +91</ion-input>
+    </ion-item>
+
+    <div *ngIf="mobile_num.touched && mobile_num.invalid" class="alert">
+      <div *ngIf="mobile_num.errors?.required">
+        {{'HEADER.MOBILE NO REQUIRED' | translate}}
+      </div>
+      <div *ngIf="mobile_num.errors?.minlength">
+        {{'HEADER.MOBILE NUMBER IS INVALID' | translate}}
+      </div>
+    </div>
+
+    <ion-item id="email">
+      <ion-label position="floating">{{'HEADER.EMAIL' | translate}} : <span class="required">*</span></ion-label>
+      <ion-input [(ngModel)]="emp.email" type="email" #email="ngModel" required
+        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})">
+      </ion-input>
+    </ion-item>
+    <div *ngIf="email.touched && email.invalid" class="alert">
+      <div *ngIf="email.errors?.required">
+        {{'HEADER.EMAIL REQUIRED' | translate}}
+      </div>
+      <div *ngIf="email.invalid">
+        {{'HEADER.INVALID EMAIL' | translate}}
+      </div>
+    </div>
+
+    <ion-item id="roleSelect">
+      <ion-label position="floating">{{'HEADER.ROLE' | translate}} :</ion-label>
+      <ion-select [(ngModel)]="emp.role" interface="popover">
+        <!-- <ion-select-option value="Admin">Admin</ion-select-option>
+        <ion-select-option value="Advocate/Accountant">Advocate/Accountant</ion-select-option>
+        <ion-select-option value="Partner">Partner</ion-select-option>
+        <ion-select-option value="Salesman">Salesman</ion-select-option> -->
+        <ion-select-option *ngFor="let r of rolesData" [value]="r.id">{{r.role}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item [ngClass]="hide">
+      <ion-label>{{'HEADER.ENTER OTP' | translate}}</ion-label>
+      <ion-input [(ngModel)]="emp.otp" style="background-color: #f4f0df;height: 30px; border-radius: 7px;">
+      </ion-input>
+    </ion-item>
+
+    <ion-button id="ver" [ngClass]="show" (click)="addStaff()" expand="full" type="submit">{{'HEADER.VERIFY MOBILE NUMBER' |
+      translate}}</ion-button>
+
+    <ion-button [ngClass]="hide" (click)="otpFunction()" expand="full">{{'MESSAGE.CREATE NEW STAFF' | translate}}
+    </ion-button>
+
+  </ion-card>
+</ion-content>

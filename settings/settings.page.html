@@ -1,0 +1,212 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref=""></ion-back-button>
+      </ion-buttons>
+    <ion-title>{{'HEADER.SETTINGS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid fixed>
+    <ion-row>
+      <!-- <ion-col  id="logo"> -->
+        <ion-img [src]="currentCompany[0].company_logo" id="addlogo" ></ion-img>
+      <!-- </ion-col> -->
+    </ion-row>     
+     <ion-row style="font-size: 25px;padding-top: 16px;">{{currentCompany[0].business_name}}</ion-row>
+
+  </ion-grid>
+
+  <ion-card>
+    <ion-grid fixed>
+      <ion-row style="text-align: center;">
+        <ion-col id="details" size="3" (click)="editCompany(currentCompany[0])"><ion-icon name="business-outline" style="font-size: 40px;color: #000;"></ion-icon><br>{{'HEADER.COMPANY DETAILS' | translate}}</ion-col>
+        <ion-col id="temp" size="3" [routerLink]="['/invoice-template']"><ion-icon name="receipt-outline" style="font-size: 40px;color: #000;"></ion-icon><br>{{'HEADER.INVOICE TEMPLATE' | translate}}</ion-col>
+        <ion-col id="payment" size="3" [routerLink]="['/invoice-setting']"><ion-icon name="settings-outline" style="font-size: 40px;color: #000;"></ion-icon><br>{{'HEADER.INVOICE SETTINGS' | translate}}</ion-col>
+        <ion-col id="qr" size="3" [routerLink]="['/show-staff-list']">
+        <ion-icon name="person-outline" style="font-size: 40px;color: #000;"></ion-icon><br>{{'HEADER.MANAGE USERS' | translate}}</ion-col>
+
+        <!-- <ion-col id="payment" size="3"><ion-icon name="journal-outline" style="font-size: 40px;color: #000;" id="open-modal"></ion-icon><br>{{'HEADER.PAYMENT' | translate}}</ion-col> -->
+        <!-- <ion-col id="qr" size="3" [routerLink]="['/qrcodelogin']"><ion-icon name="qr-code-outline" style="font-size: 40px;color: #000;" ></ion-icon><br>QR Login</ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card>
+    <ion-grid fixed id="sign">
+      <ion-row style="text-align: center;">
+        <ion-col size="12"><ion-label>{{'HEADER.SIGNATURE' | translate}}</ion-label></ion-col>
+        
+      </ion-row>
+      <ion-row style="text-align: center;">
+        <!-- <ion-col size="12" style="padding:20px"><ion-img [src]="currentCompany[0].signature"></ion-img></ion-col> -->
+        <ion-col size="12" style="padding:20px" id="addSignature">
+          <ion-img [src]="currentCompany[0].signature" ></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+ <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]" style="padding-top:30px">
+      <ng-template>
+        <ion-content style="text-align: center;">
+
+          <ion-segment value="pg" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="pg">
+              <ion-label>Payment Gateway</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="pos">
+              <ion-label>POS</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+  
+          <div *ngIf="segmentShow=='pg'">
+          <form [formGroup]="paymentForm" style="padding-top:20px" *ngIf="paymentOption">
+            <ion-label style="padding-top:20px">Payment API Key</ion-label>
+            <ion-item>
+              <ion-label>Merchant ID: <span class="required">*</span></ion-label>
+              <ion-input type="text" class="form-control" formControlName="merchant_id_pg"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Merchant Key: <span class="required">*</span></ion-label>
+              <ion-input type="text" class="form-control" formControlName="merchant_key_pg"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Industry Type: <span class="required">*</span></ion-label>
+              <ion-input type="text" class="form-control" formControlName="industry_type_pg"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Bank</ion-label>
+              <ion-select interface="popover">
+                <ion-select-option  (ionChange)="selectBank()">select</ion-select-option>
+                <ion-select-option  *ngFor="let item of bankList">{{item.bank_name}}</ion-select-option>
+              </ion-select>
+              <!-- <ion-button (click)="addBank()">Add Bank</ion-button> -->
+            </ion-item>
+            <div class="col-md-12">
+              <ion-button type="submit" class="btn btn-primary" expand="full" (click)="submitForm()">Submit</ion-button>
+            </div>
+
+          </form>
+
+          <ion-grid fixed style="padding-top:20px" *ngIf="already">
+            <ion-row>
+              <ion-col size="6">Merchant ID</ion-col>
+              <ion-col size="6">{{companyData.merchant_id_pg}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">Merchant Key</ion-col>
+              <ion-col size="6">#############</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">Industry_type_pg</ion-col>
+              <ion-col size="6">{{companyData.industry_type_pg}}</ion-col>
+            </ion-row>
+            <ion-button (click)="onClick()"  shape="round">
+              Request Change Key
+            </ion-button>
+          </ion-grid>
+        </div>
+       
+      <div *ngIf="segmentShow=='pos'">
+          <form [formGroup]="paymentFormPos" style="padding-top:20px" *ngIf="paymentOption1">
+          <ion-label style="padding-top:20px">Payment API Key for POS</ion-label>
+          <ion-item>
+            <ion-label>Merchant ID: <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="merchant_id_pg"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Merchant Key: <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="merchant_key_pg"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Industry Type: <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="industry_type_pg"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>TID: <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="transaction_id_pg"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Bank</ion-label>
+            <ion-select interface="popover">
+              <ion-select-option  (ionChange)="selectBank()">select</ion-select-option>
+              <ion-select-option  *ngFor="let item of bankList">{{item.bank_name}}</ion-select-option>
+            </ion-select>
+            <!-- <ion-button (click)="addBank()">Add Bank</ion-button> -->
+          </ion-item>
+          <div class="col-md-12">
+            <ion-button type="submit" class="btn btn-primary" expand="full" (click)="submitFormPos()">Submit</ion-button>
+          </div>
+
+        </form>
+
+        <ion-grid fixed style="padding-top:20px" *ngIf="already1">
+          <ion-row>
+            <ion-col size="6">Merchant ID</ion-col>
+            <ion-col size="6">{{companyData1.merchant_id_pg}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">Merchant Key</ion-col>
+            <ion-col size="6">#############</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">Industry_type_pg</ion-col>
+            <ion-col size="6">{{companyData1.industry_type_pg}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">Transaction ID</ion-col>
+            <ion-col size="6">{{companyData1.transaction_id_pg}}</ion-col>
+          </ion-row>
+          <ion-button (click)="onClick()"  shape="round">
+            Request Change Key
+          </ion-button>
+        </ion-grid>
+      </div>
+      <!-- </ion-content> -->   
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal trigger="addlogo" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+      <ng-template>
+        <ion-content>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="addLogo()">
+              <ion-icon name="image-outline" size="large"></ion-icon><br>
+              <ion-label>Media</ion-label>
+            </ion-card-header>
+          </ion-card>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="openCamera()">
+              <ion-icon name="camera-outline" size="large"></ion-icon><br>
+              <ion-label>Camera</ion-label>
+            </ion-card-header>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+
+    <ion-modal trigger="addSignature" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+      <ng-template>
+        <ion-content>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="addSignature()">
+              <ion-icon name="image-outline" size="large"></ion-icon><br>
+              <ion-label>Media</ion-label>
+            </ion-card-header>
+          </ion-card>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="openCameras()">
+              <ion-icon name="camera-outline" size="large"></ion-icon><br>
+              <ion-label>Camera</ion-label>
+            </ion-card-header>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+</ion-content>

@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>reactive</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="testForm" >
+    <label for="name"></label>
+    <ion-input formControlName="name"></ion-input>
+    <ion-button type="submit" (click)="submitForm()">submit</ion-button>
+  </form>
+
+</ion-content>

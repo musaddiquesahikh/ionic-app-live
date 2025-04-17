@@ -1,0 +1,284 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.PAYMENT IN' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <form [formGroup]="payInForm">
+    <div >
+      <ion-input id="no" class="custom-input"  formControlName="receipt_no" (click)="$event.target.select()" [value]="receipt_no">
+      <ion-label class="ion-margin" name="receipeNo">{{'HEADER.RECEIPT NO' |translate}} :<span class="required">*</span></ion-label>
+    </ion-input>
+    </div>
+</form>
+
+    <!-- <div id="date" style="margin-bottom: 13px; margin-top: 13px;">
+      <ion-input class="custom-input" type="date" name="receipt_date" [(ngModel)]="payment.receipt_date" #receipt_date="ngModel" required>
+      <ion-label class="ion-margin" name="receiptDate">{{'HEADER.RECEIPT DATE' | translate}} :<span class="required">*</span></ion-label>
+    </ion-input>
+    </div>
+
+    <div>
+      <ion-row class="custom-input" >
+        <ion-col size="5" style="padding-top: 15px;">
+      <ion-label style="margin-left: 14px;">{{'HEADER.RECEIVED FOR' | translate}} :<span class="required">*</span></ion-label>
+      </ion-col>
+      <ion-col size="7">
+      <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.received_for"
+        (ngModelChange)="optionChange(payment.received_for)"  id="received">
+        <ion-select-option [value]="0" selected="">Select</ion-select-option>
+        <ion-select-option *ngFor="let lc of ledgerCategory" [value]="lc">{{lc.received_for}}</ion-select-option>
+      </ion-select>
+    </ion-col>
+    </ion-row>
+    </div>
+
+    <div style="margin-bottom: 13px; margin-top: 13px;" *ngIf="payment.received_for">
+      <ion-row  class="custom-input" *ngIf="categoryId == 18">
+        <ion-col size="6" style="padding-top: 15px;">
+        <ion-label style="margin-left: 14px;">{{'HEADER.PARTY NAME' | translate}} :<span class="required">*</span></ion-label>
+        </ion-col>
+        <ion-col size="6">
+        <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.select"
+          (ionChange)="invoice_Details(payment.select)">
+          <ion-select-option [value]="0" selected="">Select</ion-select-option>
+          <ion-select-option *ngFor="let item of partyList" [value]="item.id">{{item.Party_name}}</ion-select-option>
+        </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-item *ngIf="categoryId == 18">
+        <ion-button (click)="createNewParty()">{{'HEADER.CREATE PARTY' | translate}}</ion-button>
+      </ion-item>
+
+      <ion-row class="custom-input" *ngIf="categoryId != 18">
+        <ion-col size="8" style="padding-top: 15px;">
+        <ion-label style="margin-left: 14px;">{{'HEADER.RECEIVED FOR' | translate}} {{receive}} : <span class="required">*</span></ion-label>
+      </ion-col>
+        <ion-col size="">
+        <ion-select interface="popover" placeholder="select" [(ngModel)]="payment.ledgerCategory"
+          (ngModelChange)="option(payment.ledgerCategory)">
+          <ion-select-option [value]="0" selected="">Select</ion-select-option>
+          <ion-select-option *ngFor="let item of payment1" [value]="item.id">{{item.ledger_name}}</ion-select-option>
+        </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-item *ngIf="categoryId != 18">
+        <ion-button id="new" (click)="createNewLedger()">{{'HEADER.CREATE NEW LEDGER' | translate}}</ion-button>
+      </ion-item>
+
+      <ion-row id="amt">
+        <ion-input class="custom-input" type="number" [(ngModel)]="payment.amount" (ionChange)="chheck()" #amount="ngModel" required>
+        <ion-label class="ion-margin" name="amount">{{'HEADER.AMOUNT' | translate}} :<span class="required">*</span></ion-label>
+      </ion-input>
+      </ion-row>
+
+      <span *ngIf="amount.touched && amount.invalid" class="alert">
+        <div *ngIf="amount.errors?.required">
+          {{'HEADER.ENTER AMOUNT' | translate}}
+        </div>
+      </span>
+
+      <div *ngIf="partyId && payment.amount && categoryId == 18">
+
+        <ion-item>
+          <ion-label>{{'HEADER.RECEIVED AGAINST' | translate}} <span class="required">*</span></ion-label>
+          <ion-select [(ngModel)]="payment.payment_for" (ionChange)="Function(payment.payment_for)" [multiple]="true"
+            interface="popover">
+            <ion-select-option [value]="1" *ngIf="one">{{'HEADER.ADVANCE' | translate}}</ion-select-option>
+            <ion-select-option [value]="2">{{'HEADER.AGAINST INVOICE' | translate}}</ion-select-option>
+            <ion-select-option [value]="3" *ngIf="three">{{'HEADER.ON ACCOUNT' | translate}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="two">
+          <ion-list>
+            <ion-item *ngFor="let item of invoice">
+              <ion-checkbox value="item" [checked]="item.checked1"
+                [disabled]="same == payment.amount || same > payment.amount" (ionChange)="onChange(item)" name="item">
+              </ion-checkbox>
+              <ion-label style="margin-left: 15px;">{{item.invoice_no}}</ion-label>
+              <ion-label>{{item.invoice_date}}</ion-label>
+              <ion-label style="text-align: right;">{{item.old_value}}</ion-label>
+              <ion-label style="text-align: right;">{{item.remaining_amt}}</ion-label>
+            </ion-item>
+          </ion-list>
+
+
+          <ion-card *ngIf="payment.invoice_list">
+            <ion-item>
+              <ion-label>{{'HEADER.INVOICE NO' | translate}}</ion-label>
+              <ion-label>{{'HEADER.DATE' | translate}}</ion-label>
+              <ion-label>{{'HEADER.FOR RS' | translate}}</ion-label>
+              <ion-label>{{'HEADER.REMAIN' | translate}}</ion-label>
+            </ion-item>
+
+            <ion-item *ngFor="let ii of invData; let i=index">
+              <ion-col size="2">
+                <ion-label> {{ii.invoice_no}}</ion-label><br>
+              </ion-col>
+              <ion-col size="4">
+                <ion-label>{{ii.invoice_date}}</ion-label>
+              </ion-col>
+              <ion-col size="3">
+                <ion-label style="text-align: right;">{{ii.old_value}}</ion-label>
+              </ion-col>
+              <ion-col size="3">
+                <ion-input
+                  style="background-color: #f4f0df;height: 30px; border-radius: 7px;padding-left:3px; text-align: right;"
+                  [(ngModel)]="ii.inv_amt" [value]="ii.inv_amt" type="number" max="{{ii.inv_amt}}" (keyup)="chheck()">
+                </ion-input>
+              </ion-col>
+            </ion-item>
+           
+          </ion-card>
+        </div>
+        <ion-item>
+          <ion-label>{{'HEADER.REMAIN' | translate}}</ion-label>
+          <ion-label>{{payment.balance_amt}}</ion-label>
+        </ion-item>
+        <div class="col-lg-12">
+          <span *ngIf="balanceHide" style="color: red;">Balance must not be less than 0</span>
+        </div>
+        <div class="col-lg-12">
+          <span style="color: rgb(220, 95, 12);">Received value must not be more than given value
+          </span>
+        </div>
+      </div>
+
+      <ion-item lines="none" id="paytype">
+        <ion-label class="paymentType">{{'HEADER.PAYMENT TYPE' | translate}} <span class="required">*</span></ion-label>
+        <br>
+      </ion-item>
+
+      <ion-item>
+        <ion-button (click)="CashModel()" size="small" fill="outline" style="width:100px;">{{'HEADER.CASH' | translate}}
+        </ion-button>
+
+        <ion-button (click)="ChequeModel()" size="small" fill="outline" style="width:100px;">
+          {{'HEADER.CHEQUE' | translate}}
+        </ion-button>
+
+        <ion-button (click)="BankTransferModel()" size="small" fill="outline" style="width:120px;">
+          {{'HEADER.BANK TRANSFER' | translate}}
+        </ion-button>
+      </ion-item>
+
+      <ion-card [ngClass]="[hide]">
+        <div style="margin:4px">
+          <ion-row class="custom-input" >
+            <ion-label class="ion-margin">{{'HEADER.LEDGER NAME' | translate}} :<span class="required">*</span></ion-label>
+
+            <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.handover_to"
+              (ngModelChange)="select(payment.handover_to)" name="ledger" #ledger="ngModel" required>
+              <ion-select-option *ngFor="let item of cashLedger" [value]="item.id">{{item.ledger_name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-row>
+
+          <ion-row class="custom-input" style="margin-top:12px">
+            <ion-label class="ion-margin">{{'HEADER.DATE' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input type="date" name="date" required="" [(ngModel)]="payment.cleared_date" #date="ngModel" required></ion-input>
+          </ion-row>
+          <ion-button (click)="createCashledger()" size="small">{{'HEADER.ADD CASH LEDGER' | translate}}</ion-button>
+          <ion-button expand="full" (click)="cashDetails()">{{'HEADER.DONE' | translate}}</ion-button>
+        </div>
+      </ion-card>
+
+      <ion-card showCheque [ngClass]="[hideCheque]">
+        <div style="margin:4px">
+          <ion-row class="custom-input" style="margin-top:12px">
+            <ion-label class="ion-margin">{{'HEADER.CHEQUE NO' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input [(ngModel)]="payment.cheque_no" name="chakename" (click)="$event.target.select()" #chakename="ngModel" required></ion-input>
+          </ion-row>
+
+          <ion-row class="custom-input" style="margin-top:12px">
+            <ion-label class="ion-margin">{{'HEADER.DATE ISSUED' | translate}}:<span class="required">*</span></ion-label>
+            <ion-input type="date" name="issued_date" required="" [(ngModel)]="payment.issued_date"></ion-input>
+          </ion-row>
+
+          <ion-row class="custom-input" style="margin-top:12px">
+            <ion-label class="ion-margin">{{'HEADER.DATE CLEARED' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input type="date" name="cleared_date" required="" [(ngModel)]="payment.cleared_date">
+            </ion-input>
+          </ion-row>
+
+          <ion-row class="custom-input" style="margin-top:12px">
+            <ion-label class="ion-margin">{{'HEADER.SELECT BANK' | translate}} :<span class="required">*</span></ion-label>
+            <ion-select name="bankreq" interface="action-sheet" placeholder="select" [(ngModel)]="payment.bank" #bankreq="ngModel" required>
+              <ion-select-option [value]="0" selected="">Select</ion-select-option>
+              <ion-select-option *ngFor="let item of bankList" [value]="item.id">{{item.bank_name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-row>
+
+          <ion-item>
+            <ion-button (click)="createNewBank()" >{{'HEADER.ADD BANK' | translate}}</ion-button>
+          </ion-item>
+
+          <ion-button  expand="full" (click)="chequeDetails()">{{'HEADER.DONE' | translate}}</ion-button>
+        </div>
+      </ion-card>
+
+      <ion-card [ngClass]="[hideBank]">
+        <div style="margin:4px">
+          <ion-row class="custom-input" >
+            <ion-label class="ion-margin">{{'HEADER.REFERANCE NO' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input name="refrece" [(ngModel)]="payment.reference_no" (click)="$event.target.select()" #refrece="ngModel" required></ion-input>
+          </ion-row>
+
+          <ion-row class="custom-input" style="margin-top:12px;margin-bottom: 12px;">
+            <ion-label class="ion-margin">{{'HEADER.DATE' | translate}}:</ion-label>
+            <ion-input type="date" name="date" required="" [(ngModel)]="payment.cleared_date"></ion-input>
+          </ion-row>
+
+          <ion-row class="custom-input" >
+            <ion-label class="ion-margin">{{'HEADER.SELECT BANK' | translate}} :</ion-label>
+            <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.bank">
+              <ion-select-option [value]="0" selected="">Select</ion-select-option>
+              <ion-select-option *ngFor="let item of bankList" [value]="item.id">{{item.bank_name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-row>
+
+          <ion-item>
+            <ion-button (click)="createNewBank()" >{{'HEADER.ADD BANK' | translate}}</ion-button>
+          </ion-item>
+
+          <ion-button expand="full" (click)="bankTransferDetails()">{{'HEADER.DONE' | translate}}</ion-button>
+        </div>
+      </ion-card>
+
+      <div *ngIf="payment.payment_type == 1">
+        <ion-item>
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CASH' | translate}} </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="payment.payment_type == 2">
+        <ion-item>
+          <ion-label>Y{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CHEQUE' | translate}}</ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="payment.payment_type == 3">
+        <ion-item>
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.BANK TRANSFER' | translate}}</ion-label>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label>{{'HEADER.NOTES' | translate}}</ion-label>
+        <ion-input [(ngModel)]="payment.notes"></ion-input>
+      </ion-item>
+
+      <ion-button id="done" expand="full" type="submit" (click)="createPaymentIn()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+    </div> -->
+  </ion-card>
+</ion-content>

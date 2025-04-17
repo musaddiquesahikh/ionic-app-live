@@ -1,0 +1,144 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="modelDismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{data1.Party_name}}</ion-title>
+    <ion-button fill="clear" slot="end" size="small" id="editparty" (click)="presentModal(item)">
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid fixed style="padding:13px">
+    <ion-row>
+      <ion-col>
+        <ion-label class="partyname">{{data1.Party_name}}</ion-label><br>
+        <ion-label style="color: #a0a0a0;" *ngIf="data1.party_type==1">Customer</ion-label>
+        <ion-label style="color: #a0a0a0;" *ngIf="data1.party_type==2">Supplier</ion-label>
+        <!-- <ion-label >{{data1.party_type}}</ion-label> -->
+      </ion-col>
+      <ion-col style="text-align: right;">
+        <ion-label>
+          ₹ {{data1.current_balance}}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-segment value="details" mode="ios" (ionChange)="segmentChanged($event)">
+
+    <ion-segment-button value="details">
+      <ion-label>{{'HEADER.DETAILS'| translate}}</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="transaction" (click)="transaction()">
+      <ion-label>{{'HEADER.TRANSACTION' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="selectSegment == 'transaction'">
+
+    <ion-card *ngFor="let item of transData" id="pData" (click)="transactionDetails(item)">
+      <ion-row>
+        <h6>{{item.partyName}}</h6>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>{{'HEADER.INVOICE NO' | translate}} :{{item.invoice_no}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>{{'HEADER.INVOICE DATE' | translate}} : {{item.invoice_date}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>{{'HEADER.PARTICULARS' | translate}} : {{item.particular}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>{{'HEADER.AMOUNT' | translate}} : {{item.amount}}</ion-label>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+  </div>
+
+  <div *ngIf="selectSegment == 'details'">
+    <div>
+      <ion-item>
+        <ion-col>
+          <h5>{{'HEADER.MOBILE NUMBER' | translate}}</h5>
+          <ion-label>
+            +91 {{item.mobile_number}}
+          </ion-label>
+        </ion-col>
+      </ion-item>
+
+      <ion-item>
+        <ion-col>
+          <h5>{{'HEADER.BILLING ADDRESS' | translate}}</h5>
+          <ion-row>
+            <!--  <ion-col> -->
+            {{item.billing_address}}
+           
+          </ion-row>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <h5>{{'HEADER.SHIPPING ADDRESS' | translate}}</h5>
+          <ion-row>
+            {{item.shipping_address}}
+          </ion-row>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <h5>{{'HEADER.PINCODE' | translate}}</h5>
+          <ion-row>
+            {{item.pincode}}
+          </ion-row>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <h5>{{'HEADER.GSTIN' | translate}}</h5>
+          <ion-row>
+            <ion-label>{{item.gstin}}</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <h5>{{'HEADER.PAN' | translate}}</h5>
+          <ion-row>
+            <ion-label>{{item.pan}}</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-item>
+
+      <ion-item>
+        <ion-col>
+          <h5>Balance Details</h5>
+          <ion-row>
+            <ion-col>
+              <ion-label style="font-size: 12px;
+            color: #626262;">{{'HEADER.CREDIT PERIOD' | translate}} : </ion-label>
+              <ion-label>{{item.credit_period}} Days</ion-label>
+            </ion-col>
+
+            <ion-col>
+              <ion-label style="font-size: 12px;
+            color: #626262;">{{'HEADER.CREDIT LIMIT' | translate}}</ion-label>
+              <ion-label>{{item.credit_limit}}</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-item>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-title>Payslip</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+    <ion-label>Month & Year:</ion-label>
+    <ion-input type="Month" [(ngModel)]="data.date"></ion-input>
+
+  </ion-item>
+  <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+    <ion-button id="search" (click)="Search()">Search</ion-button>
+    <ion-button id="btn" type=reset (click)="clear()">clear search</ion-button>
+
+  </ion-item>
+
+  <div *ngIf="emp1">
+    <ion-searchbar type="text" (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-list *ngFor="let item of item">
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-col>
+          <ion-label>{{item.employee_name}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="download(item.attendance_id)" fill="clear">Download Payslip</ion-button>
+      
+        </ion-col>
+      </ion-item>
+    </ion-list>
+    <ion-buttons slot="primary" *ngIf="downloadUrl">
+      <a [href]="downloadUrl" ><ion-button>
+   
+        <ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+       
+      </ion-button></a>
+    </ion-buttons>
+  </div>
+
+</ion-content>

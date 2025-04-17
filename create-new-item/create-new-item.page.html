@@ -1,0 +1,310 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.CREATE ITEMS/SERVICE' | translate}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="submitData(user)">
+        <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content fullscreen="true">
+ 
+  <ion-segment mode="ios" class="segmentC" value="1" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="1" style="border: dotted 0.1px;">
+      <ion-label style=" font-size: 20px;">{{'HEADER.PRODUCT' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2" style="border: dotted 0.1px;">
+      <ion-label style=" font-size: 20px;">{{'HEADER.SERVICES' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-card *ngIf="user.item_type == 1">
+    <div>
+      <ion-label position="stacked">{{'HEADER.ITEM CATEGORY' | translate}} :<span class="required">*</span></ion-label>
+    </div>
+    <ion-row>
+      <ion-col size="10">
+        <ion-select style="border: solid 1px #b5a7a7;border-radius: 25px;margin: 1px 0px 1px 1px;" interface="popover" placeholder="Select Category"
+          [(ngModel)]="user.group">
+          <ion-select-option *ngFor="let option of options" [value]="option.id">{{ option.group_name
+            }}</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col size="2">
+        <ion-icon (click)="addOption()" name="add-circle-sharp" class="category">
+        </ion-icon>
+      </ion-col>
+    </ion-row>
+    <div>
+      <ion-label position="stacked">{{'HEADER.ITEM NAME' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input  class="custom-input"  #searchBar [(ngModel)]="user.item_name" type="text" #item_name="ngModel"
+        required></ion-input>
+      <div *ngIf="item_name.touched && item_name.invalid" class="alert">
+        <div *ngIf="item_name.errors?.required">
+          {{'HEADER.ITEM NAME REQUIRED' | translate}}
+        </div>
+      </div>
+    </div>
+    <div>
+      <ion-label position="stacked">{{'HEADER.ITEM CODE' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input class="custom-input" [(ngModel)]="user.item_code" type="text" #item_code="ngModel" required></ion-input>
+    
+      <div *ngIf="item_code.touched && item_code.invalid" class="alert">
+        <div *ngIf="item_code.errors?.required">
+          {{'HEADER.ITEM CODE REQUIRED' | translate}}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ion-label position="stacked">{{'HEADER.ITEM DESCRIPTION' | translate}} :</ion-label>
+      <ion-textarea  class="custom-input" [(ngModel)]="user.item_description" type="text"></ion-textarea>
+    </div>
+
+    <div>
+      <ion-row>
+        <ion-col size="6">
+      <ion-label style="margin-left: 32px;">{{'HEADER.UNIT' | translate}}</ion-label>
+      <ion-select class="unit" interface="popover" placeholder="UNIT" [(ngModel)]="user.unit" (ionChange)="other($event)">
+        <ion-select-option *ngFor="let lc of Unit" [value]="lc.id">{{lc.unit}}</ion-select-option>
+      </ion-select>
+      </ion-col>
+    
+      <ion-col size="6">
+        <div>
+          <ion-label style="margin-left: 32px;">{{'HEADER.OPENING STOCK' | translate}}<span class="required">*</span></ion-label>
+          <ion-input  class="custom-input" [(ngModel)]="user.opening_stock" type="number" #opening_stock="ngModel" required
+            (click)="$event.target.select()"></ion-input>
+        </div>
+        <ion-item *ngIf="opening_stock.touched && opening_stock.invalid" class="alert">
+          <div *ngIf="opening_stock.errors?.required">
+            {{'HEADER.OPENING STOCK REQUIRED' | translate}}
+          </div>
+        </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf="otherUnit">
+      <ion-label position="stacked">Add other unit</ion-label>
+      <ion-input  class="custom-input" type="text" [(ngModel)]="user.other_unit" maxlength="5" required></ion-input>
+    </div>
+
+    <ion-item >
+      <ion-label position="stacked">{{'HEADER.ADD ALTERNATIVE UNIT' | translate}}</ion-label>
+      <ion-toggle slot="end" color="primary" (ionChange)="conversion()" [disabled]="otherUnit"></ion-toggle>
+    </ion-item>
+    <!-- <div > -->
+      <ion-row  *ngIf="conversionRate">
+        <ion-row>
+          <ion-col size="6">
+            <div>
+        <ion-label position="stacked">{{'HEADER.ALTERNATIVE UNIT' | translate}} :</ion-label>
+        <ion-select style="border: solid 1px #b5a7a7;border-radius: 25px;margin-top: 5px;" interface="popover"
+         placeholder="select" [(ngModel)]="user.alternative_unit">
+          <ion-select-option *ngFor="let lc of Unit" [value]="lc.id">{{lc.unit}}</ion-select-option>
+        </ion-select>
+        </div>
+        </ion-col>
+
+        <ion-col size="6">
+          <div>
+        <ion-label>{{'HEADER.CONVERSION VALUE' | translate}} :<span class="required">*</span></ion-label>
+        <ion-input  class="custom-input" [(ngModel)]="user.conversion_value" type="number" #conversion_value="ngModel" required></ion-input>
+        </div>
+      </ion-col>
+      </ion-row>
+    </ion-row>
+    <!-- </div> -->
+
+    <div>
+      <ion-label position="stacked">{{'HEADER.AS OF DATE' | translate}}<span class="required">*</span></ion-label>
+      <ion-input style="width: 313px;margin-left: 4px;" class="custom-input" type="date" [(ngModel)]="user.as_of_date" #date="ngModel" required></ion-input>
+    </div>
+
+    <ion-grid>
+      <ion-row fill="outline" style="border: solid 1px #b5a7a7;border-radius: 30px;margin-top: 2px;">
+        <ion-col size="12">
+          <ion-accordion-group>
+            <ion-accordion value="first" style="border-radius: 30px;">
+              <ion-item slot="header" color="light">
+                <ion-label>Pricing Details</ion-label>
+              </ion-item>
+
+              <ion-item slot="content">
+                <ion-label>For Multiple GST Rates</ion-label>
+                <ion-checkbox slot="end" [checked]="isChecked" (ionChange)="checked()"></ion-checkbox>
+              </ion-item>
+
+              <div slot="content">
+                <ion-row *ngIf="isChecked">
+                  <ion-row *ngFor="let i of multiple; let n=index">
+                    <ion-col size="4">
+                      <ion-label position="stacked" style="text-align: center;">From</ion-label><span class="required">*</span>
+                      <ion-input class="custom-input" type="number" style="background-color: #f4f0df;height: 30px; width:90px;padding-left:3px" [(ngModel)]="i.from_rate" required></ion-input>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ion-label position="stacked" style="text-align: center;">To</ion-label>
+                      <ion-input  class="custom-input" style="background-color: #f4f0df;height: 30px; width:90px; padding-left:3px" [(ngModel)]="i.to_rate" type="number"></ion-input>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ion-label position="stacked"> GST rate</ion-label>
+            
+                      <ion-select class="gstselect" interface="popover" placeholder="select" [(ngModel)]="i.tax">
+                        <ion-select-option *ngFor="let lc of gstrate" [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+                      </ion-select>
+            
+                    </ion-col>
+                    <ion-row>
+                        <ion-button fill="clear" shape="round" (click)="deleteRange(n)" >
+                          <ion-icon name="trash-outline"></ion-icon>
+                        </ion-button>
+                    </ion-row>
+                  </ion-row>
+
+                  <ion-row>
+                      <ion-button fill="clear" shape="round" (click)="toggleRow()">
+                        Add Row
+                      </ion-button>
+                  </ion-row>
+                </ion-row>
+              </div>
+              
+              <div slot="content">
+                  <ion-label position="stacked" margin="10px">{{'HEADER.SALES PRICE' | translate}} :<span class="required">*</span></ion-label>
+                  <ion-row  class="custom-input">
+                    <ion-col size="6">
+                    <ion-input  [(ngModel)]="user.sales_prices" type="number" (click)="$event.target.select()"> </ion-input>
+                 </ion-col>
+                 <ion-col size="6">
+                  <div *ngIf="showGst">
+                    <ion-select [(ngModel)]="user.sales_types" interface="popover" placeholder="Select One">
+                      <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+                      <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+                    </ion-select>
+                  </div>
+                  </ion-col>
+                  </ion-row>
+              </div>
+
+              <div slot="content">
+                    <ion-label position="stacked" margin="10px">{{'HEADER.PURCHASE PRICE' | translate}} : <span class="required">*</span></ion-label>
+                    <ion-row class="custom-input">
+                    <ion-col size="6">
+                    <ion-input  [(ngModel)]="user.purchase_prices" type="number" (click)="$event.target.select()"></ion-input>
+                 </ion-col>
+                 <ion-col size="6">
+                  <div *ngIf="showGst">
+                    <ion-select [(ngModel)]="user.purchase_types" interface="popover" placeholder="Select One">
+                      <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+                      <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+                    </ion-select>
+                  </div>
+                  </ion-col>
+                  </ion-row>
+              </div>
+
+              <div slot="content">
+                <ion-item>
+                  <ion-label >{{'Enable width & Height' | translate}}</ion-label>
+                  <ion-toggle slot="end" [checked]="user.square_calculation" [(ngModel)]="user.square_calculation"></ion-toggle>
+                </ion-item>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div>
+      <ion-label position="stacked">{{'HEADER.HSN CODE' | translate}} :</ion-label>
+      <ion-input  class="custom-input" type="number" [(ngModel)]="user.hsn_code" (ionInput)="filterOptions(user.hsn_code)" autocomplete="on"
+        (click)="$event.target.select()"></ion-input>
+    </div>
+    <ion-list *ngIf="sdata">
+      <ion-item *ngFor="let option of filteredOptions" (click)="selectOption(option)" style="border-radius: 8px;
+      padding: 2px 5px;
+      border: 1px solid #bdbdbd;
+      box-shadow: 1px 2px 3px 2px #afafaf;">
+        {{option.hsn}} {{ option.d }}
+      </ion-item>
+    </ion-list>
+
+    <!-- <div *ngIf="showGst"> -->
+      <ion-row *ngIf="showGst">
+        
+        <ion-col size="6">
+          <ion-label style="margin-left: 32px;" >{{'HEADER.GST TAX RATE' | translate}} %</ion-label><div>
+          <ion-select class="custom-input" interface="popover" placeholder="Select Gst%" [(ngModel)]="user.Gst_tax_rate">
+            <ion-select-option *ngFor="let lc of gstrate " [value]="lc.id ">{{lc.gst_tax_rate }} </ion-select-option>
+          </ion-select></div>
+      </ion-col>
+      
+      <ion-col size="6">
+      <ion-label style="margin-left: 32px;" position="stacked"> {{'HEADER.CESS TAX RATE' | translate}} % </ion-label><div>
+      <ion-select class="custom-input" interface="popover" placeholder="Select Cess%" [(ngModel)]="user.cess_tax_rate">
+        <ion-select-option *ngFor="let lc of cessData" [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+      </ion-select></div>
+        </ion-col>
+      </ion-row>
+    <!-- </div> -->
+  </ion-card>
+
+  <ion-card *ngIf="user.item_type == 2">
+    <div>
+      <ion-label position="stacked">{{'HEADER.SERVICE NAME' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input  class="custom-input"  type="text" [(ngModel)]="user.item_name" required></ion-input>
+    </div>
+
+    <div>
+          <ion-label >{{'HEADER.RATE' | translate}} :<span class="required">*</span></ion-label>
+          <ion-row class="custom-input">
+          <ion-col size="6">
+          <ion-input [(ngModel)]="user.sales_prices" type="number" (click)="$event.target.select()"></ion-input>
+       </ion-col>
+       <ion-col size="6">
+        <div *ngIf="showGst">
+          <ion-select [(ngModel)]="user.sales_types" interface="popover" placeholder="Select One">
+            <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+            <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+          </ion-select>
+        </div>
+        </ion-col>
+        </ion-row>
+    </div>
+
+    <div>
+      <ion-label >{{'HEADER.SERVICE DESCRIPTION' | translate}} </ion-label>
+      <ion-input  class="custom-input" [(ngModel)]="user.item_description"></ion-input>
+    </div>
+
+    <div>
+      <ion-label >{{'HEADER.SAC CODE'| translate}} :</ion-label>
+      <ion-input  class="custom-input" type="text" [(ngModel)]="user.hsn_code"></ion-input>
+    </div>
+
+    <ion-row *ngIf="showGst">
+      <ion-col size="6">
+        <ion-label style="margin-left: 32px;" >{{'HEADER.GST TAX RATE' | translate}} %</ion-label><div>
+        <ion-select class="custom-input" interface="popover" placeholder="Select Gst%" [(ngModel)]="user.Gst_tax_rate">
+          <ion-select-option *ngFor="let lc of gstrate " [value]="lc.id ">{{lc.gst_tax_rate }} </ion-select-option>
+        </ion-select></div>
+    </ion-col>
+    
+    <ion-col size="6">
+    <ion-label style="margin-left: 32px;" position="stacked"> {{'HEADER.CESS TAX RATE' | translate}} % </ion-label><div>
+    <ion-select class="custom-input" interface="popover" placeholder="Select Cess%" [(ngModel)]="user.cess_tax_rate">
+      <ion-select-option *ngFor="let lc of cessData" [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+    </ion-select></div>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+</ion-content>

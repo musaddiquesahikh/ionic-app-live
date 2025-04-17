@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Employee Attendance Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-searchbar type="text" (ionInput)="getItems($event)" class="search"></ion-searchbar>
+    <ion-list>
+      <ion-row *ngFor="let employee of item" class="row" (click)="scrollToHalfPage()">
+        <ion-col size="12" (click)="onMonthSelect(start_date,employee)" class="col">
+          {{ employee.name }}
+          <ion-ripple-effect type="bounded"></ion-ripple-effect>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div>
+
+  <ion-item fill="outline" style="margin-top: 7px; margin-left: 5px; margin-right: 5px;">
+    <ion-label>Month & Year:</ion-label>
+    <ion-input type="Month" (ionChange)="onMonthSelect(start_date,'')" [(ngModel)]="start_date"></ion-input>
+  </ion-item>
+
+  <h1 class="h1" style="margin: 8px;">{{ this.emp_name}} </h1>
+  <h2 style="margin: 8px;">{{ months[selectedMonth] }} {{ selectedYear }}</h2>
+
+  <!-- Calendar -->
+  <div class="calendar-grid">
+    <div class="calendar-day" *ngFor="let day of daysOfWeek">{{ day }}</div>
+  </div>
+  <div class="calendar-grid">
+    <div *ngFor="let item of calendarDays; let i = index" class="calendar-day" [class.empty]="!item.day"
+      [ngClass]="getStatusClass(item.status)" (click)="editAttendance(item)">
+      <ng-container *ngIf="editingDay === item.day && this.admin == 'Admin' ">
+        <ion-select interface="popover" [(ngModel)]="item.status" (ionChange)="updateAttendance(item)">
+          <ion-select-option value="1">Present</ion-select-option>
+          <ion-select-option value="2">Absent</ion-select-option>
+        </ion-select>
+      </ng-container>
+      <ng-container *ngIf="editingDay !== item.day">
+        {{ item.day }}
+      </ng-container>
+    </div>
+  </div>
+  <ion-button *ngIf="this.admin == 'Admin' " expand="full" color="primary" (click)="submitAttendanceUpdates()">
+    Submit Updates
+  </ion-button>
+
+  <div class="legend">
+    <div style="margin-top: 7px;"><span class="legend-item present">P</span> Present</div>
+    <div style="margin-top: 7px;"><span class="legend-item absent">A</span> Absent</div>
+  </div>
+</ion-content>

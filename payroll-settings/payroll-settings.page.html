@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-title>Payroll Settings</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-label>Deduct absent fee yearly or monthly?</ion-label><br>
+  <ion-item>
+    <ion-radio-group [(ngModel)]="user.yearly_deduction">
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label>Monthly
+              <ion-radio slot="start" value=0></ion-radio>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-item>
+            <ion-label>Yearly
+              <ion-radio slot="start" value=1></ion-radio>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+  </ion-item>
+
+  <ion-label>Do you have Profession Tax (PT) number?</ion-label><br>
+  <ion-item>
+    <ion-radio-group [(ngModel)]="user.pt" (ionChange)="valueChanged()">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Yes</ion-label>
+            <ion-radio slot="start" value=1></ion-radio>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio slot="start" value=0></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+  </ion-item>
+
+  <ion-item *ngIf="abc">
+    <ion-label>PTRC :</ion-label>
+    <ion-input [(ngModel)]="user.ptrc_no"></ion-input>
+
+    <ion-label>PTEC :</ion-label>
+    <ion-input [(ngModel)]="user.ptec_no"></ion-input>
+  </ion-item>
+
+  <ion-label>Do you have Tax Account Number(TAN)?</ion-label><br>
+  <ion-item>
+    <ion-radio-group [(ngModel)]="user.tan" (ionChange)="valueTan()">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Yes</ion-label>
+            <ion-radio slot="start" value=1></ion-radio>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio slot="start" value=0></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+  </ion-item>
+
+  <ion-item *ngIf="abc1">
+    <ion-label>TAN</ion-label>
+    <ion-input [(ngModel)]="user.tan_no"></ion-input>
+  </ion-item>
+
+  <ion-label>Do you have Provident Fund(PF) Account?</ion-label><br>
+  <ion-item>
+    <ion-radio-group [(ngModel)]="user.pf" (ionChange)="valuePf()">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Yes</ion-label>
+            <ion-radio slot="start" value=1></ion-radio>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio slot="start" value=0></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+  </ion-item>
+
+  <ion-item *ngIf="abc2">
+    <ion-label>PF</ion-label>
+    <ion-input [(ngModel)]="user.pf_no"></ion-input>
+  </ion-item>
+
+  <ion-button (click)="submit()">Submit</ion-button>
+  <ion-button (click)="dismiss()">Close</ion-button>
+</ion-content>

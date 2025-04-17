@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.PROFORMA REGISTER' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-card>
+
+  <ion-item>
+    <ion-label position="stacked">{{'HEADER.FROM' | translate}} : </ion-label>
+    <ion-input type="date" name="dateF" required="" [(ngModel)]="item.start_date"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+    <ion-input type="date" name="dateT" required="" [(ngModel)]="item.end_date"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-button (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </ion-item>
+</ion-card>
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{proformaData.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+<ion-content>
+  <ion-list *ngFor="let item of proformaData">
+    <ion-item-sliding>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteInvoice(item)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item lines="none">
+
+        <ion-card (click)="selected(item)"
+          style="margin-left: 2px; margin-right: 5px; width:100%; margin-bottom: 10px; margin-top: 10px;">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-label>#{{item.invoice_no}}</ion-label>
+              </ion-col>
+              <ion-col size="6" style="text-align: right;font-weight: 600;">
+                <ion-label>{{item.invoice_date | date:'dd MMM, yyyy'}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col style="font-weight: 600;" size="8">
+                <ion-label>{{item.party_name}}</ion-label><br>
+                <ion-label>{{'HEADER.GSTIN' | translate}}# {{item.gstin}}</ion-label>
+              </ion-col>
+              <ion-col size="4" style="font-weight: 600;text-align: right;font-size: 18px;color:#00a600"
+                *ngIf="item.type == 'Sales_Invoice' ">
+                ₹ {{item.total_amount}}
+                <br>
+                <span style="color:#00a600;font-size: 14px;"
+                  *ngIf='item.payment_status === "Paid"'>{{item.payment_status}}</span>
+                <span style="color:#ff0000;font-size: 14px;"
+                  *ngIf="item.payment_status === 'Unpaid' ">{{item.payment_status}}</span>
+                <span style="color:#a64b00;font-size: 14px;"
+                  *ngIf='item.payment_status === "Partially Paid"'>{{item.payment_status}}</span>
+                <!-- {{item.payment_status}} -->
+              </ion-col>
+              <ion-col size="4" style="font-weight: 600;text-align: right;font-size: 18px;color: #ff0000;"
+                *ngIf="item.type != 'Sales_Invoice' ">
+                ₹ {{item.total_amount}}
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+        </ion-card>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -1,0 +1,72 @@
+
+.padL3{
+    --padding-left:3px
+}
+.right_part{
+  text-align: right;
+}
+.custom_card{
+border-radius: 25px;
+width: 94%;
+margin-left: 10px;
+background: #ffffff;
+margin-top: 8px;
+box-shadow: 0px 0px 7px 0px #dddde7;
+height: fit-content;
+padding: 0px;
+}
+.inputfield{
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+  --padding-right: 0px;
+  --padding-start: 10px;
+}
+.party{
+  border-radius: 25px;
+    width: 94%;
+    margin-left: 10px;
+    background: #ffffff;
+    box-shadow:  0px 0px 7px 0px #dddde7;
+    margin-top: 8px;
+}
+.category{
+  font-size: 40px;
+    color: #014796;
+    margin-top: 2px;
+    margin-left: 12px;
+}
+.invNo{
+    border-radius: 25px;
+    width: 94%;
+    margin-left: 10px;
+    background: #ffffff;
+    box-shadow: 0px 0px 7px 0px #dddde7;
+    margin-top: 8px
+}
+ion-content{
+  --ion-background-color: #e3f0ff !important;
+}
+.fotter{
+    border-radius: 14px;
+    --background: #014796;
+    width: 94.5%;
+    margin-left: 10px;
+    color: white;
+}
+.select1{
+  margin-left: -7px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  background: #b3d8ff;
+  border-radius: 10px;
+}
+.textarea{
+  width: 90%;
+  height: 76px;
+  margin-left: 14px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: solid 1px black;
+  background: #e2eefd;
+}

@@ -1,0 +1,67 @@
+<ion-content [fullscreen]="true">
+  <ion-slides pager (ionSlideDidChange)="slideChanged()">
+    <ion-slide>
+      <ion-row class="slider1">
+        <ion-col size="12">
+          <ion-img src="./assets/icon/verification-img.png"></ion-img>
+        </ion-col>
+        <h2>Custom URL.!</h2>
+        <p>Create custom URL and add notes.!</p>
+      </ion-row>
+
+    </ion-slide>
+
+    <ion-slide>
+      <ion-row class="slider2">
+        <ion-col size="12">
+
+          <ion-icon class="icon" name="lock"></ion-icon>
+        </ion-col>
+
+        <h2>Make it Private.!</h2>
+        <p>Add password to your url for private data .!</p>
+      </ion-row>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-row class="slider3">
+        <ion-col size="12">
+          <ion-icon class="icon" name="color-fill"></ion-icon>
+        </ion-col>
+        <h2>Coloured.!</h2>
+        <p>Make your notes coloured as you want.!</p>
+      </ion-row>
+    </ion-slide>
+
+    <ion-slide>
+        <ion-row class="slider4">
+          <ion-col size="12">
+            <ion-icon class="icon" name="copy"></ion-icon>
+          </ion-col>
+          <h2>Copy.!</h2>
+          <p>Easily copy content from notes.!</p>
+        </ion-row>
+    </ion-slide>
+
+  </ion-slides>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="dark" (click)="prevSlide()">
+          PREV
+        </ion-button>
+      </ion-col>
+      <ion-col text-right padding-right>
+        <ion-button ion-button clear (click)="nextSlide()" color="dark" *ngIf="currentIndex < 3">
+          NEXT
+        </ion-button>
+        <!-- <ion-button (click)="finish()" color="dark">
+				FINISH
+      </ion-button> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

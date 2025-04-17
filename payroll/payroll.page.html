@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>PAYROLL</ion-title>
+    <ion-button [routerLink]="['/payroll-settings']" fill="clear" size="small" style="align-items: flex-end;" slot="end"><ion-icon name="settings-outline"></ion-icon>  </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header style="text-align: center;">
+      <ion-card-title [routerLink]="['/add-new-employee']">
+        <ion-icon name="people-circle-outline"></ion-icon> 
+      </ion-card-title>Add New Employee
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header style="text-align: center;">
+      <ion-card-title [routerLink]="['/attendence']">
+        <ion-icon name="save-outline"></ion-icon> 
+      </ion-card-title>Monthly Salary Payments
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header style="text-align: center;">
+      <ion-card-title [routerLink]="['/tax-deduction']">
+        <ion-icon name="terminal-outline"></ion-icon> 
+      </ion-card-title>Tax Deduction
+    </ion-card-header>
+  </ion-card>
+
+  <ion-accordion-group>
+    <ion-accordion value="colors">
+
+      <ion-card  slot="header">
+        <ion-card-header style="text-align: center;">
+          <ion-card-title id="pay-report">
+            <ion-icon name="card-outline"></ion-icon>
+          </ion-card-title>Reports
+        </ion-card-header>
+      </ion-card>
+
+      <ion-list slot="content">
+
+        <ion-card>
+          <ion-card-header style="text-align: center;">
+            <ion-card-title  [routerLink]="['/payslip']">
+              <ion-icon name="logo-paypal"></ion-icon>
+            </ion-card-title> Download Payslip
+          </ion-card-header>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-header style="text-align: center;">
+            <ion-card-title [routerLink]="['/salary-register']">
+              <ion-icon name="cash-outline"></ion-icon>
+            </ion-card-title>Salary Register
+          </ion-card-header>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-header style="text-align: center;">
+            <ion-card-title [routerLink]="['/leave-report']">
+              <ion-icon name="document-text-outline"></ion-icon>
+            </ion-card-title>Leave Report
+          </ion-card-header>
+        </ion-card>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>

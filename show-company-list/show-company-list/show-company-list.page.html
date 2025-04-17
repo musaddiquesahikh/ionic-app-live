@@ -1,0 +1,176 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'HEADER.SELECT COMPANY' | translate}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button id="click-trigger" fill="clear" slot="end">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="primary" (click)="logout()">
+        <ion-icon slot="icon-only" ios="log-out" md="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<div *ngIf="this.active">
+
+  <ion-button size="small" (click)="appCreateNewCompany()" style="padding-left: 10px;">+ {{'HEADER.CREATE COMPANY' |
+    translate}}</ion-button>
+
+  <ion-card>
+    <ion-card-header style="text-align: center;">
+      <ion-icon name="ribbon-outline" size="large"></ion-icon><br>
+      <ion-label>{{this.plan}}</ion-label><br>
+      <ion-button *ngIf="this.plan1 ==3 || this.plan1 ==4" size="small" (click)="buyPlan()" style="text-align: center;">
+        {{'MESSAGE.BUY NOW' | translate}}
+      </ion-button>
+      <!-- <ion-label *ngIf="this.plan == '4'">You have active Free Trial subscription</ion-label> -->
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header style="text-align: center;">
+      <ion-icon name="hourglass-outline" size="large"></ion-icon><br>
+      <ion-label>{{this.days}} {{'HEADER.DAYS ARE REMAINING' | translate}} / {{this.days1}}</ion-label>
+
+    </ion-card-header>
+  </ion-card>
+</div>
+<!-- <ion-content > -->
+  <ion-content *ngIf="subplan1">
+    <ion-card (click)="pricing()">
+      <ion-card-header style="text-align: center;">
+        <ion-icon name="log-out-outline" size="large"></ion-icon><br>
+        <ion-label>{{'HEADER.SUBSCRIBE' | translate}}</ion-label>
+      </ion-card-header>
+    </ion-card>
+  </ion-content>
+  <ion-content *ngIf="this.plan2">
+  
+    <ion-card (click)="buy()">
+      <ion-card-header style="text-align: center;">
+        <ion-label>Your 30 days trial version is over</ion-label><br>
+        <ion-label>To continue Service Buy Plan</ion-label>
+      </ion-card-header>
+    </ion-card>
+  
+    <ion-card (click)="buy()">
+      <ion-card-header style="text-align: center;">
+        <ion-icon name="log-out-outline" size="large"></ion-icon><br>
+        <ion-label>{{'MESSAGE.BUY NOW' | translate}}</ion-label>
+      </ion-card-header>
+    </ion-card>
+  </ion-content>
+  <ion-content>
+  <ion-segment value="bank" #segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="admin">
+      <ion-label>Admin</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="staff">
+      <ion-label>Staff</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <div *ngIf="selectSegment == 'admin'">
+    <ion-card *ngFor="let item of listCompany" (click)="showCompany(item.isSelected, item)"
+      style="padding:15px;margin-top:10px;margin-bottom:10px;">
+      <ion-row>
+        <ion-label style="font-size: 20px;
+        font-weight: 600;">{{item.business_name}}</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label>{{item.email}}</ion-label>
+      </ion-row>
+    </ion-card>
+  </div>
+
+  <div *ngIf="selectSegment == 'staff'">
+    <ion-card *ngFor="let item of companyList" (click)="showCompany(item.isSelected, item)"
+      style="padding:15px;margin-top:10px;margin-bottom:10px;">
+      <ion-row>
+        <ion-label style="font-size: 20px;
+          font-weight: 600;">{{item.business_name}}</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label>{{item.email}}</ion-label>
+      </ion-row>
+    </ion-card>
+  </div>
+
+  <ion-card *ngIf="!listCompany" style="padding:15px;margin-top:10px;margin-bottom:10px;">
+    <ion-row>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    </ion-row>
+    <ion-row>
+      <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+    </ion-row>
+  </ion-card>
+  <ion-popover trigger="click-trigger" triggerAction="click">
+    <ng-template>
+      <ion-list>
+        <ion-item button *ngFor="let lng of languages" (click)="select(lng.value)" details="false">
+          <ion-label>{{lng.text}}</ion-label>
+          <ion-icon slot="end" name="checkmark" *ngIf="lng.value == select"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+  </ion-popover>
+</ion-content>
+
+<ion-footer>
+  <ion-card>
+    <ion-button fill="clear" id="open-modal">
+      <ion-icon name="trash-outline"></ion-icon>&nbsp; Delete My Account
+    </ion-button>
+  </ion-card>
+</ion-footer>
+
+<ion-modal #modal trigger="open-modal" [swipeToClose]="true" [presentingElement]="presentingElement"
+  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-label style="text-align:center">
+          <h2>Account Deletion / Deactivation</h2>
+        </ion-label>
+        <!-- <ion-buttons slot="end">
+          <ion-button (click)="modal.dismiss()">Close</ion-button>
+        </ion-buttons> -->
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-row>
+        <ion-col size="2" style="text-align: center;">
+          <ion-icon size="large" name="eye-off-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label class="ion-text-wrap" for="terms">
+            <h3 style="margin-bottom: 0px;">Deactivating your account is temporary</h3>
+            <p>Your Profile, Company, Transactions Everything will be hidden untill you enable it.</p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="2" style="text-align: center;">
+          <ion-icon size="large" name="trash-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label class="ion-text-wrap" for="terms">
+            <h3 style="margin-bottom: 0px;">Deleting your account is Permanent </h3>
+            <p>Your Profile, Company, Transactions Everything will be permanently deleted. </p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-button expand="block" (click)="deleteUser(user)" (click)="modal.dismiss">Deactivate Account</ion-button>
+      <ion-button expand="block" fill="outline" (click)="canDismiss(user)">Delete Account</ion-button>
+
+    </ion-content>
+
+
+  </ng-template>
+</ion-modal>
+

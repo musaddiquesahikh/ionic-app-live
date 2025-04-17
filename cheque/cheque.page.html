@@ -1,0 +1,35 @@
+<ion-item fill="outline" style="margin-top:12px">
+  <ion-label position="floating">{{'HEADER.CHEQUE NO' | translate}} :</ion-label>
+  <ion-input [(ngModel)]="user.cheque_no"></ion-input>
+</ion-item>
+
+<ion-item fill="outline" style="margin-top:12px">
+  <ion-label> {{'HEADER.DATE ISSUED' | translate}} :</ion-label>
+  <ion-input type="date" name="issued_date" required="" [(ngModel)]="user.issued_date"></ion-input>
+</ion-item>
+
+<ion-item fill="outline" style="margin-top:12px">
+  <ion-label>{{'HEADER.DATE CLEARED' | translate}} :</ion-label>
+  <ion-input type="date" name="cleared_date" required="" [(ngModel)]="user.cleared_date">
+  </ion-input>
+</ion-item>
+
+<ion-item fill="outline" style="margin-top:12px">
+  <ion-label>{{'HEADER.SELECT BANK' | translate}} :</ion-label>
+  <ion-select *ngIf="!this.data" interface="action-sheet" placeholder="select" [(ngModel)]="user.bank_name">
+    <ion-select-option *ngFor="let lc of bankList" [value]="lc.id">{{lc.bank_name}}</ion-select-option>
+  </ion-select>
+
+  <ion-select *ngIf="this.data" interface="action-sheet" placeholder="select" [(ngModel)]="user.bank">
+    <ion-select-option *ngFor="let lc of bankList" [value]="lc.id">{{lc.bank_name}}</ion-select-option>
+  </ion-select>
+
+  <ion-select *ngIf="this.data.data" interface="action-sheet" placeholder="select" [(ngModel)]="user.bank_name">
+    <ion-select-option *ngFor="let lc of bankList" [value]="lc.id">{{lc.bank_name}}</ion-select-option>
+  </ion-select>
+</ion-item>
+
+<ion-item>
+  <ion-button (click)="createNewBank()" style="margin-top:12px">{{'HEADER.ADD BANK' | translate}}</ion-button>
+</ion-item>
+<ion-button expand="full" (click)="chequeDetails()">{{'HEADER.SUBMIT' | translate}}</ion-button>

@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)=dismiss()></ion-back-button>
+    </ion-buttons>
+    <ion-title>Dued Payment Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-item id="from">
+  <ion-label position="stacked">{{'HEADER.FROM' | translate}} : </ion-label>
+  <ion-input type="date" name="dateF" required="" [(ngModel)]="item1.start_date"></ion-input>
+</ion-item>
+
+<ion-item id="to">
+  <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+  <ion-input type="date" name="dateT" required="" [(ngModel)]="item1.end_date"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-button id="submit" (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+</ion-item>
+
+<ion-content>
+  <ion-list *ngIf="isItemAvailable">
+    <ion-item *ngFor="let item of Itemdata">
+      <ion-label>{{ item1.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="transaction_div">
+    <ion-list *ngFor="let item of Itemdata">
+      <div class="transaction_div">
+        <ion-grid>
+          <ion-row style="border: solid 1px #b7b7b7;">
+            <ion-col style="border-right: solid 1px #b7b7b7;">
+              <ion-label> <b>Invoice Number :</b>{{item.invoice_no}} </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label> <b>Total Amount :</b>{{item.total_amount }} </ion-label>
+            </ion-col>
+          </ion-row>
+
+          <ion-row style="border-right: solid 1px #b7b7b7;border-left: solid 1px #b7b7b7;border-bottom: solid 1px #b7b7b7;">
+            <ion-col style="border-right: solid 1px #b7b7b7;">
+              <ion-label><b>Invoice Date :</b>{{item.invoice_date}} </ion-label>
+            </ion-col>
+            <ion-col >
+              <ion-label><b>Due Date :</b>{{item.due_date}} </ion-label>
+            </ion-col>
+          </ion-row>
+
+          <ion-row style="border-left: solid 1px #b7b7b7;">
+             <ion-col size="6" style="border-right: solid 1px #b7b7b7;">
+              <b>No of days Delayed:</b> {{item.delayed_days}}
+            </ion-col>
+            <ion-col size="6" style="border-right: solid 1px #b7b7b7;">
+              <b>Interest Amount :</b> {{item.delay_interest}}
+            </ion-col>
+          </ion-row>
+
+          <ion-row style="border: solid 1px #b7b7b7;">
+           <ion-col >
+             <b>Reciept Date:</b> {{item.receipt_date}}
+           </ion-col>
+         </ion-row>
+
+        </ion-grid>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

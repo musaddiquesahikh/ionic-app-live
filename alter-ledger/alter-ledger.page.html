@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">Alter Ledger</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-item>
+    <ion-button id="ledger" (click)="createLedger()" fill="clear">{{'HEADER.CREATE NEW LEDGER' | translate}}</ion-button>
+    <ion-button (click)="createGroup()" fill="clear">{{'HEADER.CREATE NEW GROUP' | translate}}</ion-button>
+  </ion-item>
+
+  <ion-searchbar type="text" (ionInput)="getItems($event)"></ion-searchbar>
+
+  <ion-item>
+    <ion-label>{{'HEADER.LEDGER NAME' | translate}}</ion-label>
+    <ion-label>{{'HEADER.BALANCE' | translate}}</ion-label>
+    <ion-label slot="end">{{'HEADER.ACTION' | translate}}</ion-label>
+  </ion-item>
+
+  <ion-list *ngFor="let item of items">
+    <ion-item>
+      <ion-label>{{item.ledger_name}}</ion-label>
+      <ion-label>{{item.opening_balance}}</ion-label>
+      <ion-button id="model" fill="clear" (click)="selectedLedger(item)">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="deleteLedger(item.id)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

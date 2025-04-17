@@ -1,0 +1,126 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)=dismiss()></ion-back-button>
+    </ion-buttons>
+    <ion-title>Party Wise Bills Report</ion-title>
+    <!-- <ion-button fill="clear" *ngIf="length" (click)="exportexcel()" slot="end">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+    </ion-button> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-card style="border: solid 1px;border-radius: 20px;">
+  <ion-item id="from">
+    <ion-label position="stacked">{{'HEADER.FROM' | translate}} : </ion-label>
+    <ion-input type="date" name="dateF" required="" [(ngModel)]="item1.start_date"></ion-input>
+  </ion-item>
+  
+  <ion-item id="to">
+    <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+    <ion-input type="date" name="dateT" required="" [(ngModel)]="item1.end_date"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-select interface="popover" placeholder="select" [(ngModel)]="item1.party_id" (ionChange)="partySelect(item1.party_id)">
+    <ion-select-option *ngFor="let item of partyList" [value]="item.id">{{item.Party_name}}</ion-select-option>
+  </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-button id="submit" (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </ion-item>
+</ion-card>
+
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{PartyDataS.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+
+<div *ngIf="pagination" style="overflow-x: auto;padding: 7px;">
+  <ion-row style="width: 94%;border-radius: 10px;width: 130%;">
+    <ion-col size="3"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;margin-left: 5px;color: black">Total
+      Invoice <br>
+      {{summary.total_bills}} ({{summary.total_bills_amount | currency:'INR'}})</ion-col>
+      <ion-col size="3"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;color: green;">Paid
+      invoice <br>
+      {{summary.total_paid_bills}} ({{summary.total_paid_amount | currency:'INR'}})</ion-col>
+      <ion-col size="3"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;color: red;">Unpaid
+      invoice<br>
+      {{summary.total_unpaid_bills}} ({{summary.total_unpaid_amount | currency:'INR'}})</ion-col>
+    <ion-col size="2"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;color: #c08700;">Partially
+      <br>
+      {{summary.total_partiallypaid_bills}} ({{summary.total_partiallypaid_amount | currency:'INR'}}) </ion-col>
+    
+   
+  </ion-row>
+</div>
+
+<ion-searchbar type="text"  (ionInput)="search($event)" (ionInput)="getItems($event)" class="search"></ion-searchbar>
+
+  <ion-content>
+    <ion-list *ngIf="loading">
+      <ion-item>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div style="overflow-x: auto;">
+      <table style="width:100%; margin-bottom: 10px; margin-top: 10px; border-collapse: collapse; white-space: nowrap;">
+        <thead fixed>
+          <tr style="border-bottom: solid 1px gray;" >
+            <th style="text-align: left;">Invoice Date</th>
+            <th style="text-align: center;">Referance no</th>
+            <th style="text-align: center;">Item Name</th>
+            <th style="text-align: center;">Selling Qty</th>
+            <th style="text-align: left;">Customer Code</th>
+            <th style="text-align: left;">Vehicle No</th>
+            <th style="text-align: left;">Total selling price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of PartyDataS">
+            <tr style="border-bottom: solid 1px gray;">
+              <td>{{item.invoice_date}}</td>
+              <td style="text-align: center;">{{item.reference_no}}</td>
+              <td style="text-align: center;">{{item.item_name}}</td>
+              <td style="text-align: center;">{{item.item_quantity}}</td>
+              <td style="text-align: center;">{{item.customer_code}}
+                <span *ngIf="item.customer_code==null">NA</span>
+              </td>
+              <td style="text-align: center;">{{item.vehicle_no}}
+                <span *ngIf="(item.vehicle_no=='' || item.vehicle_no==null)">NA</span>
+              </td>
+              <td style="text-align: center;">{{item.amount | number:'2.1-2'}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>  
+  
+  </ion-content>
+

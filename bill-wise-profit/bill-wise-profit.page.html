@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{'HEADER.BILL WISE PROFIT (FOR ITEM)' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="length" fill="clear" (click)="excel()">
+        <ion-icon name="cloud-download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-card style="border: solid 1px;border-radius: 20px;">
+    <ion-item>
+      <ion-label position="stacked">{{'HEADER.FROM' | translate}} :</ion-label>
+      <ion-input type="date" name="start_date" [(ngModel)]="user.start_date" required=""></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+      <ion-input type="date" name="end_date" [(ngModel)]="user.end_date" required=""></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-button (click)="Submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+    </ion-item>
+</ion-card>
+
+    <ion-item *ngIf="pagination">
+      <ion-label>Showing {{billwiseProfit.length}} of {{pagination.total_data}} results</ion-label>
+    </ion-item >
+
+<ion-content>
+  <ion-list *ngIf="loading">
+    <ion-item>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  
+    <div style="overflow-x: auto;">
+      <table style="width:100%; margin-bottom: 10px; margin-top: 10px; border-collapse: collapse; white-space: nowrap;">
+        <thead fixed>
+          <tr style="border-bottom: solid 1px gray;" *ngIf="!loading">
+            <th>invoice Date</th>
+            <th style=" text-align: center;">Invoice No</th>
+            <th style=" text-align: center;">Party name</th>
+            <th style="text-align: center;">Sales Price</th>
+            <th style="text-align: center;">Purchase Price</th>
+            <th style="text-align: left;">Profit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of billwiseProfit">
+            <tr style="border-bottom: solid 1px gray;">
+              <td>{{item.invoice_date | date:'dd MMM, yyyy'}}</td>
+              <td style="text-align: center;">{{item.invoice_no}}</td>
+              <td style="text-align: center;">{{item.party_name}}</td>
+              <td style="text-align: center;">{{item.selling_amount | number:'1.2-2'}}</td>
+              <td style="text-align: center;">{{item.purchase_amount | number:'1.2-2'}}</td>
+              <td style="text-align: left;color: {{item.profit_amount >0 ? '#00a600':  '#ff0000'}}">{{item.profit_amount | number:'1.2-2'}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

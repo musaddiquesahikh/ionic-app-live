@@ -1,0 +1,316 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.VIEW REPORTS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-accordion-group>
+    <ion-accordion value="report">
+      <ion-item slot="header" id="step1" style="color: black;">
+        <ion-icon name="card-outline"></ion-icon> {{'HEADER.SALES REPORTS' | translate}}
+      </ion-item>
+      <ion-list slot="content">
+
+        <ion-item (click)="salesRegister()" id="view">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label> {{'HEADER.SALES REGISTER' | translate}} </ion-label>
+        </ion-item>
+
+        <ion-item (click)="bill()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.BILL WISE PROFIT (FOR ITEM)' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="itemsale()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.ITEM WISE SALES' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="partysale()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PARTY WISE SALES' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="partyWbill()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Party Wise Bill</ion-label>
+        </ion-item>
+
+        <ion-item (click)="viewQuotation()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.VIEW QUOTATION' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="viewChallan()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.VIEW CHALLAN' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="PartyWiseItemSale()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PARTY WISE ITEM SALE' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="EwayBillReg()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.EWAY BILL REGISTER' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="EinvoiceReg()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.EINVOICE REGISTER' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="CategoryWiseSale()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.CATEGORY WISE SALES' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="salesRdetails()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Sales Register Details</ion-label>
+        </ion-item>
+
+        <ion-item (click)="SalesOrder()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Sales Order Register</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="newspaper-outline"></ion-icon> {{'HEADER.PURCHASE REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item (click)="purchase()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PURCHASE REGISTER' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="item_purchase()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.ITEM WISE PURCHASE' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="party_purchase()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PARTY WISE PURCHASE' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="purchaseOrder()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Purchase order register</ion-label>
+        </ion-item>
+
+        <ion-item (click)="PartyWiseItemPurch()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PARTY WISE ITEM PURCHASE' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="CategoryWisePurchase()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.CATEGORY WISE PURCHASE' | translate}}</ion-label>
+        </ion-item>
+
+        <!-- <ion-item (click)="PurchRdetails()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Sales Register Details</ion-label>
+        </ion-item> -->
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <!-- <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header">
+        <ion-icon name="newspaper-outline"></ion-icon> {{'HEADER.VIEW QUOTATION' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item (click)="viewQuotation()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.QUOTATIONS' | translate}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group> -->
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="newspaper-outline"></ion-icon> {{'HEADER.PROFORMA REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item (click)="proforma()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PROFORMA REGISTER' | translate}}</ion-label>
+        </ion-item>
+
+        <!-- <ion-item (click)="item_proforma()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.ITEM WISE PROFORMA' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="party_proforma()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PARTY WISE PROFORMA' | translate}}</ion-label>
+        </ion-item> -->
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-accordion-group>
+    <ion-accordion value="gst">
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="save-outline"></ion-icon> {{'HEADER.GST REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+
+        <ion-item (click)="gstr1()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.GSTR-1 REPORTS' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="gstr2()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.GSTR-2 REPORTS' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="gstr3()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.GSTR-3B REPORTS' | translate}}</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="wallet-outline"></ion-icon>{{'HEADER.EXPENSES REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item button (click)="category()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Category Wise Report</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="cash-outline"></ion-icon> {{'HEADER.PROFIT & LOSS REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item button (click)="trailBalance()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.TRIAL BALANCE' | translate}}</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="calculator-outline"></ion-icon> {{'HEADER.DISPLAY LEDGER REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item button (click)="ledger()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.LEDGER REPORTS' | translate}}</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <!-- <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header">
+        <ion-icon name="wallet-outline"></ion-icon> {{'HEADER.INVENTORY' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item button (click)="inventory()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.MANAGE INVENTORY' | translate}}</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group> -->
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="checkbox-outline"></ion-icon> {{'HEADER.DISPLAY PAYMENT(IN/OUT) REPORTS' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item button (click)="Payment()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.PAYMENT(IN/OUT) REPORTS' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item button (click)="Voucher()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.JOURNAL VOUCHER REGISTER' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="expense()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.EXPENSE REGISTER' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item (click)="DuedPayment()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.DUED PAYMENT REPORT' | translate}}</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" style="color: black;">
+        <ion-icon name="server-outline"></ion-icon>{{'HEADER.INVENTORY' | translate}}
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item button (click)="inventory()">
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>{{'HEADER.MANAGE INVENTORY' | translate}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          <ion-label>Non-Moving Items Register</ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>

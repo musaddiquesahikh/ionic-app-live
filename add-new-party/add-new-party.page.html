@@ -1,0 +1,169 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.CREATE PARTY' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveData()">
+        <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="partyForm">
+    <div>
+      <ion-grid fixed>
+        <ion-row class="custom-input" style="width: 200px; margin-left: 76px">
+          <ion-col [ngClass]="partA" (click)="partyType(1)" style="color: #fff;" size="5">Customer</ion-col>
+          <ion-col [ngClass]="partB" (click)="partyType(2)" size="5">Supplier</ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div [class.invalid]="partyForm.get('Party_name').invalid && partyForm.get('Party_name').touched">
+      <ion-label>{{'HEADER.PARTY NAME' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input type="text" class="custom-input" formControlName="Party_name"></ion-input>
+
+      <span class="text-danger"
+        *ngIf="partyForm.controls['Party_name'].hasError('required') && (partyForm.controls['Party_name'].dirty || partyForm.controls['Party_name'].touched)">
+        {{'HEADER.PARTY NAME REQUIRED' | translate}}</span>
+    </div>
+
+    <div [class.invalid]="partyForm.get('mobile_number').invalid && partyForm.get('mobile_number').touched">
+      <ion-label position="stacked">{{'HEADER.MOBILE NUMBER' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input class="custom-input" formControlName="mobile_number" type="number" id="mobile_number">+91-</ion-input>
+
+      <span class="text-danger"
+        *ngIf="partyForm.controls['mobile_number'].hasError('pattern') && (partyForm.controls['mobile_number'].dirty || partyForm.controls['mobile_number'].touched)">
+        {{'HEADER.MOBILE NO REQUIRED' | translate}}</span>
+    </div>
+    <div>
+      <ion-label position="stacked">{{'HEADER.EMAIL' | translate}} (Optional):</ion-label>
+      <ion-input class="custom-input" formControlName="email" type="email">
+      </ion-input>
+      <span class="text-danger"
+        *ngIf="partyForm.controls['email'].hasError('pattern') && (partyForm.controls['email'].dirty || partyForm.controls['email'].touched)">
+        {{'HEADER.PLEASE ENTER VALID EMAIL' | translate}}</span>
+    </div>
+    <div >
+      <ion-label style="margin-top: 20px;" position="stacked">{{'HEADER.OPENING BALANCE' | translate}} </ion-label>
+      <ion-row class="custom-input" >
+        <ion-col size="6" >
+          <ion-input type="number" formControlName="opening_balance" placeholder="Opening Balance"
+            (click)="$event.target.select()"> </ion-input>
+        </ion-col>
+        <ion-col size="6">
+          <div>
+            <!-- <ion-label position="stacked">{{'HEADER.TO COLLECT' | translate}}/{{'HEADER.TO PAY' | translate}}</ion-label> -->
+            <ion-select formControlName="payment_type" interface="popover" value="Debit" style="margin-left: 50px;">
+              <ion-select-option value="Debit">{{'HEADER.TO COLLECT' | translate}}</ion-select-option>
+              <ion-select-option value="Credit">{{'HEADER.TO PAY' | translate}}</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <span class="text-danger"
+        *ngIf="partyForm.controls['opening_balance'].hasError('required') && (partyForm.controls['opening_balance'].dirty || partyForm.controls['opening_balance'].touched)">
+        {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}</span>
+
+    </div>
+    <ion-grid>
+      <ion-row fill="outline" style="border: solid 1px #b5a7a7;border-radius: 30px;margin-top: 2px;">
+        <ion-col size="12">
+          <ion-accordion-group>
+            <ion-accordion value="first" style="border-radius: 30px;">
+              <ion-item slot="header" color="light">
+                <ion-label>Address Details</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-label position="stacked">{{'HEADER.BILLING ADDRESS' | translate}} :</ion-label>
+                <ion-textarea class="custom-input" formControlName="billing_address"
+                  value="{{partyForm.value.billing_address}}"> </ion-textarea>
+              </div>
+              <div slot="content">
+                <ion-checkbox checked="true" formControlName="same_as_billing"
+                  (ionChange)="onAddressSame()"></ion-checkbox>
+                <ion-label style="font-size: 15px;">{{'HEADER.SHIPPING ADDRESS' | translate}} {{'HEADER.SAME AS BILLING
+                  ADDRESS' |
+                  translate}} </ion-label>
+              </div>
+              <div class="ion-padding" slot="content">
+                <ion-label position="stacked">{{'HEADER.SHIPPING ADDRESS' | translate}} :</ion-label>
+                <ion-textarea class="custom-input" formControlName="shipping_address" (ionChange)="onAddressSame()">
+                </ion-textarea>
+              </div>
+
+              <div slot="content">
+                <ion-label position="stacked">{{'HEADER.PINCODE' | translate}} :</ion-label>
+                <ion-input class="custom-input" type="number" formControlName="pincode" required></ion-input>
+                <span class="text-danger"
+                  *ngIf="partyForm.controls['pincode'].hasError('pattern') && (partyForm.controls['pincode'].dirty || partyForm.controls['pincode'].touched)">
+                  {{'Pleas enter valid pincode'}}</span>
+              </div>
+              <div slot="content">
+                <ion-label position="stacked">{{'HEADER.CITY' | translate}} :</ion-label>
+                <ion-input class="custom-input" formControlName="city" name="city" required> </ion-input>
+              </div>
+              <!-- <div slot="content">
+                <ion-label position="stacked">{{'HEADER.STATE' | translate}} :<span
+                    class="required">*</span></ion-label>
+                <ion-select class="custom-input" interface="action-sheet" formControlName="place_of_supply"
+                  id="place_of_supply">
+                  <ion-select-option *ngFor="let lc of place_of_supply" [value]="lc.id">{{'STATE.'+lc.place_of_supply |
+                    translate}}</ion-select-option>
+                </ion-select>
+              </div> -->
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div [class.invalid]="partyForm.get('place_of_supply').invalid && partyForm.get('place_of_supply').touched">
+      <ion-label position="stacked">{{'HEADER.STATE' | translate}} :<span class="required">*</span></ion-label>
+      <ion-select class="custom-input" interface="popover" formControlName="place_of_supply" id="place_of_supply">
+        <ion-select-option *ngFor="let lc of place_of_supply" [value]="lc.id">{{'STATE.'+lc.place_of_supply | translate}}</ion-select-option>
+      </ion-select>
+
+      <span class="text-danger"
+        *ngIf="partyForm.controls['place_of_supply'].hasError('required') && (partyForm.controls['place_of_supply'].dirty || partyForm.controls['place_of_supply'].touched)">
+        {{'HEADER.PARTY NAME REQUIRED' | translate}}</span>
+    </div>
+
+    <div>
+      <ion-label position="stacked">{{'HEADER.GSTIN(OPTIONAL)' | translate}}:</ion-label>
+      <ion-input class="custom-input" type="text" name="gstin" (keyup)="gstFunction()" formControlName="gstin">
+      </ion-input>
+
+      <span class="text-danger"
+        *ngIf="partyForm.controls['gstin'].hasError('pattern') && (partyForm.controls['gstin'].dirty || partyForm.controls['gstin'].touched)">
+        {{'HEADER.ENTER VALID GST NO.' | translate}}</span>
+
+    </div>
+    <div>
+      <ion-label position="stacked">{{'HEADER.PAN' | translate}} :</ion-label>
+      <ion-input class="custom-input" formControlName="pan">
+      </ion-input>
+
+      <span class="text-danger"
+        *ngIf="partyForm.controls['pan'].hasError('pattern') && (partyForm.controls['pan'].dirty || partyForm.controls['pan'].touched)">
+        {{'HEADER.PAN NO. INVALID' | translate}}</span>
+    </div>
+
+    <div>
+      <ion-label position="stacked">{{'HEADER.CREDIT PERIOD' | translate}} (Days) :</ion-label>
+      <ion-input class="custom-input" type="number" formControlName="credit_period" (click)="$event.target.select()">
+      </ion-input>
+    </div>
+    <div>
+      <ion-label position="stacked">{{'HEADER.CREDIT LIMIT' | translate}} (₹) :</ion-label>
+      <ion-input class="custom-input" type="number" formControlName="credit_limit" (click)="$event.target.select()">
+      </ion-input>
+    </div>
+  </form>
+</ion-content>

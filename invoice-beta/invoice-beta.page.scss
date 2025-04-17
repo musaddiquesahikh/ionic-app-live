@@ -1,0 +1,188 @@
+.right_part{
+    text-align: right;
+}
+.custom_card{
+  border-radius: 25px;
+  width: 94%;
+  margin-left: 10px;
+  background: #ffffff;
+  margin-top: 8px;
+  box-shadow: 0px 0px 7px 0px #dddde7;
+  height: fit-content;
+  padding: 0px;
+}
+    // font-size: 12;
+.select{
+  margin-left: 48px;
+  margin-top: -5px;
+  border-radius: 25px;
+  height: 32px;
+  width: 154px;
+
+}
+.inputfield{
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-right: 0px;
+    --padding-start: 10px;
+}
+.spin{
+    --o-animation:spin 2s linear infinite;
+  }
+  .header {
+    // text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .content {
+    font-size: 12px;
+  }
+  .qr-code {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  
+  table td:first-child {
+    width: 150px;
+  }  
+  table td {
+    padding: 5px;
+  }
+  .irn-details {
+    margin-bottom: 20px;
+  }
+  
+  .irn-details h4 {
+    margin-bottom: 10px;
+  }
+  
+  .generated-by {
+    text-align: right;
+  }
+  .qr-code {
+  text-align: center;
+  margin: 20px;
+}
+.party{
+  border-radius: 25px;
+    width: 94%;
+    margin-left: 10px;
+    background: #ffffff;
+    box-shadow:  0px 0px 7px 0px #dddde7;
+    margin-top: 8px;
+}
+.category{
+  font-size: 40px;
+    color: #014796;
+    margin-top: 2px;
+    margin-left: 12px;
+}
+.invNo{
+    border-radius: 25px;
+    width: 94%;
+    margin-left: 10px;
+    background: #ffffff;
+    box-shadow: 0px 0px 7px 0px #dddde7;
+    margin-top: 8px
+}
+ion-content{
+  --ion-background-color: #e3f0ff !important;
+}
+
+.nacho{
+  background: rgb(195,195,195);
+  background: linear-gradient(0deg, rgba(195,195,195,1) 0%, rgba(255,255,255,1) 44%);
+}
+.custom-input {
+  border: 1px solid #b5a7a7; /* This sets a 2px solid blue border */
+  border-radius: 25px; /* This adds rounded corners to the border */
+  margin: 5px 5px 4px 8px;
+}
+.custom-input1 {
+  /* This sets a 2px solid blue border */
+  border-radius: 25px; /* This adds rounded corners to the border */
+
+  text-align: center;
+  margin-left: 6px;
+  color:#fff;
+  background-color: #014796;
+  box-shadow: 0 0 0 1px #d5d5d5
+  
+}
+.custom-input2 {
+  /* This sets a 2px solid blue border */
+  border-radius: 25px; /* This adds rounded corners to the border */
+
+  text-align: center;
+  background-color: #fdfdfd; 
+  margin-left: 16px; 
+  box-shadow: rgb(200 209 219) 0px 0px 0px 1px;
+}
+.unit{
+  border: solid 1px #b5a7a7; 
+  border-radius: 25px;
+  margin-top: 5px;
+}
+.modal {
+  --height: 10%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal::part(backdrop) {
+  background: rgb(255, 255, 255);
+  opacity: 1;
+}
+.skeleton{
+     height: 50px;
+     border-radius: 20px;
+}
+.textarea{
+          width: 90%;
+          height: 76px;
+          margin-left: 14px;
+          margin-top: 5px;
+          border-radius: 10px;
+          border: solid 1px black;
+          background: #e2eefd;
+}
+.select{
+            border: solid 1px;
+            width: 93%;
+            margin-left: 8.5px;
+            border-radius: 10px;
+            border: solid 1px black;
+            background: #e2eefd;
+            --placeholder-opacity: 1;
+}
+.select1{
+              margin-left: -7px;
+              margin-bottom: 0px;
+              padding-bottom: 0px;
+              padding-top: 0px;
+              background: #b3d8ff;
+              border-radius: 10px;
+}
+.textarea1{
+            width: 100%;
+            margin-top: 4px;
+            border: aliceblue;
+            background: #b3d8ff;
+            border-radius: 10px;
+            padding: 5px;
+}
+.fotter{
+  border-radius: 14px;
+  --background: #014796;
+  width: 94.5%;
+  margin-left: 10px;
+  color: white;
+  margin-top: -6px;
+}

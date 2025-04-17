@@ -1,0 +1,63 @@
+<ion-header class="toolbar">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.PARTIES' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createParty()">
+        <ion-icon slot="start" name="add"></ion-icon>
+        {{'HEADER.CREATE' | translate}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{item.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar style="--border-radius: 15px; --box-shadow: 1px 1px 1px 1px #e5e5e5;" type="text"
+    (ionInput)="getItems($event)"></ion-searchbar>
+
+  <div>
+    <ion-grid style="margin-left: 4px;margin-right: 4px;">
+      <ion-row fill="outline"style="border-radius: 30px;background: white;box-shadow: 0 0 0 1px #ececec;font-size: 12px;padding: 2px;">
+        <ion-col>
+          <ion-row style="border-bottom: 1px solid #d0d0d0;" *ngFor="let item of item" >
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-col size="2" style="align-self: center;text-align: center;" (click)="presentModal(item)">
+              <div class="avatar" style="background-color: #014796;">{{item.Party_name[0].toUpperCase()}}</div>
+            </ion-col>
+            <ion-col size="7" (click)="presentModal(item)"> 
+              <ion-label style="color: #a0a0a0;" *ngIf="item.party_type==1">Customer</ion-label>
+              <ion-label style="color: #a0a0a0;" *ngIf="item.party_type==2">Supplier</ion-label><br>
+              <ion-label style="font-size: 15px;
+             color: #014796;">{{item.Party_name}}</ion-label>
+            </ion-col>
+            <ion-col size="3" style="text-align: right;
+            font-size: 13px;align-self: center;">
+              <ion-label [ngClass]="item.current_balance < 0 ? 'amountColor':'positive'">₹
+                {{item.current_balance}}</ion-label><br>
+                <ion-icon  name="trash-outline" style="color: red;margin-top: 10px;font-size: larger;" (click)="deleteParty(item.id)"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div style="text-align: center;margin-top: 141px">
+    <ion-label style="font-size: 25px;font-weight: 500;color: blue;">{{b}}</ion-label>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading Partys..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

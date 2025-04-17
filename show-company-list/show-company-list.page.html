@@ -1,0 +1,230 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="color: #014796;text-align: center;">{{'HEADER.SELECT COMPANY' | translate}}</ion-title> 
+ </ion-toolbar>
+</ion-header> 
+<ion-row class="" *ngIf="this.active ">
+ <ion-col size="12" >
+    <div style="border-radius: 10px;border-radius: 10px;color: rgb(255, 255, 255);background: rgb(13 59 110);box-shadow: 0 0 0px 1px #b7b7b7">
+    
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="2" style="
+          align-self: center;"><ion-icon name="ribbon-outline" style="color:rgb(255, 255, 255);font-size: 46px;"></ion-icon></ion-col>
+          <ion-col size="10" style="align-self: center;">
+            <ion-label style="font-size: 17px;
+            font-weight: 500;">{{this.plan}}</ion-label><br>
+            <ion-label style="font-size: 12px;
+            color: #c0c0c0;">
+        {{this.days}} {{'HEADER.DAYS ARE REMAINING' | translate}}/ {{this.days1}} DAYS</ion-label>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+    </div>
+    <ion-card-header class="head">
+      <ion-button *ngIf="this.plan1 ==3 || this.plan1 ==4" size="small" (click)="buyPlan()" style="text-align: center;"
+        id="buynow">
+        {{'MESSAGE.BUY NOW' | translate}}
+      </ion-button>
+      <ion-label *ngIf="this.plan == '4'">You have active Free Trial subscription</ion-label>
+    </ion-card-header>
+  </ion-col>
+</ion-row>
+<ion-content *ngIf="subplan1">
+  <div (click)="pricing()" id="new">
+    <ion-card>
+      <div id="buynow">
+        <ion-card-header style="text-align: center;" id="company">
+          <ion-icon name="log-out-outline" size="large"></ion-icon><br>
+          <ion-label>{{'HEADER.SUBSCRIBE' | translate}}</ion-label>
+        </ion-card-header>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>
+  <ion-card *ngIf="this.plan2" style="border-radius: 15px;
+  margin: 9px;
+  font-size: 17px;
+  box-shadow: 0px 0px 0px 1px #c5c5c5;">
+    <ion-card-header style="text-align: center;font-size: larger;
+    color: black;">
+      <ion-label>Your Plan Is Expired To continue Our Service Buy Plan</ion-label><br>
+    </ion-card-header>
+    <ion-button style="margin-left: 40%;" size="small" id="buynow" (click)="buy()" shape="round">
+      <ion-label>{{'MESSAGE.BUY NOW' | translate}}</ion-label>
+    </ion-button>
+  </ion-card>
+<ion-searchbar class="search" type="text" (keyup)="getItems($event)"></ion-searchbar>
+
+<ion-row>
+  <ion-segment value="bank" style="background-color: #fff; width: 96%;margin-left: 7px;margin-top: 8px;" mode="ios" #segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="admin">
+      <ion-label style=" font-size: 16px;font-family: 'Roboto', sans-serif;">{{'HEADER.ADMIN' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="staff">
+      <ion-label style=" font-size: 16px;font-family: 'Roboto', sans-serif;">{{'HEADER.STAFF' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-row>
+
+<ion-content>
+  
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+  </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button>
+        <ion-button color="primary" (click)="logout()">
+          <ion-icon slot="icon-only" ios="log-out" md="log-out"></ion-icon>
+        </ion-button>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-button (click)="presentPopover($event)">
+          <ion-icon name='language'></ion-icon>
+        </ion-button>
+      </ion-fab-button>
+      
+      <ion-fab-button>
+        <ion-button id="open-modal">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-fab-button>
+      <ion-fab-button  *ngIf="!this.plan2">
+        <ion-button (click)="appCreateNewCompany()">
+        <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  
+  <div *ngIf="selectSegment == 'admin'  ">
+  <div *ngIf="!this.plan2"> 
+
+    <ion-grid style="margin-left: 4px;margin-right: 4px;">
+      <ion-row fill="outline" style="border-radius: 30px;background: white;box-shadow: 0 0 0 1px #ececec;font-size: 12px;padding: 10px;">
+      <ion-col>
+    <ion-row id="select" *ngFor="let item of listCompany" (click)="showCompany(item.isSelected, item)" style="border-bottom: 1px solid #d0d0d0;">
+      
+      <ion-col size="2" style="align-self: center;text-align: center;">
+       <div class="avatar" style="background-color: #014796;">{{item.business_name[0].toUpperCase()}}</div>
+      </ion-col>
+      <ion-col size="7">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-label style="font-size: 15px;color: #014796;">{{item.business_name.toUpperCase()}}</ion-label><br>
+         <ion-label style="color: #a0a0a0;">{{item.city}}</ion-label>
+      </ion-col>
+      <ion-col size="3" style="text-align: right;font-size: 15px;align-self: center;">
+        <ion-label [ngClass]="item.current_balance < 0 ? 'amountColor':'positive'"><ion-icon name="arrow-forward-outline"></ion-icon></ion-label>
+       </ion-col>
+      </ion-row>
+    </ion-col>
+    </ion-row>
+    </ion-grid>
+  </div>
+
+ <ion-row *ngIf="this.plan2" style="padding: 74px;font-size: large;text-align: center;">
+    <ion-icon style="margin-left: 80px;font-size: 49px;color: #f3c821; text-align: center;" name="alert-circle-outline"></ion-icon>
+    <ion-label >Your Plan Is Expired To Continue Our Services Subscribe The Plan</ion-label>
+    <ion-label style="color: #014796;margin-left: 63px;margin-top: 9px;text-align: center;" (click)="buyPlan()">Click Here</ion-label>
+  </ion-row>
+  
+</div>
+ 
+  <div *ngIf="selectSegment == 'staff'  ">
+  
+      <ion-grid style="margin-left: 4px;
+      margin-right: 4px;">
+        <ion-row fill="outline" style="border-radius: 30px;
+        background: white;
+        box-shadow: 0 0 0 1px #ececec;
+        font-size: 12px;
+        padding: 10px;">
+        <ion-col>
+      <ion-row id="select" *ngFor="let item of companyList" (click)="showCompany(item.isSelected, item)" style="border-bottom: 1px solid #d0d0d0;">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-col size="2" style="align-self: center;
+        text-align: center;">
+         <div class="avatar" style="background-color: #014796;">{{item.business_name[0].toUpperCase()}}</div>
+        </ion-col>
+        <ion-col size="7">
+          <ion-label style="font-size: 15px;
+          color: #014796;">{{item.business_name.toUpperCase()}}</ion-label><br>
+           <ion-label style="color: #a0a0a0;">{{item.city}}</ion-label>
+        </ion-col>
+        <ion-col size="3" style="text-align: right;
+        font-size: 15px;align-self: center;">
+        <!-- step == 'step1' ? 'my_class1' : 'my_class2' -->
+          <ion-label [ngClass]="item.current_balance < 0 ? 'amountColor':'positive'"><ion-icon name="arrow-forward-outline"></ion-icon></ion-label>
+          <!-- <ion-label style="color: #f45c5c;" *ngIf="t.type=='Purchase' || t.type=='Payment Out'">₹{{t.amount}}/-</ion-label> -->
+         </ion-col>
+        </ion-row>
+      </ion-col>
+      </ion-row>
+      </ion-grid>
+    <!-- </div> -->
+    </div>
+
+
+  <ion-card *ngIf="!listCompany" style="padding:15px;margin-top:10px;margin-bottom:10px;">
+    <ion-row>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    </ion-row>
+
+    <ion-row>
+      <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+    </ion-row>
+  </ion-card>
+</ion-content>
+
+<ion-modal #modal trigger="open-modal" [swipeToClose]="true" [presentingElement]="presentingElement"
+  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-label style="text-align:center">
+          <h2>Account Deletion / Deactivation</h2>
+        </ion-label>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-row>
+        <ion-col size="2" style="text-align: center;">
+          <ion-icon size="large" name="eye-off-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label class="ion-text-wrap" for="terms">
+            <h3 style="margin-bottom: 0px;">Deactivating your account is temporary</h3>
+            <p>Your Profile, Company, Transactions Everything will be hidden untill you enable it.</p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2" style="text-align: center;">
+          <ion-icon size="large" name="trash-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label class="ion-text-wrap" for="terms">
+            <h3 style="margin-bottom: 0px;">Deleting your account is Permanent </h3>
+            <p>Your Profile, Company, Transactions Everything will be permanently deleted. </p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-button expand="block" (click)="deleteUser(user)" (click)="modal.dismiss">Deactivate Account</ion-button>
+      <ion-button expand="block" fill="outline" (click)="canDismiss(user)">Delete Account</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-popover trigger="trigger1">
+  <ng-template>
+    <ion-list>
+      <ion-item><ion-label class="label" (click)="clickCompany() ; dissmiss()">Where can we see create <br>company
+          option?</ion-label><br></ion-item>
+      <ion-item> <ion-label class="label" (click)="introForBuy() ; dissmiss()">How to subscribe
+          plan?</ion-label><br></ion-item>
+    </ion-list>
+  </ng-template>
+</ion-popover>

@@ -1,0 +1,705 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="modalCtrl.dismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <a [href]="downloadInv" style="margin-right:10px" id="download"><ion-icon style="font-size: x-large;"
+          name="cloud-download-outline"></ion-icon></a>
+      <ion-button fill="clear" shape="round" (click)="whatsappSend()">
+        <ion-icon float="left" name="logo-whatsapp" style="color: rgb(95, 185, 95);"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="padding: 0px;">{{dictionary[0].header}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <a *ngIf="(invoice_type == 1 || invoice_type == 3) && billData.einvoice" [href]="downloadEinvoicePDF1" download
+      class="alert-link">Download E-Invoice</a>
+    <ion-button *ngIf="(invoice_type == 1 || invoice_type == 3) && billData.ewb" fill="clear" type="button"
+      (click)="convertToPDF()">Download E-way Bill</ion-button>
+  </ion-card>
+  <ion-row class="party" style="padding: 15px;padding-bottom: 0px;">
+    <ion-col size="10">
+      <ion-label style="color: #6a6a6a;">{{'HEADER.PARTY NAME' | translate}} <ion-text color="danger">*</ion-text>
+      </ion-label><br>
+      <ion-label class="global_dark_c" style="font-size: 17px;color: #006ee9;" *ngIf="party_details.Party_name">
+        {{party_details.Party_name}} </ion-label><br>
+    </ion-col>
+
+    <ion-col class="right_part" size="2">
+      <ion-icon id="open" name="add-circle-sharp" (click)="showPartyData();" class="category"></ion-icon>
+    </ion-col>
+
+    <ion-col size="12" *ngIf="expandParty">
+      <ion-label class="global_dark_c" style="color: #646464;"
+        *ngIf="party_details.gstin">{{party_details.gstin}}</ion-label>
+      <br *ngIf="party_details.gstin">
+      <ion-label class="global_dark_c" *ngIf="party_details.mobile_number" style="color: #646464;">
+        <ion-icon name="call-outline"></ion-icon>
+        {{party_details.mobile_number}}
+      </ion-label> <br *ngIf="party_details.mobile_number"> <ion-label class="global_dark_c" *ngIf="party_details.email"
+        style="color: #646464;">
+        <ion-icon name="mail-outline"></ion-icon>
+        {{party_details.email}}
+      </ion-label>
+    </ion-col>
+
+    <ion-col size="12" *ngIf="expandParty && party_details.id" style="padding:0;">
+      <ion-grid style="padding: 0px;">
+        <ion-row>
+          <ion-col *ngIf="invoice_type != 2 && invoice_type != 4 && invoice_type != 10">
+            <ion-label>{{'HEADER.BILL TO' |translate }}:</ion-label>
+            <ion-label><b>{{party_details.billing_address}}</b></ion-label>
+          </ion-col>
+
+          <ion-col *ngIf="invoice_type == 2 || invoice_type == 4 || invoice_type == 10">
+            <ion-label>{{'HEADER.BILL FROM' |translate }}:</ion-label>
+            <ion-label><b>{{party_details.billing_address}}</b></ion-label>
+          </ion-col>
+
+          <ion-col *ngIf="invoice_type != 2 && invoice_type != 4 && invoice_type != 10">
+            <ion-label>{{'HEADER.SHIP TO' | translate}} :</ion-label>
+            <ion-label><b>{{party_details.shipping_address}}</b></ion-label>
+          </ion-col>
+
+          <ion-col *ngIf="invoice_type == 2 || invoice_type == 4 || invoice_type == 10">
+            <ion-label>{{'HEADER.SHIP FROM' |translate }}:</ion-label>
+            <ion-label><b>{{party_details.billing_address}}</b></ion-label>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="showItemsPanel">
+          <ion-row *ngIf="invoice_type != 2 && invoice_type != 4 && invoice_type != 10">
+            <label style="margin-left: 11px ;margin-top: -1px;"><b>{{'HEADER.PLACE OF SUPPLY' | translate}} </b></label>
+            <ion-select style="padding: 0;
+            margin-left: 62px;" class="select" interface="popover" (ionChange)="supply()"
+              [(ngModel)]="invoice_model.place_of_supply">
+              <ion-select-option selected *ngFor="let p of place_of_supply"
+                [value]="p.state_code">{{p.place_of_supply}}</ion-select-option>
+            </ion-select>
+          </ion-row>
+
+          <ion-row *ngIf="invoice_type==3 || invoice_type==4">
+            <ion-item>
+              <ion-label>Against invoice:</ion-label>
+              <ion-input placeholder="Select Invoice No"
+                (ionInput)="List(invoice_model.against_inv_no);clear(invoice_model.against_inv_no)"
+                (click)="$event.target.select()" [(ngModel)]="invoice_model.against_inv_no"></ion-input>
+            </ion-item>
+            <ion-list interface="action-sheet" *ngIf="show1">
+              <ion-item *ngFor="let item of arry1" (click)="invSelect(item)">
+                {{item.invoice_no}}
+              </ion-item>
+            </ion-list>
+          </ion-row>
+        </ion-row>
+      </ion-grid>
+    </ion-col>
+    <ion-col *ngIf="!expandParty && party_details.id">
+      <div style="text-align: center;color:#006fed;" (click)="expandPartyDetails()">
+        Show More <ion-icon name="chevron-up-outline"></ion-icon>
+      </div>
+    </ion-col>
+    <ion-col *ngIf="expandParty && party_details.id">
+      <div style="text-align: center;color:#006fed;" (click)="shrinkPartyDetails()">
+        Show Less <ion-icon name="chevron-down-outline"></ion-icon>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="invNo" *ngIf="party_details.id">
+    <ion-grid style="padding:13px">
+      <ion-row>
+        <ion-col size="10" id="step2">
+          <ion-label style="color: gray;">{{dictionary[0].label}} #</ion-label>
+          <ion-input id="searchBar1"
+            style="--padding-top: 0px;--padding-bottom: 0px;--padding-start: 6px;background-color: #b2d8ff;width: 118px;border-radius: 6px;"
+            [(ngModel)]="invoice_model.invoice_no" (click)="$event.target.select()">
+          </ion-input>
+        </ion-col>
+        <ion-col class="right_part" size="2">
+          <ion-icon id="open" name="create-outline" (click)="modalOpenEdit()" class="category"
+            style="font-size: 26px;"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label style="color: gray;">Invoice date</ion-label><br>
+          <!-- <ion-label>{{invoice_model.invoice_date | date: 'dd/MM/yyyy'}}</ion-label> -->
+          <ion-input type="date" [(ngModel)]="invoice_model.invoice_date" style="--padding-top: 0px;
+          --padding-end: 0;
+          --padding-bottom: 0px;
+          --padding-start: 0px;" (ionChange)="dateChange()"></ion-input>
+          <!-- <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime"></ion-datetime>
+            </ng-template>
+          </ion-modal> -->
+          <!-- <ion-label style="color: gray;">{{dictionary[0].label}} #</ion-label>
+          <ion-input id="searchBar1" style="--padding-top: 0px;--padding-bottom: 0px;--padding-start: 0px;"
+            [(ngModel)]="invoice_model.invoice_no" (click)="$event.target.select()">
+          </ion-input> -->
+        </ion-col>
+
+        <ion-col class="right_part" size="6">
+          <ion-label style="color: gray;">Payment Terms (Days) </ion-label><br>
+          <ion-input type="number"
+            style="--padding-top: 0px;--padding-bottom: 0px;--padding-start: 6px;--padding-end:8px;float:right;background-color: #b2d8ff;width: 60px;border-radius: 6px;"
+            [(ngModel)]="invoice_model.payment_terms" (ionChange)="dateChange()"></ion-input>
+
+          <!-- <ion-label>{{invoice_model.payment_terms}} </ion-label> -->
+          <!-- <ion-label style="color: gray;">Invoice date</ion-label><br>
+          <ion-label>{{invoice_model.invoice_date | date: 'yyyy/MM/dd'}}</ion-label> -->
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="expandInvoice">
+        <ion-col size="6">
+          <ion-label style="color: gray;">Due Date</ion-label><br>
+          <ion-label>{{invoice_model.due_date | date:'yyyy/MM/dd'}} </ion-label>
+        </ion-col>
+
+        <ion-col size="6" class="right_part">
+          <!-- <ion-label style="color: gray;">Due Date</ion-label><br>
+          <ion-label>{{invoice_model.due_date | date:'yyyy/MM/dd'}} </ion-label> -->
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="expandInvoice">
+        <ion-col size="6" *ngIf="invSett.po_number">
+          <ion-label>{{'HEADER.PO NUMBER' |translate}}</ion-label>
+          <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;padding-left:3px" [(ngModel)]="invoice_model.po_no"></ion-input>
+        </ion-col>
+        <ion-col size="6" *ngIf="invSett.eway_number">
+          <ion-label style="width:100px;margin-left:10px;">{{'HEADER.E-WAY BILL NUMBER' | translate}} </ion-label>
+          <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;margin-left:20px" [(ngModel)]="invoice_model.eway_bill_no"></ion-input>
+        </ion-col>
+        <ion-col size="6" *ngIf="invSett.vehicle_number">
+          <ion-label>{{'HEADER.VEHICLE NUMBER' | translate}}</ion-label>
+          <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;padding-left:3px" [(ngModel)]="invoice_model.vehicle_no"></ion-input>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="expandInvoice">
+        <ion-row *ngFor="let data of invSett.extra_fields">
+          <ion-col size="10">
+            <ion-label style="color: gray;">{{data.extra_fields}}</ion-label>
+            <ion-input
+              style="--padding-top: 0px;--padding-bottom: 0px;--padding-start: 6px;background-color: #b2d8ff;width: 118px;border-radius: 6px;"
+              [(ngModel)]="data.extra_fieldsValue"></ion-input>
+          </ion-col>
+        </ion-row>
+      </div>
+      <ion-row>
+        <ion-col *ngIf="!expandInvoice">
+          <div style="text-align: center;color:#006fed;" (click)="expandInvoiceDetails()">
+            Show More <ion-icon name="chevron-up-outline"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col *ngIf="expandInvoice">
+          <div style="text-align: center;color:#006fed;" (click)="shrinkInvoiceDetails()">
+            Show Less <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-row>
+  <!-- <ion-row class="invNo">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" id="step2">
+          <ion-label style="color: gray;">{{dictionary[0].label}} #</ion-label>
+          <ion-input id="searchBar1" style="--padding-top: 0px;--padding-bottom: 0px;--padding-start: 0px;"
+            [(ngModel)]="invoice_model.invoice_no" (click)="$event.target.select()">
+          </ion-input>
+        </ion-col>
+
+        <ion-col class="right_part" size="6">
+          <ion-label style="color: gray;">invoice date</ion-label><br>
+          <ion-label>{{invoice_model.invoice_date | date: 'yyyy/MM/dd'}}</ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <ion-label style="color: gray;">Payment Terms </ion-label><br>
+          <ion-label>{{invoice_model.payment_terms}} </ion-label>
+        </ion-col>
+
+        <ion-col size="6" class="right_part">
+          <ion-label style="color: gray;">Due Date</ion-label><br>
+          <ion-label>{{invoice_model.due_date | date:'yyyy/MM/dd'}} </ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="3" *ngIf="invSett.po_number">
+          <ion-label>{{'HEADER.PO NUMBER' |translate}}</ion-label>
+          <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;padding-left:3px" [(ngModel)]="invoice_model.po_no"></ion-input>
+        </ion-col>
+        <ion-col size="5" *ngIf="invSett.eway_number">
+          <ion-label style="width:100px;margin-left:10px;">{{'HEADER.E-WAY BILL NUMBER' | translate}} </ion-label>
+          <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;margin-left:20px" [(ngModel)]="invoice_model.eway_bill_no"></ion-input>
+        </ion-col>
+        <ion-col size="4" *ngIf="invSett.vehicle_number">
+          <ion-label>{{'HEADER.VEHICLE NUMBER' | translate}}</ion-label>
+          <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;padding-left:3px" [(ngModel)]="invoice_model.vehicle_no"></ion-input>
+        </ion-col>
+      </ion-row>
+      <div *ngFor="let data of invSett.extra_fields">
+        <ion-row>
+          <ion-col size="10">
+            <ion-label>{{data.extra_fields}}</ion-label>
+            <ion-input style="background-color: #d8daf3;height: 30px; width:90px; border-radius: 
+          7px;padding-left:3px" [(ngModel)]="data.extra_fieldsValue"></ion-input>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </ion-row> -->
+
+  <ion-modal [isOpen]="isModalOpen" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5" [backdropDismiss]="false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{'HEADER.EDIT' | translate}}</ion-title>
+          <ion-buttons slot="end" (click)="mocalClose()">
+            <ion-icon slot="icon-only" ios="close-outline" md="close-outline"></ion-icon>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-card>
+          <ion-item fill="outline" style="margin-top:20px">
+            <ion-label>{{'HEADER.INVOICE DATE' | translate}} : </ion-label>
+            <ion-input type="Date" required="" [(ngModel)]="invoice_model.invoice_date" (ionChange)="dateChange()">
+            </ion-input>
+          </ion-item>
+
+          <ion-item fill="outline" style="margin-top:20px">
+            <ion-label>{{'HEADER.PAYMENT TERMS' | translate}} :</ion-label>
+            <ion-input type="text" [(ngModel)]="invoice_model.payment_terms" (ionChange)="dateChange()"></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline" style="margin-top:20px; margin-bottom: 10px;">
+            <ion-label>{{'HEADER.DUE DATE' | translate}} :</ion-label>
+            <ion-input type="Date" required="" [(ngModel)]="invoice_model.due_date" (ionChange)="dateChange()">
+            </ion-input>
+          </ion-item>
+
+          <ion-button (click)="editInvoiceNo()" expand="full">{{'HEADER.DONE' | translate}}</ion-button>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <!-- <ion-card class="custom_card">
+  </ion-card> -->
+  <ion-modal style="--border-radius: 25px;" #modal trigger="open" [initialBreakpoint]="0.60"
+    [breakpoints]="[0, 0.25, 0.5, 0.75]">
+    <ng-template>
+      <ion-content>
+        <ion-list *ngIf="partyComponent">
+          <app-party-list (parentFunction)="partyFunction($event)"> </app-party-list>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-grid fixed *ngIf="showItemsPanel">
+    <ion-row>
+      <ion-col size="10" style="padding-top: 8px;
+        padding-left: 10px;">
+        <ion-label>Merge Item(Increase Quantity Only)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-toggle style="padding:4px" [checked]="toggleItem" [(ngModel)]="toggleItem"></ion-toggle>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-card class="custom_card" *ngIf="showItemsPanel" style="margin-top: 0px;">
+    <ion-row style="height: 40px;padding: 12px;">
+      <!-- <ion-checkbox  unchecked [(ngModel)]="invoice_model.description_allow"></ion-checkbox> -->
+      <div>
+        <input type="checkbox" name="description" id="description" [(ngModel)]="description_allow">
+        <label for="description" style="padding-left: 5px;">Item {{ 'HEADER.DESCRIPTION' | translate}}</label>
+      </div>
+      <div style="margin-left: 20%;">
+        <input type="checkbox" name="rchrg" id="rchrg" [(ngModel)]="invoice_model.rchrg">
+        <label for="rchrg" style="padding-left: 5px;">{{ 'HEADER.REVERSE CHARGE' | translate}}</label>
+        <!-- <button (click)="reversecheck(invoice.rchrg)">check</button> -->
+      </div>
+    </ion-row>
+  </ion-card>
+  <ion-card class="custom_card" *ngIf="showItemsPanel" style="margin-top: 0px;">
+    <ion-grid style="padding:15px">
+      <ion-row>
+        <ion-col>
+          <ion-label> {{'HEADER.ITEMS/SERVICE' | translate}}<ion-text color="danger">*</ion-text>
+          </ion-label>
+
+          <ion-input required type="text" style="padding:0" *ngIf="partyList">
+          </ion-input>
+          <ion-label class="global_dark_c" *ngIf="partyList">{{'HEADER.MOBILE NUMBER' | translate}}</ion-label>
+        </ion-col>
+        <ion-col class="right_part">
+          <ion-button id="create-item" size="small" fill="clear" (click)="showItemData();scrollToHalfPage()" tapable>+
+            Add {{'HEADER.ITEMS' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let item of items; let i=index" style="border-bottom: 1px solid #818181;">
+        <ion-col size="8" style="padding: 0px;">
+          <ion-label style="color: #006ee9;font-size: 17px;font-weight: 600;">{{item.item_name}}</ion-label>
+
+          <ion-row *ngIf="description_allow">
+            <textarea style="width: 100%;
+            margin-top: 4px;
+            border: aliceblue;
+            background: #b3d8ff;
+            border-radius: 10px;
+            padding: 5px;" [(ngModel)]="item.item_description"></textarea>
+          </ion-row>
+          <ion-row>
+            <ion-col *ngIf="items[i].item_type==1">
+              <ion-label>Quantity</ion-label>
+              <ion-input type="number" style="border-radius: 10px;
+              background: #b3d8ff;" class="inputfield" (ionChange)="calculation()" [(ngModel)]="item.quantity"
+                (click)="$event.target.select()">
+              </ion-input>
+
+              <div *ngIf="items[i].square_calculation">
+                <ion-label>Width x Height</ion-label>
+                <ion-input type="number" class="inputfield" (click)="changedopen()" (ionChange)="WHFunction(i)"
+                  [(ngModel)]="item.breadth"></ion-input>
+                <ion-input type="number" class="inputfield" (click)="changedopen()" (ionChange)="WHFunction(i)"
+                  [(ngModel)]="item.length_c"></ion-input>
+              </div>
+            </ion-col>
+
+            <ion-col *ngIf="items[i].item_type==2">
+              <ion-label>Quantity</ion-label>
+              <ion-input type="number" style="border-radius: 10px; background: #b3d8ff;" class="inputfield"
+                (ionChange)="calculation()" [(ngModel)]="item.quantity" (click)="$event.target.select()">
+              </ion-input>
+            </ion-col>
+
+            <ion-col>
+              <ion-label>{{'HEADER.UNIT'|translate }}</ion-label>
+              <ion-select style="    margin-left: -7px;
+              margin-bottom: 0px;
+              padding-bottom: 0px;
+              padding-top: 0px;
+              background: #b3d8ff;
+              border-radius: 10px;" interface="popover" *ngIf="item.abc.id!=null" (ionChange)="unitChange(item.abc,i)"
+                [(ngModel)]="items[i].abc">
+                <ion-select-option selected *ngFor="let i of items[i].units" [value]="i">{{i.unit}}</ion-select-option>
+              </ion-select>
+            </ion-col>
+
+            <ion-col
+              *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7">
+              <ion-label>{{'HEADER.RATE' | translate}}</ion-label>
+              <ion-input type="number" class="inputfield" (click)="$event.target.select()" (click)="changedopen()"
+                (ionChange)="selectgstrate(items[i],i)" (ionChange)="calculation()"style="border-radius: 10px;
+                background: #b3d8ff;"[(ngModel)]="items[i].rate"></ion-input>
+            </ion-col>
+
+            <ion-col *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10">
+              <ion-label>P Rate</ion-label>
+              <ion-input type="number" class="inputfield" (click)="$event.target.select()" (ionChange)="calculation()"
+                (click)="changedopen()" (ionChange)="selectgstrate(items[i],i)"style="border-radius: 10px;
+                background: #b3d8ff;"[(ngModel)]="items[i].purchase_rate"></ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col *ngIf="!invoice_model.enable_value_addition">
+              <ion-label>Disc(-)</ion-label>
+              <ion-input type="number" class="inputfield" style="border-radius: 10px; 
+              background: #b3d8ff;" (ionChange)="calculation()" [(ngModel)]="items[i].discount"
+                (click)="$event.target.select()">
+              </ion-input>
+              <span *ngIf="invoice_model.show_discount_rs">{{items[i].discount_in_rs | currency:'INR'}}</span>
+            </ion-col>
+            <ion-col *ngIf="invoice_model.enable_value_addition">
+              <ion-label>Value Addn(-%)</ion-label>
+              <ion-input type="number" class="inputfield" style="border-radius: 10px; 
+              background: #b3d8ff;" (ionChange)="calculation()" [(ngModel)]="items[i].value_addition"
+                (click)="$event.target.select()">
+              </ion-input>
+              <span *ngIf="invoice_model.show_value_add_rs">{{items[i].discount_value_add | currency:'INR'}}</span>
+            </ion-col>
+            <ion-col>
+              <ion-label>{{'HEADER.TAX' | translate}}:</ion-label>
+              <ion-label *ngIf="items[i].Gst_tax_rate == -1 && !items[i].multiple_rates">0%</ion-label>
+              <ion-label
+                *ngIf="items[i].Gst_tax_rate != -1 && !items[i].multiple_rates">{{items[i].Gst_tax_rate}}%</ion-label>
+
+              <!-- <ion-label *ngIf="items[i].Gst_tax_rate != -1 && items[i].multiple_rates"> -->
+              <ion-select style="margin-left: -15px;" interface="popover" [(ngModel)]="items[i].tax_rate_id"
+                [disabled]="!company_gst" (ionChange)="ratechange(items[i],i)">
+                <ion-select-option *ngFor="let g of gstData;let i=index" [value]="g.id">{{g.gst_tax_rate}}
+                </ion-select-option>
+              </ion-select>
+              <!-- </ion-label> -->
+
+              <ion-label
+                *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7">
+                ₹{{items[i].tax | number:'1.2-2'}}</ion-label>
+              <ion-label *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10">₹{{items[i].taxp |
+                number:'1.2-2'}}
+              </ion-label>
+            </ion-col>
+
+            <ion-col>
+              <ion-label>{{'HEADER.CESS' | translate}}:</ion-label>
+              <ion-label
+                *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7">{{items[i].cess_tax_rate}}%</ion-label>
+              <ion-label
+                *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7">
+                ₹{{items[i].cess| number:'1.2-2' }}</ion-label>
+              <ion-label
+                *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10">{{items[i].cess_tax_rate}}%</ion-label>
+              <ion-label *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10">₹{{items[i].cessp |
+                number:'1.2-2' }}</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col size="4" style="text-align: right;position: relative; padding: 0px;">
+          <ion-button fill="clear" (click)="dismiss(i)" lines="none" style="margin: -6px;">
+            <ion-icon name="close-circle-outline" style="font-size: 15px;
+            color: #ed6464;"></ion-icon>
+          </ion-button> <br>
+          <ion-row>
+            <ion-col size="6" *ngIf="invoice_model.has_free_qty" style="padding: 0px;">
+              <ion-label style="margin-right: 4px;">free qty</ion-label>
+              <ion-input type="number" class="inputfield" 
+              style="border-radius: 10px; background: #b3d8ff;text-align: left;margin-left: -4px;"
+               [(ngModel)]="items[i].free_qty"
+                (click)="$event.target.select()"></ion-input>
+            </ion-col>
+           
+          <ion-col size="6" *ngIf="invoice_model.has_free_qty" style="padding: 0px;">
+            <ion-label  style="margin-left: 0px;">free unit</ion-label>
+            <ion-select class="select1" style="margin-left: 2px;margin-right: -4px;margin-left: -3px;"
+             interface="popover"  [(ngModel)]="items[i].free_unit">
+                <ion-select-option selected *ngFor="let i of items[i].units" [value]="i">{{i.unit}}</ion-select-option>
+              </ion-select>
+          </ion-col>
+          </ion-row>
+          <ion-input position="inline" style="position: absolute;
+          bottom: 10px;
+          right: 6px;" (keyup)="revCal()" (click)="$event.target.select()"
+            *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7"
+            [(ngModel)]="items[i].sales_prices"></ion-input>
+          <!-- <ion-label>₹{{items[i].sales_prices | number:'1.2-2'}}</ion-label> -->
+          <ion-input (keyup)="revCal()" *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10" position="inline"
+            (click)="$event.target.select()" style="position: absolute;bottom: 10px; right: 6px;"
+            [(ngModel)]="items[i].purchase_prices">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card *ngIf="itemComponent">
+    <app-show-item (parentFunction)="parentFunction1($event)"> </app-show-item>
+  </ion-card>
+
+  <ion-card class="custom_card" *ngIf="showItemsPanel">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="8">{{'HEADER.TOTAL TAXABLE AMOUNT' | translate}}</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{total_taxable_amount | number:'1.2-2'}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">IGST</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{igst | number:'1.2-2'}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">CGST</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{cgst | number:'1.2-2'}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">SGST</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{sgst | number:'1.2-2'}}</ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col size="8">{{'HEADER.CESS' | translate}}:</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{total_cess_rate | number:'1.2-2'}}</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let data1 of exp1; let i=index;">
+        <ion-col size="2">
+          <ion-icon name="trash-outline" (click)="deleteRow(i)" style="font-size:20px; color:#ed6464;"></ion-icon>
+        </ion-col>
+        <ion-col size="6">
+          <ion-input placeholder="Enter Desription"
+            style="background-color: #d8daf3;height: 30px; border-radius: 7px;padding-left:3px" class="padL3"
+            [(ngModel)]="data1.extra_charges"></ion-input>
+        </ion-col>
+        <ion-col size="4" style="text-align: right;">
+          <ion-input placeholder="Enter Amount" [(ngModel)]="data1.extra_amt"
+            style="background-color: #d8daf3;height: 30px; border-radius: 7px;padding-left:3px" class="padL3"
+            type="number" class="inputfield" (keyup)="total1()"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-button size="small" fill="clear" (click)="addAnotherCharges()" id="addCharge" tapable>+{{'HEADER.ADD EXTRA CHARGES' | translate}}
+      </ion-button>
+
+      <ion-row>
+        <ion-col>{{'HEADER.DISCOUNT' | translate}}</ion-col>
+        <ion-select style="margin-left: -15px;" interface="popover" [(ngModel)]="invoice_model.discount_type"
+          (ionChange)="calculation()">
+          <ion-select-option [value]="1">%</ion-select-option>
+          <ion-select-option [value]="2">₹</ion-select-option>
+        </ion-select>
+        <ion-col style="text-align: right;">
+          <ion-input type="number" class="inputfield" (click)="$event.target.select()" (ionChange)="calculation()"
+            [(ngModel)]="invoice_model.discountTotal" style="position: absolute;bottom: 10px;border-radius: 10px;
+            background: #b3d8ff;--padding-end: 9px;"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <h2>{{'HEADER.TOTAL' | translate}}</h2>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <h2>₹{{subTotal | number:'1.2-2'}}</h2>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-checkbox (click)="roundOff()" [(ngModel)]="invoice_model.round_off"
+            checked="round_off"></ion-checkbox>Round off
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7">
+        <ion-col size="8">{{'HEADER.AMOUNT RECEIVED' | translate}}</ion-col>
+        <ion-col size="4" style="text-align: right;">
+          <ion-input style="color: green;" type="number" class="inputfield" (ionChange)="calculation()"
+            [(ngModel)]="invoice_model.received_amount" disabled></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10">
+        <ion-col size="8">{{'HEADER.AMOUNT PAID' | translate}}</ion-col>
+        <ion-col size="4" style="text-align: right;">
+          <ion-input style="color: green;" type="number" class="inputfield" (ionChange)="calculation()"
+            [(ngModel)]="invoice_model.received_amount"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="invoice_type==1 || invoice_type==3 || invoice_type==5 || invoice_type==6 || invoice_type==7">
+        <ion-col size="8">{{'HEADER.RECEIVABLE' | translate}}</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{receivable | number:'1.2-2'}}</ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="invoice_type==2 || invoice_type==4 || invoice_type==10">
+        <ion-col size="8">{{'HEADER.PAYABLE' | translate}}</ion-col>
+        <ion-col size="4" style="text-align: right;">₹{{receivable | number:'1.2-2'}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card class="custom_card" *ngIf="showItemsPanel && items.length!=0">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-row>
+            <label style="margin: 10px;font-weight: bold;">{{ 'HEADER.NOTES' | translate}} / Terms and Conditions</label>
+          <textarea class="textarea" [(ngModel)]="invoice_model.notes"></textarea>
+        </ion-row>
+        <ion-col>
+
+            <ion-label style="margin: 10px;font-weight: bold;">{{'HEADER.SELECT BANK' | translate}}</ion-label>
+            <ion-select interface="popover" [(ngModel)]="invoice_model.bank" placeholder="select bank"
+            style="border: solid 1px;width: 94%;border-radius: 10px;margin-left: 8px;background: #e2eefd;">
+              <ion-select-option *ngFor="let lc of bank" [value]="lc.id">{{lc.bank_name}}</ion-select-option>
+            </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="invoice_type==1 && companyDetails[0].pay_gateway_service === true">
+        <ion-col>
+          <ion-item style="border: solid 1px;width: 94%;border-radius: 10px;margin-left: 8px;background: #e2eefd;">
+            <ion-label>{{'HEADER.ENABLE PARTIAL PAYMENT' | translate}}</ion-label>
+            <ion-toggle slot="end" color="primary" [(ngModel)]="invoice_model.partial_paid"
+              (ionChange)="onChange()"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="enableEInvoice && !downloadEinvoiceButton">
+        <ion-col>
+          <ion-item  style="border: solid 1px gray;
+          border-radius: 10px;
+          width: 94%;
+          margin-left: 8px;">
+            <ion-label>{{'HEADER.GENERATE E-INVOICE' | translate}}</ion-label>
+            <ion-toggle slot="end" (ionChange)="createEInvoice(eInvoice)" color="primary" [checked]="eInvoice"
+             [(ngModel)]="eInvoice" [checked]="eInvoice"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>                                                                    
+
+      <ion-row *ngIf="invoice_model.ewb">
+        <ion-col>
+          <ion-item>
+            <ion-label>{{'HEADER.GENERATE E-WAY BILL' | translate}}</ion-label>
+            <ion-toggle slot="end" [(ngModel)]="ewb" [checked]="ewb"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>
+
+<!-- <ion-footer collapse="fade"> -->
+  <ion-toolbar class="fotter">
+    <ion-label *ngIf="invoice_type==1">Convert Sreturn</ion-label>
+    <ion-toggle *ngIf="invoice_type==1" slot="start" (ionChange)="retuntoggel(changeInvoicereturn)"
+      [(ngModel)]="changeInvoicereturn"></ion-toggle>
+    
+      <ion-label *ngIf="invoice_type==2">Convert Preturn</ion-label>
+      <ion-toggle *ngIf="invoice_type==2" slot="start" (ionChange)="purchasereturn(purchaseInvoiceReturn)"
+        [(ngModel)]="purchaseInvoiceReturn"></ion-toggle>
+   
+      <ion-label *ngIf="invoice_type==10">Create Pinvoice</ion-label>
+      <ion-toggle *ngIf="invoice_type==10"  (click)="click()" slot="start" (ionChange)="purchaseinvoice(changepurchaseInvoice)"
+        [(ngModel)]="changepurchaseInvoice"></ion-toggle>
+    
+    <!-- <ion-buttons slot="primary" > -->
+      <button (click)="saveInvoice()" id="update" 
+      *ngIf="!downloadUrl  && !downloadEinvoiceButton" style="float: right;">
+        <ion-icon name="save-outline"></ion-icon>
+        {{dictionary[0].sButton}} 
+      </button>
+    <!-- </ion-buttons> -->
+    <!-- <ion-buttons slot="primary"> -->
+      <button (click)="einvoi()" id="update" *ngIf="downloadEinvoiceButton" style="float: right;">
+        <ion-icon name="save-outline"></ion-icon>
+        {{dictionary[0].sButton}} </button>
+    <!-- </ion-buttons> -->
+  </ion-toolbar>
+<!-- </ion-footer> -->

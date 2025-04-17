@@ -1,0 +1,74 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">{{'HEADER.MANAGE STAFF' | translate}}</ion-label>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header> -->
+<!-- <ion-button expand="block" (click)="introMethod()">Start Tour</ion-button> -->
+
+<ion-header class="toolbar">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.MANAGE STAFF' | translate}}</ion-title>
+    <ion-buttons slot="end">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-row>
+<ion-col size="4">
+ <ion-button id="role" (click)="createRole()" fill="outline" style="font-size: 10px;">{{'STATE.CREATE ROLE' |   translate}}</ion-button>
+</ion-col> 
+<ion-col size="4">
+  <ion-button id="staff" (click)="createStaffModal()" fill="outline" style="font-size:10px;">{{'HEADER.CREATE STAFF' | translate}}</ion-button>
+</ion-col>
+<ion-col size="4">
+  <ion-button id="edit" (click)="editRole()" fill="outline" style="font-size: 10px;">{{'HEADER.EDIT ROLE' | translate}} </ion-button>
+</ion-col>
+</ion-row>
+    <div class="transaction_div">
+      <div>
+        <ion-card class="transaction_card" *ngFor="let item of staffData">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-icon name="person-outline"></ion-icon> {{item.first_name}} {{item.last_name}}<br>
+                <ion-label class="transaction_matter">{{item.role}}</ion-label>
+              </ion-col>
+              <ion-col push="2">
+                <ion-button id="edit-item" fill="clear" (click)="showItem(item)" *ngIf="item.role!='Admin'">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" (click)="deleteStaff(item.id)" *ngIf="item.role!='Admin'">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
+    </div>
+
+    <ion-modal [isOpen]="isModalOpen" trigger="add-bank">
+      <ng-template>
+        <ion-header [translucent]="true">
+          <ion-toolbar>
+            <ion-buttons slot="start" (click)="modalCtrl.dismiss()">
+              <ion-back-button defaultHref=""></ion-back-button>
+            </ion-buttons>
+            <ion-title>{{'HEADER.ADD BANK' | translate}}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <app-create-new-bank></app-create-new-bank>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+</ion-content>

@@ -1,0 +1,123 @@
+<ion-searchbar style="--border-radius: 25px;--background: #e6e9eb;" type="text"
+  (ionInput)="getItems($event)"></ion-searchbar>
+<a style="padding-left: 10px;" id="step11" (click)="createParty()">+ {{'HEADER.CREATE PARTY' | translate}}</a>
+<a slot="end" style="margin-right: 17px;float: right;" id="trigger-button">+ {{'HEADER.QUICK CREATE PARTY' |
+  translate}}</a>
+<ion-row>
+  <ion-segment value="bank" style="background-color: #fff;
+    width: 80%;
+    margin-left: 35px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+    border: solid 1px #a5a5a5;" mode="ios" #segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="admin">
+      <ion-label style=" font-size: 16px;font-family: 'Roboto', sans-serif;">{{'HEADER.CUSTOMER' |
+        translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="staff">
+      <ion-label style=" font-size: 16px;font-family: 'Roboto', sans-serif;">{{'HEADER.SUPPLIER' |
+        translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-row>
+<div class="transaction_div">
+
+  <ion-list *ngIf="loading">
+    <ion-item>
+      <ion-label>
+        <h3><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></h3>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <!-- *ngIf="selectSegment == 'admin'&& item[0].party_type==1" -->
+  <div *ngIf="selectSegment == 'admin'">
+    <ion-row *ngFor="let item of item"  id="select-party">
+      <ion-grid *ngIf=" item.party_type==1"
+        style="background: #fff;border-radius: 10px;box-shadow: 0 0 2px 1px #d5d5d5;margin: 5px;">
+        <ion-row (click)="function_partylist(item)">
+          <ion-col size="6">
+            <ion-card-header class="transaction_header" style="padding-left: 8px;padding-top: 0px;padding-bottom: 0px;">
+              <ion-label style="font-weight: 500;color: #1c7fee;">{{item.Party_name}}</ion-label>
+            </ion-card-header>
+          </ion-col>
+          <ion-col size="6">
+            <ion-card-header class="transaction_amount">
+              <ion-card-subtitle>{{item.opening_balance | currency:'INR'}}</ion-card-subtitle>
+            </ion-card-header>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6" (click)="function_partylist(item)">
+            <ion-card-header class="transaction_header" style="padding-left: 8px;padding-top: 0px;padding-bottom: 0px;">
+              <ion-label style="color: gray;font-size: 12px;">{{item.mobile_number}}</ion-label>
+            </ion-card-header>
+          </ion-col>
+          <ion-col size="6">
+            <ion-card-header class="transaction_amount">
+              <ion-icon name="create-outline" style="color: blue;" (click)="presentModal(item)"></ion-icon> &nbsp; &nbsp;
+              <ion-icon name="trash-outline" style="color: red;" (click)="deleteParty(item.id)"></ion-icon>
+            </ion-card-header>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+  </div>
+
+  <!-- *ngIf="item[0].party_type==2" -->
+  <div *ngIf="selectSegment == 'staff'">
+    <ion-row *ngFor="let item of item" (click)="function_partylist(item)" id="select-party">
+      <ion-grid *ngIf=" item.party_type==2"
+        style="background: #fff;border-radius: 10px;box-shadow: 0 0 2px 1px #d5d5d5;margin: 5px;">
+        <ion-row>
+          <ion-col>
+            <ion-card-header class="transaction_header" style="padding-left: 8px;padding-top: 0px;padding-bottom: 0px;">
+              <ion-label style="    font-weight: 500;color: #1c7fee;">{{item.Party_name}}</ion-label><br>
+              <ion-label style="color: gray;font-size: 12px;">{{item.mobile_number}}</ion-label>
+            </ion-card-header>
+          </ion-col>
+          <ion-col>
+            <ion-card-header class="transaction_amount">
+              <ion-card-subtitle>{{item.opening_balance | currency:'INR'}}</ion-card-subtitle>
+            </ion-card-header>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+  </div>
+
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</div>
+
+<ion-popover trigger="trigger-button">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <h3 style="margin: 0px;margin-bottom: 7px;border-bottom: solid 1px;height: 38px;">{{'HEADER.QUICK CREATE PARTY' |
+        translate}}
+        <ion-button class="ion-float-right" size="small" slot="end" (click)="saveData(user)">Save</ion-button>
+      </h3>
+
+      <div>
+        <ion-label class="labelhead">{{'HEADER.PARTY NAME' | translate}}<span style="color: red;"
+            class="required">*</span></ion-label>
+        <ion-input type="text" style="border: solid 1px;border-radius: 10px" [(ngModel)]="user.Party_name"
+          #Party_name="ngModel" required placeholder="Enter Party Name"></ion-input>
+      </div>
+
+      <div>
+        <ion-label class="labelhead" position="stacked">{{'HEADER.MOBILE NUMBER' | translate}}</ion-label>
+        <ion-input maxlength="10" style="border: solid 1px;border-radius: 10px" [(ngModel)]="user.mobile_number"
+          type="number" maxlength="10" clearInput placeholder="Enter Mobile No." id="mobile_number">+91-</ion-input>
+      </div>
+      <div>
+
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-popover>

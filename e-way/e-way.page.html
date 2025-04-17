@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'MESSAGE.TRANSPORTATION DETAILS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment value="a" #segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="a">
+      <ion-label>{{'MESSAGE.PART A' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="b">
+      <ion-label>{{'MESSAGE.PART B' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <div *ngIf="selectSegment == 'a'">
+    <ion-list>
+      <ion-item>
+        <ion-label>{{'MESSAGE.TRANSPORT ID' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.transport_id"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'MESSAGE.TRANSPORT NAME' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.transport_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'MESSAGE.DISTANCE' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.distance"></ion-input>
+      </ion-item> 
+    </ion-list>
+  </div>
+  <div *ngIf="selectSegment== 'b'">
+    <ion-list>
+      <ion-item>
+        <ion-label>{{'MESSAGE.VEHICLE TYPE' | translate}}</ion-label>
+        <ion-select placeholder="Select" interface="popover" id="vehicle_type" [(ngModel)]="eway.vehicle_type">
+          <ion-select-option  *ngFor="let v of vehicle_type" [value]="v.id">{{v.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'MESSAGE.TRANSPORT TYPE' | translate}}</ion-label>
+        <ion-select placeholder="Select" id="transport_type" [(ngModel)]="eway.trans_mode" interface="popover">
+          <ion-select-option *ngFor="let t of transport_type" [value]="t.id">{{t.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'HEADER.VEHICLE NUMBER' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.vehicle_no"></ion-input>
+      </ion-item>  
+      <ion-item>
+        <ion-label>{{'MESSAGE.DISTANCE' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.distance"></ion-input>
+      </ion-item>  
+      <ion-item>
+        <ion-label>{{'MESSAGE.DISPATCHER GSTIN' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.disp_gst"></ion-input>
+      </ion-item>  
+      <ion-item>
+        <ion-label>{{'MESSAGE.DISPATCHER GST NAME' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="eway.disp_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'MESSAGE.SHIP TO GSTIN' | translate}}</ion-label>
+        <ion-input class="form-control" type="text" [(ngModel)]="eway.ship_gst"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'MESSAGE.SHIP TO GST NAME' | translate}}</ion-label>
+        <ion-input class="form-control" type="text" [(ngModel)]="eway.ship_name"></ion-input>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div>
+  <ion-button (click)="ewaySubmit(eway)" slot="center" shape="round" expand="block">
+    {{'HEADER.SUBMIT' | translate}}
+  </ion-button>
+  </div>
+</ion-content>

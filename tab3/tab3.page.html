@@ -1,0 +1,89 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.ITEMS' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createNewItem()">
+        <ion-icon slot="start" name="add"></ion-icon>
+        {{'HEADER.CREATE' | translate}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{items.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+
+<ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar type="text" (ionInput)="getItems($event)" style="--border: solid 1px;
+--border-radius: 15px;
+--box-shadow: -1px 0px 1px 1px #e7e7e7;"></ion-searchbar>
+  <ion-list *ngIf="loading">
+    <ion-item>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngFor="let item of items" style="padding: 0;">
+    <ion-card style="border: solid 1px;border-radius: 15px;margin: 3px;margin-bottom: 1px;">
+      <ion-row (click)="presentModal(item)">
+        <ion-col size="6">
+          <ion-card-subtitle>
+            <ion-label style="font-size: 15px;color: #014796;">{{item.item_name}}</ion-label>
+          </ion-card-subtitle>
+        </ion-col>
+        <ion-col size="6">
+         
+            <ion-card-subtitle style="float: right;">₹ <ion-label> <b>{{item.sales_prices}}</b></ion-label> </ion-card-subtitle><br>
+         
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" (click)="presentModal(item)">
+          <ion-label style="color: #a0a0a0;" *ngIf="item.item_type==1">Product</ion-label>
+          <ion-label style="color: #a0a0a0;" *ngIf="item.item_type==2">Service</ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon name="trash-outline" style="color: #ef3636;float: right;font-size: large;"
+            (click)="deleteItem(item.id)"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-list>
+
+
+  <div style="text-align: center;margin-top: 141px">
+    <ion-label style="    font-size: 25px;
+    font-weight: 500;
+    color: #aa8462;">{{b}}</ion-label>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

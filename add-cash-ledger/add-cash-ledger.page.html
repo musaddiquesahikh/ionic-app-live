@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="height: 25px;">
+    <ion-title class="title">{{'HEADER.ADD CASH LEDGER' | translate}}
+      <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+    </ion-title>
+    <!-- <ion-icon (click)="back()" name="close-outline"></ion-icon> -->
+   
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  
+  <!-- <ion-card> -->
+<form [formGroup]="CashForm" (ngSubmit)="submitCashLedger()">
+    <div [class.invalid]="CashForm.get('ledger_name').touched && CashForm.get('ledger_name').invalid">
+      <ion-input 
+      placeholder="{{'HEADER.LEDGER NAME' | translate}} " class="custom-input"  formControlName="ledger_name" >
+    </ion-input>
+    <span class="text-danger" 
+    *ngIf="c['ledger_name'].hasError('required') && (c['ledger_name'].dirty || c['ledger_name'].touched)">
+    {{'MESSAGE.LEDGER NAME REQUIRED' | translate}}</span>
+    </div>
+
+    <div [class.invalid]="CashForm.get('opening_balance').invalid && CashForm.get('opening_balance').touched" style="margin-bottom: 13px; margin-top: 13px;">
+      <ion-input placeholder="{{'HEADER.OPENING BALANCE' | translate}} " type="number" class="custom-input" formControlName="opening_balance">
+      <ion-label class="ion-margin">{{'HEADER.OPENING BALANCE' | translate}} : <span class="required">*</span></ion-label>
+    </ion-input>
+    <span class="text-danger" 
+    *ngIf="c['opening_balance'].hasError('required') && (c['opening_balance'].dirty || c['opening_balance'].touched)">
+    {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}</span>
+</div>
+
+    <div style="margin-bottom: 13px; " [class.invalid]="CashForm.get('as_on').touched && CashForm.get('as_on').invalid">
+      <ion-input class="custom-input" type="date" formControlName="as_on">
+      <ion-label class="ion-margin">{{'HEADER.AS ON' | translate}} : <span class="required">*</span></ion-label>
+    </ion-input>
+    <span class="text-danger" 
+    *ngIf="c['as_on'].hasError('required') && (c['as_on'].dirty || c['as_on'].touched)">
+    {{'HEADERAS ON DATE IS REQUIRED' | translate}}</span>
+</div>
+
+    <ion-button style="border: solid 1px; border-radius: 25px;" (click)="submitCashLedger()"  [disabled]="!CashForm.valid" expand="full">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  <!-- </ion-card> -->
+  </form>
+</ion-content>

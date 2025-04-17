@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-title >{{'HEADER.JOURNAL VOUCHER' | translate}}
+      <!-- <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon> -->
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/tab1"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <form [formGroup]="voucherForm" > -->
+    <div>
+      <ion-input class="custom-input"  [(ngModel)]="Journal.voucher_no" #voucher_no="ngModel" required>
+      <ion-label class="ion-margin">{{'HEADER.VOUCHER NO.' | translate}} :<span class="required">*</span></ion-label>
+      </ion-input>
+    </div>
+    <!-- <span class="text-danger"
+    *ngIf="voucherForm.controls['voucher_no'].hasError('required') && (voucherForm.controls['voucher_no'].dirty || voucherForm.controls['voucher_no'].touched)">
+    {{'HEADER.VOUCHER NO. REQUIRED' | translate}}</span> -->
+
+    <div *ngIf="voucher_no.touched && voucher_no.invalid" class="alert">
+      <div *ngIf="voucher_no.errors?.required">
+        {{'HEADER.VOUCHER NO. REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-modal [isOpen]="isModalOpen" trigger="create-new-ledger" [breakpoints]="[0.1, 0.5, 1]"
+      [initialBreakpoint]="0.5">
+      <ng-template>
+        <app-create-new-ledger></app-create-new-ledger>
+      </ng-template>
+    </ion-modal>
+
+    <div>
+      <ion-input class="custom-input" type="date" name="voucher_date" #voucher_date="ngModel" required [(ngModel)]="Journal.voucher_date">
+      <ion-label class="ion-margin">{{'HEADER.DATE' | translate}} :<span class="required">*</span></ion-label>
+    </ion-input>
+    </div>
+    <div *ngIf="voucher_date.touched && voucher_date.invalid" class="alert">
+      <div *ngIf="voucher_date.errors?.required">
+        {{'HEADER.PLEASE ENTER THE DATE' | translate}}
+      </div>
+    </div>
+
+    <div *ngFor="let data1 of ledgerData; let i=index" class="div1">
+
+      <ion-row class="roww">
+        <ion-button fill="clear" (click)="dismis(i)" style="height: 14px;">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-row>
+
+      <ion-row>
+        <!-- <ion-col size="11"> -->
+          <ion-input class="custom-input"(keyup)="getVoucher(data1.ledger,i)" [(ngModel)]="data1.ledger" >
+            <ion-label class="ion-margin">{{'HEADER.LEDGER NAME' | translate}} :<span class="required">*</span></ion-label>
+          </ion-input>
+          <div *ngIf="voucherlist[i]" class="list">
+            <ion-list class="list1" *ngFor="let lc of ledger_List;i" (click)="selectedJv(lc,i)">
+              {{lc.name}}
+            </ion-list>
+          </div>
+
+      </ion-row>
+      <ion-row class="custom-input">
+        <ion-col size="6">
+          <ion-select placeholder="payment type" style="margin-top: -5px;--placeholder-opacity: 1;" [(ngModel)]="data1.voucher_type" interface="popover">
+            <ion-select-option value="1">{{'HEADER.DEBIT' | translate}}</ion-select-option>
+            <ion-select-option value="2">{{'HEADER.CREDIT' | translate}}</ion-select-option>
+          </ion-select>  
+        </ion-col>
+        <ion-col size="6">
+          <ion-input placeholder="Enter Amount"value="debit" type="number" [(ngModel)]="data1.amount" autocomplete="on" (click)="$event.target.select()">
+          </ion-input>
+        </ion-col>
+
+      </ion-row>
+    </div>
+
+    <div>
+      <ion-button style="float: right;" fill="clear" (click)="ClickNewRow()">
+        <ion-icon class="add1" name="add-circle-outline"></ion-icon>{{'HEADER.ADD ROW' | translate}}
+      </ion-button>
+    </div>
+    <div>
+      <!-- <ion-label>{{'HEADER.NARRATION' | translate}} : </ion-label> -->
+      <ion-input style="margin-bottom: 11px;" class="custom-input" [(ngModel)]="Journal.narration" placeholder="{{'HEADER.NARRATION' | translate}} "></ion-input>
+    </div>
+    <!-- <ion-col push="8"> -->
+      <ion-button expand="block" (click)="addvoucher()">{{'HEADER.SUBMIT'| translate}}</ion-button>
+    <!-- </ion-col> -->
+  <!-- </form> -->
+</ion-content>

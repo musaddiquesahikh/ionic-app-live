@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="height: 25px;">
+    <ion-title class="title">{{'HEADER.ADD NEW BANK' | translate}}
+      <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+    <form [formGroup]="BankForm" (ngSubmit)="addBankAccount()">
+      <div style="margin-bottom: 10px;"  [class.invalid]="BankForm.get('bank_name').touched && BankForm.get('bank_name').invalid">
+        <ion-input placeholder="{{'HEADER.BANK NAME' | translate}}" class="custom-input"formControlName="bank_name" type="text">
+        </ion-input>
+      </div>
+      <span class="text-danger" 
+    *ngIf="c['bank_name'].hasError('required') && (c['bank_name'].dirty || c['bank_name'].touched)">
+    {{'HEADER.BANK NAME IS REQUIRED' | translate}}</span>
+  
+      <div style="margin-bottom: 10px;" [class.invalid]="BankForm.get('bank_branch').touched && BankForm.get('bank_branch').invalid">
+        <ion-input placeholder="{{'HEADER.BRANCH' | translate}} " class="custom-input"formControlName="bank_branch" type="text" >
+      </ion-input>
+      </div>
+      <span class="text-danger" 
+      *ngIf="c['bank_branch'].hasError('required') && (c['bank_branch'].dirty || c['bank_branch'].touched)">
+      {{'HEADER.BRANCH IS REQUIRED' | translate}}</span>
+  
+      <ion-grid>
+        <ion-row  style="border: solid 1px #b5a7a7;border-radius: 30px;margin-top: 2px;">
+          <ion-col size="12">
+            <ion-accordion-group>
+              <ion-accordion value="first" style="border-radius: 30px;">
+                <ion-item slot="header" color="light">
+                  <ion-label>Account Details</ion-label>
+                </ion-item>
+  
+                <div slot="content">
+                  <div  [class.invalid]="BankForm.get('account_no').touched && BankForm.get('account_no').invalid">
+                    <ion-input placeholder="{{'HEADER.ACCOUNT NO' | translate}}" class="custom-input1" formControlName="account_no" type="number" >
+                  </ion-input>
+                  </div>
+                  <span class="text-danger" 
+                  *ngIf="c['account_no'].hasError('required') && (c['account_no'].dirty || c['account_no'].touched)">
+                  {{'HEADER.ACCOUNT NO. IS REQUIRED' | translate}}</span>
+                </div>
+                
+                <div slot="content">
+                  <div [class.invalid]="BankForm.get('ifsc_code').touched && BankForm.get('ifsc_code').invalid">
+                    <ion-input placeholder="{{'HEADER.IFSC CODE' | translate}}" class="custom-input1" formControlName="ifsc_code" type="text"appCapitalizeInput>
+                  </ion-input>
+                  </div>
+                  <span class="text-danger" 
+                  *ngIf="c['ifsc_code'].hasError('pattern') && (c['ifsc_code'].dirty || c['ifsc_code'].touched)">
+                  {{'HEADER.IFSC CODE IS REQUIRED' | translate}}</span>
+                </div>
+  
+                <div slot="content">
+                  <div [class.invalid]="BankForm.get('user').touched && BankForm.get('user').invalid">
+                    <ion-input placeholder="{{'HEADER.ACCOUNT HOLDER NAME' | translate}}" class="custom-input1" formControlName="user" type="text" >
+                    </ion-input>
+                  </div>
+                  <span class="text-danger" 
+                  *ngIf="c['user'].hasError('required') && (c['user'].dirty || c['user'].touched)">
+                  {{'HEADER.NAME OF ACCOUNT HOLDER REQUIRED' | translate}}</span>
+                </div>
+  
+                <div slot="content">
+                  <div [class.invalid]="BankForm.get('address').touched && BankForm.get('address').invalid">
+                    <ion-input placeholder="{{'HEADER.ADDRESS' | translate}}" class="custom-input1" formControlName="address" type="text" >
+                    </ion-input>
+                  </div>
+                  <span class="text-danger" 
+                  *ngIf="c['address'].hasError('required') && (c['address'].dirty || c['address'].touched)">
+                  {{'HEADER.ADDRESS IS REQUIRED' | translate}}</span>
+                </div>
+  
+                <div slot="content">
+                  <div [class.invalid]="BankForm.get('opening_balance').touched && BankForm.get('opening_balance').invalid">
+                    <ion-input placeholder="{{'HEADER.OPENING BALANCE' | translate}}" class="custom-input1" formControlName="opening_balance" type="number" (click)="$event.target.select()">
+                    </ion-input>
+                  </div>
+                  <span class="text-danger" 
+                  *ngIf="c['opening_balance'].hasError('required') && (c['opening_balance'].dirty || c['opening_balance'].touched)">
+                  {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}</span>
+                </div>
+  
+                <div slot="content">
+                  <div [class.invalid]="BankForm.get('as_on').touched && BankForm.get('as_on').invalid">
+                    <ion-input placeholder="{{'HEADER.AS ON' | translate}}" class="custom-input1" type="date" name="date" formControlName="as_on"  (ionInput)="dateChange()" >
+                    </ion-input>
+                  </div>
+                  <span class="text-danger" 
+                  *ngIf="c['as_on'].hasError('required') && (c['as_on'].dirty || c['as_on'].touched)">
+                  {{'HEADER.AS ON DATE IS REQUIRED' | translate}}</span>
+                </div>
+
+              </ion-accordion>
+            </ion-accordion-group>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  
+      <ion-button expand="full"  [disabled]="!BankForm.valid" type="submit" (click)="addBankAccount()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+      </form>

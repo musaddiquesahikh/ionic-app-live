@@ -1,0 +1,329 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Exemptions Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="cancel()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-subtitle>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label>Section</ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-label> Deduction Claimed</ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-label>Limit</ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-label>Amount Deducted</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-card-subtitle>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-label color="primary"> 80C Deductions</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.eightyC_amount}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.eighty_c_limit}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.eighty_c_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label color="primary">80D Medical Insurance Premia</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label>-Health Insurance(Self and Family)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.selfF_health_insurance}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>25000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.self_or_family_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-label>-Preventive Health Checkup(Self and Family)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.selfF_preventive_health}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>25000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.self_or_family_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.self_or_family_senior == 1">
+      <ion-col size="6">
+        <ion-label>-Health Insurance(Self and Family-Senior Citizen)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.selfF_health_insurance_senior}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>50000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.self_or_family_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.self_or_family_senior == 1">
+      <ion-col size="6">
+        <ion-label>-Preventive Health Checkup(Self and Family-Senior Citizen)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.selfF_preventive_health_senior}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>50000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.self_or_family_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.self_or_family_senior == 1">
+      <ion-col size="6">
+        <ion-label>-Medical Expenditure(Self and Family-Senior Citizen)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.selfF_medical_senior}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>50000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.self_or_family_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row >
+      <ion-col size="6">
+        <ion-label>-Health Insurance(Parents)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_health_insurance}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>25000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row >
+      <ion-col size="6">
+        <ion-label>-Preventive Health Checkup(Parents)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_preventive_health}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>25000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.parents_senior== 1">
+      <ion-col size="6">
+        <ion-label>-Health Insurance(Parents-Senior Citizen)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_health_insurance_senior}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>50000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.parents_senior== 1">
+      <ion-col size="6">
+        <ion-label>-Preventive Health Checkup(Parents-Senior Citizen)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_preventive_health_senior}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>50000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.parents_senior== 1">
+      <ion-col size="6">
+        <ion-label>-Medical Expenditure(Parents-Senior Citizen)</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_medical_senior}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>50000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.parents_insu_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-label color="primary">80DD Medical Treatment of Handicapped Dependent</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.section_80_dd}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label> 75000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.section_80_dd_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-label color="primary">80E Interest on Higher Education Loan</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.section_80_e}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>-</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.section_80_e}}</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-subtitle>
+      <ion-row>
+        <ion-col size="9">
+          <ion-label>HRA Calculations</ion-label>
+        </ion-col>
+        <ion-col size="3">
+          <ion-label></ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-card-subtitle>
+    <ion-row>
+      <ion-col size="9">
+        <ion-label>Actual HRA</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{data.actual_hra}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="9">
+        <ion-label>Monthly Rent - (10% of Basic Salary)</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{data.ten_basic_monthly_rent}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.metro_city == true">
+      <ion-col size="9">
+        <ion-label>(50% of Basic Salary) + Dearness Allowance</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{data.third_hra}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="data.metro_city == false">
+      <ion-col size="9">
+        <ion-label>(40% of Basic Salary) + Dearness Allowance</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{data.third_hra}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="9">
+        <ion-label>Deducted HRA</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{data.min_hra}} </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-subtitle>
+      <ion-row>
+        <ion-col>
+          <ion-label>Interest On Home Loan Calculations</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-card-subtitle>
+    <ion-row>
+      <ion-col size="5">
+        <ion-label>Annual Interest Payable/Paid</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.annual_interest}}</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>200000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.annual_interest_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="5">
+        <ion-label>Additional Benefit Under Section 80EE</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.benefit_under_eighty_ee}}</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>500000</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>{{data.benefit_section_80ee_final}}</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+</ion-content>

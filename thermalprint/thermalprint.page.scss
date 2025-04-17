@@ -1,0 +1,118 @@
+.wdt-56 {
+    min-width: 56mm;
+    display: inline-block;
+  }
+
+  .wdt-8 {
+    min-width: 8mm;
+    display: inline-block;
+  }
+
+  .wdt-47 {
+    max-width: 47mm;
+    display: inline-block;
+  }
+
+  .wdt-10 {
+    min-width: 10mm;
+    display: inline-block;
+  }
+
+  .wdt-16 {
+    min-width: 16mm;
+    display: inline-block;
+  }
+
+  .wdt-15 {
+    min-width: 15mm;
+    display: inline-block;
+  }
+
+  .wdt-27 {
+    min-width: 27mm;
+    display: inline-block;
+  }
+
+  body {
+    font-family: "Roboto", sans-serif;
+    width: 80mm;
+    box-shadow: 0px 0px 1px 1px #888888;
+    padding: 10px;
+    margin: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .vertical-top {
+    vertical-align: top;
+  }
+
+  .thermal-container {
+    width: 100%;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .row {
+    display: inline-block;
+    font-size: 13px;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .top-dashes {
+    border-top: 1px solid black;
+  }
+
+  .bottom-dashes {
+    border-bottom: 1px solid black;
+  }
+
+  .margin-top-2 {
+    margin-top: 2mm;
+  }
+
+  .margin-bottom-2 {
+    margin-bottom: 2mm;
+  }
+
+  .padding-top-bottom-1 {
+    padding-top: 1mm;
+    padding-bottom: 1mm;
+  }
+
+  .padding-bootom-1 {
+    padding-bottom: 1mm;
+  }
+
+  .padding-top-1 {
+    padding-top: 2mm;
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  .height-10 {
+    max-height: 10mm;
+  }
+
+  .height-20 {
+    max-height: 20mm;
+  }
+
+  .height-25 {
+    max-height: 25mm;
+  }
+
+  .height-30 {
+    max-height: 30mm;
+  }
+
+  .tnc {
+    white-space: pre-line;
+  }

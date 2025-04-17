@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Employee Attendance</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Display Today's Date -->
+  <ion-card style="background: #c7d9e8;">
+    <ion-card-header>
+      <ion-card-title>
+        <strong>{{ displayDate }}</strong>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- Compact Calendar -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="calendar-container">
+        <ion-item>
+          <ion-datetime presentation="date" [(ngModel)]="selectedDate" (ionChange)="onDateChange($event)" [min]="today"
+            [max]="'2099-12-31'"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="this.admin =='Admin' ">
+      <ion-col size="06">
+        <ion-button (click)="Permisson()" size="small">
+          Grant permisson
+        </ion-button>
+      </ion-col>
+      <ion-col size="06">
+        <ion-button (click)="UpdatePermisson()" size="small">
+          Update permisson
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <h1 style="margin: 20px;color: #3a84c1;" *ngIf="permission==false ">
+      <ion-label>You do not have attendance permission please
+        say admin to grant you attendance permission</ion-label>
+    </h1>
+
+    <ion-searchbar *ngIf="permission == true || this.admin == 'Admin' " placeholder="Search employee"
+      (ionChange)="filterEmployees()" [(ngModel)]="searchTerm" [debounce]="250" showCancelButton="always" style="--border-radius: 8px;
+    margin-top: 8px;
+    --background: #c7d9e8;"></ion-searchbar>
+    <div *ngIf="permission==true || this.admin == 'Admin' ">
+      <ion-row *ngFor="let employee of filteredEmployees" style="margin-top: 10px;">
+        <ion-col size="6">
+          <ion-label>{{ employee.name }}</ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-buttons>
+            <ion-button style="background: #c7d9e8;font-size: smaller;
+          --border-radius: 8px;
+          margin-right: 12px;" [ngClass]="{ 'present-button': employee.status === 'Present' }"
+              (click)="markAttendance(employee, 'Present')">
+              Present
+            </ion-button>
+            <ion-button style="background: #c7d9e8;font-size: smaller;
+          border-radius: 8px;
+          margin-right: 12px;" [ngClass]="{ 'absent-button': employee.status === 'Absent' }"
+              (click)="markAttendance(employee, 'Absent')">
+              Absent
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-button expand="full" (click)="saveAttendance()">
+            Save Attendance
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!-- <ion-fab-button> -->
+    <ion-icon name="chevron-down" style="font-size: xx-large;
+      border: solid 1px;
+      border-radius: 20px;
+      background: aliceblue;" (click)="scrollToHalfPage()"></ion-icon>
+    <!-- </ion-fab-button> -->
+  </ion-fab>
+</ion-content>

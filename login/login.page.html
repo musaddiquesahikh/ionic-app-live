@@ -1,0 +1,260 @@
+<ion-content style="background-color: #fff !important;">
+  
+  <div style="display: flex;justify-content: center;padding-bottom: 26px;">
+    <ion-img *ngIf="login" style="width: 200px; margin-top: 30%;" src="./assets/icon/e-logo-2.png"></ion-img>
+    <ion-img *ngIf="!login" style="width: 335;" src="./assets/icon/e-logo-2.png"></ion-img>
+  </div>
+  
+  <form [formGroup]="loginForm" *ngIf="login" (ngSubmit)="submitForm1()" style="padding: 0 13px;text-align: left;">
+    <ion-label class="ion-margin">{{'HEADER.LOGIN' |translate}}</ion-label>
+   
+      <div >
+    <ion-row>
+      <ion-col size="12">
+        <ion-label class="ion-text-left" style="padding-left: 12px; font-size: 15px;">{{'HEADER.EMAIL' | translate}}/{{'HEADER.MOBILE NUMBER' | translate}}</ion-label>
+      </ion-col>
+    </ion-row>
+    
+      <ion-input class="custom-input inputcc" id="step2" type="text" formControlName="email" [disabled]="reactive" ></ion-input>
+    
+      </div>
+   
+    <ion-row>
+      <ion-col size="12">
+        <ion-label class="ion-text-left" style="padding-left: 12px;
+          font-size: 15px;">{{'HEADER.ENTER PASSWORD' | translate}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+    <ion-col size="10">
+      <ion-input class="custom-input inputcc" #input type="password" formControlName="password" id="step3"></ion-input></ion-col>
+    <ion-col size="2" style="padding: 16px;">
+      <ion-icon  name="eye-off-outline" (click)="togglePassword(input)" [hidden]="!showPassword"></ion-icon>
+      <ion-icon  name="eye-outline" (click)="togglePassword(input)" [hidden]="showPassword"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6" style="font-size:14px;"> <a href="javascript:void(0)" id="step1"
+            (click)="signup()">{{'HEADER.SIGN UP' | translate}}
+          </a> </ion-col>
+        <ion-col size="6" style="font-size:14px;text-align: right;"><a href="javascript:void(0)" id="step4"
+            (click)="showOtp()">{{'HEADER.FORGOT PASSWORD?' | translate}}</a> </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div style="padding-top:25px;" >
+      <ion-button  expand="block" id="step5" type="submit" [disabled]="!loginForm.valid">{{'HEADER.LOGIN' |translate}}</ion-button>
+      <ion-button *ngIf="reactive" (click)="reactiveAccount()">Reactive Account</ion-button>
+
+    </div>
+  </form>
+  <form [formGroup]="otpForm" *ngIf="otp" style="padding: 0 13px;text-align: left;">
+    <ion-label >{{'HEADER.RECOVER PASSWORD' | translate}}</ion-label>
+    <ion-col>
+      <ion-label style="    font-size: 16px;
+      display: flex;
+      padding-left: 19px;
+      margin-bottom: 10px;"  position="stacked">{{'HEADER.MOBILE NUMBER' | translate}}</ion-label>
+      <ion-input  class="custom-input inputcc" type="text" (keypress)="OnlyNumbers($event)" formControlName="mobile_number">+91-</ion-input>
+    </ion-col>
+    <!-- <ion-col>
+      <ion-label style="font-size: 16px;
+      display: flex;
+      padding-left: 19px;
+      margin-bottom: 10px;"  position="stacked">{{'HEADER.ENTER OTP' | translate}}</ion-label>
+      <ion-row >
+        <ion-col style="text-align: center;">
+         <ion-input class="x" type="number" #otp1  required="true" maxLength="1" [(ngModel)] ="OTP[0]" (keyup)="otpController($event,otp2,'')">
+         </ion-input>
+         <ion-input class="x" type="number" #otp2 required="true" maxLength="1" [(ngModel)]="OTP[1]" (keyup)="otpController($event,otp3,otp1)">
+         </ion-input>
+         <ion-input class="x" type="number" #otp3 required="true" maxLength="1" [(ngModel)]="OTP[2]"  (keyup)="otpController($event,otp4,otp2)">
+         </ion-input>
+    
+         <ion-input class="x" type="number" #otp4 required="true" maxLength="1" [(ngModel)]="OTP[3]"  (keyup)="otpController($event,otp5,otp3)">
+        </ion-input>
+    
+        <ion-input class="x" type="number" #otp5  required="true" maxLength="1" [(ngModel)]="OTP[4]" (keyup)="otpController($event,otp6,otp4)">
+        </ion-input>
+    
+        <ion-input class="x" type="number" #otp6  required="true" maxLength="1" [(ngModel)]="OTP[5]" (keyup)="otpController($event,'',otp5)">
+        </ion-input>
+    
+        </ion-col>
+      </ion-row>
+      
+    </ion-col> -->
+
+    <ion-col *ngIf="otpNumber">
+      <ion-label style="    font-size: 16px;
+      display: flex;
+      padding-left: 19px;
+      margin-bottom: 10px;"  position="stacked">{{'HEADER.ENTER OTP' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc" type="tel" maxlenght="4" autofocus="true" formControlName="otp" (keypress)="OnlyNumbers($event)"
+        required></ion-input>
+    </ion-col>
+    <div style="padding-top:30px" *ngIf="!otpNumber">
+      <ion-button  fill="clear" (click)="backLogin()">{{'HEADER.CANCEL' |translate}}</ion-button>
+      <ion-button style="text-align: right;"  [disabled]="!otpForm.valid" (click)="submitForm2()" >{{'HEADER.SEND OTP' |translate}}</ion-button>
+    </div>
+    <div style="padding-top:30px" *ngIf="otpNumber">
+      <ion-label style="margin-right: 20PX;font-size: 16px;"> <label *ngIf="!showResendBtn">Resend OTP in {{
+          remainingTime }} seconds</label>
+        <ion-button style="MARGIN-TOP: -10PX;"  fill="clear" id="resendOtpBtn" *ngIf="showResendBtn"
+          (click)="submitForm2()">
+          {{'HEADER.RESEND OTP' |translate}} </ion-button>
+      </ion-label>
+      <ion-button  fill="clear" (click)="backLogin()">{{'HEADER.CANCEL' |translate}}</ion-button>
+      <ion-button  (click)="submitFormVerify1()" expand="block">{{'HEADER.VERIFY & PROCEED' | translate}}</ion-button>
+    </div>
+  </form>
+  
+  <form [formGroup]="newPasswordForm" *ngIf="createPassword" style="padding: 0 13px;text-align: left;">
+    <ion-label>Set Password</ion-label>
+    <ion-col>
+      <ion-label style="    font-size: 16px;
+      display: flex;
+      padding-left: 19px;
+      margin-bottom: 10px;" position="stacked">{{'HEADER.NEW PASSWORD' | translate}}</ion-label>
+      <ion-input class="custom-input " #input type="password" formControlName="new_password"></ion-input>
+      <span *ngIf="newPasswordForm.controls.new_password.value && newPasswordForm.controls.new_password.touched"
+          [ngClass]="isPasswordStrong() ? 'strong-password' : 'weak-password'">
+      {{ isPasswordStrong() ? 'Password is strong' : 'Password is weak' }}
+    </span>
+      <ion-icon name="eye-off-outline" slot="end" (click)="togglePassword(input)" [hidden]="!showPassword"></ion-icon>
+      <ion-icon name="eye-outline" slot="end" (click)="togglePassword(input)" [hidden]="showPassword"></ion-icon>
+    </ion-col>
+    <ion-col *ngIf="otpNumber">
+      <ion-label style="font-size: 16px;display: flex;padding-left: 19px;
+      margin-bottom: 10px;" position="stacked">{{'HEADER.CONFIRM PASSWORD' | translate}}</ion-label>
+      <ion-input class="custom-input " #input type="password" formControlName="confirm_password"></ion-input>
+      <ion-icon name="eye-off-outline" slot="end" (click)="togglePassword(input)" [hidden]="!showPassword"></ion-icon>
+      <ion-icon name="eye-outline" slot="end" (click)="togglePassword(input)" [hidden]="showPassword"></ion-icon>
+    </ion-col>
+    <div style="padding-top:30px">
+      <ion-button type="submit" (click)="savePassword()">{{'HEADER.CHANGE PASSWORD' | translate}}</ion-button>
+    </div>
+  </form>
+  <form [formGroup]="registerForm" *ngIf="register" style="padding: 0 13px;text-align: left;">
+
+    <ion-label style="margin-bottom: 10PX; text-align: center;">{{'HEADER.REGISTER' | translate}}</ion-label>
+      
+      <ion-label style="margin-bottom: 9px;display: flex;
+       padding-left: 19px;" position="stacked">{{'HEADER.FIRST NAME' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc" type="text" formControlName="f_name"></ion-input>
+   
+      <ion-label style="margin-bottom: 9px;
+    display: flex;
+    padding-left: 19px;" position="stacked">{{'HEADER.LAST NAME' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc"  type="text" formControlName="l_name"></ion-input>
+
+      <ion-label style="margin-bottom: 9px;
+      display: flex;
+      padding-left: 19px;" position="stacked">{{'HEADER.MOBILE NUMBER' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc" type="text" (keypress)="OnlyNumbers($event)" formControlName="mobile_number">+91-</ion-input>
+
+    <ion-col *ngIf="otpNumberRegister">
+      <ion-label style="margin-bottom: 9px;
+      display: flex;
+      padding-left: 19px;" position="stacked">{{'HEADER.ENTER OTP' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc" type="tel" maxlenght="6" autofocus="true" formControlName="otp" (keypress)="OnlyNumbers($event)" id="otp"required></ion-input>
+    </ion-col>
+ 
+    <div style="padding-top:30px;text-align: right;" *ngIf="!otpNumberRegister">
+      <ion-button style="float: left;" type="submit" fill="outline" (click)="backLogin1()">{{'HEADER.CANCEL' |translate}}</ion-button>
+      <ion-button type="submit" [disabled]="!registerForm.valid" (click)="sendRegisterOtp()" id="signup">{{'HEADER.SEND OTP'|translate}}</ion-button>
+    </div>
+    <div style="padding-top:30px" *ngIf="otpNumberRegister">
+      <ion-label style="margin-right: 20PX;font-size: 16px;"> <label *ngIf="!showResendBtn">Resend OTP in {{remainingTime }} seconds</label>
+        <ion-button style="MARGIN-TOP: -10PX;" type="submit" fill="clear" id="resendOtpBtn" *ngIf="showResendBtn"
+          (click)="sendRegisterOtp()">
+          {{'HEADER.RESEND OTP' |translate}} </ion-button>
+      </ion-label>
+      <ion-button id="verify" type="submit" expand="block" (click)="submitFormVerify()">{{'HEADER.VERIFY & PROCEED' | translate}}</ion-button>
+    </div>
+   
+  </form>
+  <!-- *ngIf="registration"  -->
+  <form [formGroup]="registrationForm" (ngSubmit)="registerSubmit()" *ngIf="registration"  style="padding: 0 13px;text-align: left;">
+
+    <ion-label style="padding: 0 13px;text-align: center;">{{'HEADER.REGISTER'| translate }}</ion-label>
+   
+      <ion-label style="    margin-bottom: 9px;
+    display: flex;
+    padding-left: 19px;" position="stacked">{{'HEADER.FIRST NAME' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc" type="text" formControlName="f_name"></ion-input>
+    
+    <!-- <span
+      *ngIf="registrationForm.controls['f_name'].hasError('required') && (registrationForm.controls['f_name'].dirty || registrationForm.controls['f_name'].untouched)">
+      {{'HEADER.FIRST NAME REQUIRED' | translate}}
+    </span> -->
+   
+      <ion-label style="    margin-bottom: 9px;
+    display: flex;
+    padding-left: 19px;" position="stacked">{{'HEADER.LAST NAME' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc"  type="text" formControlName="l_name"></ion-input>
+    
+    <!-- <span class="text-danger"
+      *ngIf="registrationForm.controls['l_name'].hasError('required') && (registrationForm.controls['l_name'].dirty || registrationForm.controls['l_name'].untouched)">
+      {{'HEADER.LAST NAME REQUIRED' | translate}}
+    </span> -->
+
+   
+      <ion-label style="    margin-bottom: 9px;
+    display: flex;
+    padding-left: 19px;" position="stacked">{{'HEADER.EMAIL' |translate}}</ion-label>
+      <ion-input class="custom-input inputcc" type="email" formControlName="email"></ion-input>
+    
+    <!-- <span class="text-danger"
+      *ngIf="registrationForm.controls['email'].hasError('required') && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].untouched)">
+      {{'HEADER.EMAIL REQUIRED' | translate}}
+    </span>
+    <span class="text-danger"
+      *ngIf="registrationForm.controls['email'].hasError('pattern') && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].untouched)">
+      {{'HEADER.INVALID EMAIL' | translate}}
+    </span> -->
+
+   
+      <ion-label style="    margin-bottom: 9px;
+    display: flex;
+    padding-left: 19px;" position="stacked">{{'HEADER.ENTER PASSWORD' | translate}}</ion-label>
+      <ion-input class="custom-input inputcc"  #input type="password" formControlName="password" autocomplete="off"></ion-input>
+      <ion-icon name="eye-off-outline" slot="end" (click)="togglePassword(input)" [hidden]="!showPassword"></ion-icon>
+      <ion-icon name="eye-outline" slot="end" (click)="togglePassword(input)" [hidden]="showPassword"></ion-icon>
+<!--     
+    <span class="text-danger"
+      *ngIf="registrationForm.controls['password'].hasError('required') && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].untouched)">
+      password is required
+    </span> -->
+   
+   
+      <ion-label style="    margin-bottom: 9px;
+    display: flex;
+    padding-left: 19px;" position="stacked" (keyup)="cpassword()"> Confirm Password</ion-label>
+      <ion-input class="custom-input inputcc" #input type="password" type="password" formControlName="c_password"></ion-input>
+    
+   
+    <div style="padding-top:30px;text-align: center">
+      <ion-button type="submit" expand="fill" >{{'HEADER.REGISTER' | translate}}</ion-button>
+      <ion-button (click)="onClickLogin()" expand="block" fill="clear" shape="round">
+        {{'HEADER.LOGIN' | translate}}
+      </ion-button>
+    </div>
+  </form>
+ 
+  <ion-grid style="margin-top: 30px;">
+    <ion-row style="font-size: 15px;">
+      <ion-col size="3" class="hover-underline-animation" style="font-size: 14px; text-align: center;color:#000;
+        background-color: #fff" *ngFor="let lng of languages" (click)="select(lng.value)" details="false">
+        {{lng.text}}
+        <ion-icon slot="end" name="checkmark" *ngIf="lng.value == select"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <ion-item style="text-align:end;padding-top: 130px; font-size: 15px;">
+    <ion-label (click)="openContactPage()" fill="clear">For any query contact us on<br><a
+        href="tel:+919930474444">+91-9930474444</a></ion-label>
+  </ion-item>
+</ion-content>

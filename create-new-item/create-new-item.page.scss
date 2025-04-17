@@ -1,0 +1,88 @@
+.required{
+    content:"*";
+    //font-weight:bold;
+    color: red;
+  }
+  .alert{
+    color: red;
+}
+div{
+  padding-left: 10px
+}
+.input1{
+  
+  height: 51px;
+  margin-top: 6px;
+}
+.modal_area{
+  padding-top:20px;
+  padding-left:20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+ion-segment-button {
+  --indicator-color: #014796;
+}
+
+/* iOS styles */
+ion-segment-button.ios {
+  --color: black;
+  --color-checked: #fff;
+  --border-radius: 20px;
+}
+// .custom-input {
+//   border: 1px solid #000; /* This sets a 2px solid blue border */
+//   border-radius: 25px; /* This adds rounded corners to the border */
+// }
+.segmentC{
+  border: solid 1px #b5a7a7;
+  border-radius: 25px;
+  width: 70%;
+  margin-left: 16%;
+  // margin-bottom: -10px;
+  // background-color: #014796;
+}
+.custom-input {
+  border: 1px solid #b5a7a7; /* This sets a 2px solid blue border */
+  border-radius: 25px; /* This adds rounded corners to the border */
+  margin: 5px 5px 4px -4px;
+  
+}
+.custom-input1 {
+  /* This sets a 2px solid blue border */
+  border-radius: 25px; /* This adds rounded corners to the border */
+
+  text-align: center;
+  margin-left: 6px;
+  color:#fff;
+  background-color: #014796;
+  box-shadow: 0 0 0 1px #d5d5d5
+  
+}
+.custom-input2 {
+  /* This sets a 2px solid blue border */
+  border-radius: 25px; /* This adds rounded corners to the border */
+
+  text-align: center;
+  background-color: #fdfdfd; 
+  margin-left: 16px; 
+  box-shadow: rgb(200 209 219) 0px 0px 0px 1px;
+}
+.unit{
+  border: solid 1px #b5a7a7; 
+  border-radius: 25px;
+  margin-top: 5px;
+}
+.category{
+  font-size: 40px;
+    color: #014796;
+    margin-top: 2px;
+    margin-left: 12px;
+}
+.gstselect{
+  height: 31px;
+  margin-top: 5px;
+  border: solid 1px #b5a7a7; 
+  border-radius: 25px; 
+  background-color: #f4f0df;
+}

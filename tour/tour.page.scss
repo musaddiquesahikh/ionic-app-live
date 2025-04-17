@@ -1,0 +1,32 @@
+/* Set the background color and padding for the list */
+ion-list {
+    background-color: #fff;
+    padding-bottom: 10px;
+    padding-left: 20px;
+  }
+  
+  /* Style the list label */
+  ion-label {
+    display:inline-table;
+    // padding: 2px;
+    // border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    color: #000;
+  }
+  ion-searchbar.custom {
+    --background: #014796;
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #f00;
+    --border-radius: 15px;
+  }
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: #f00;
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: #f00;
+  }
+ 

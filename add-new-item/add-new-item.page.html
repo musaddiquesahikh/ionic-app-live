@@ -1,0 +1,548 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="padding: 0;font-size: larger;" *ngIf="dataitem==undefined">{{'HEADER.CREATE ITEMS/SERVICE' |
+      translate}}</ion-title>
+    <ion-title style="padding: 0;font-size: larger;" *ngIf="dataitem!=undefined">{{'HEADER.EDIT ITEM' |
+      translate}}</ion-title>
+
+    <ion-buttons slot="end" style="font-size: large;color: black;">
+      <ion-icon id="itemsetting" name="settings-outline"></ion-icon>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="submitData(user)" style="font-size: medium;margin-left: 15px;">
+        <!-- <ion-icon slot="start" name="checkmark-outline"></ion-icon> -->
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content fullscreen="true">
+  <div>
+    <ion-grid fixed>
+      <ion-row class="custom-input" style="width: 200px; margin-left: 76px">
+        <ion-col [ngClass]="partA" (click)="partyType(1)" size="5" style="margin: 5px 5px 4px 6px;">{{'HEADER.PRODUCT' |
+          translate}}</ion-col>
+        <ion-col [ngClass]="partB" (click)="partyType(2)" size="5" style="margin:5px 5px 4px 16px;">{{'HEADER.SERVICES'
+          | translate}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- <ion-segment mode="ios" class="segmentC" value="1" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="1" style="border: dotted 0.1px;">
+      <ion-label style=" font-size: 20px;">{{'HEADER.PRODUCT' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2" style="border: dotted 0.1px;">
+      <ion-label style=" font-size: 20px;">{{'HEADER.SERVICES' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <form [formGroup]="CategoryForm" (ngSubmit)="addOption()">
+    <ion-popover trigger="top-center" side="bottom" alignment="center">
+      <ng-template>
+        <ion-content class="ion-padding">
+          <div>
+            <ion-label>{{'HEADER.CREATE CATEGORY' | translate}}</ion-label>
+            <ion-row class="input1" fill="outline" style="margin-bottom: -20px;">
+              <ion-input type="text" style="text-align: left;border: solid 1px;
+            border-radius: 25px;height: 60%;" formControlName="group_name"> </ion-input>
+            </ion-row>
+            <ion-button style="float: right;" slot="end" shape="round" size="small" (click)="addOption()">
+              {{'HEADER.CREATE' | translate }}
+            </ion-button>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </form>
+
+  <form [formGroup]="ItemForm" (ngSubmit)="submitData()">
+
+    <div class="cardd" *ngIf="ItemForm.get('item_type').value == 1">
+      <div>
+        <ion-label class="labelhead">{{'HEADER.ITEM CATEGORY' | translate}} :<span class="required">*</span></ion-label>
+      </div>
+      <ion-row>
+        <ion-col size="10">
+          <ion-select class="custom-input inputcc" style="margin-left:2px" interface="popover" formControlName="group">
+            <ion-select-option *ngFor="let option of options" [value]="option.id">{{
+              option.group_name}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon id="top-center" name="add-circle-sharp" class="category">
+          </ion-icon>
+        </ion-col>
+      </ion-row>
+      <!-- (click)="addOption()" -->
+      <!-- <ion-popover trigger="top-center" side="bottom" alignment="center">
+      <ng-template>
+        <ion-content class="ion-padding">
+          <div>
+            
+              <ion-label>{{'HEADER.CREATE CATEGORY' | translate}}</ion-label>
+        
+            <ion-row class="input1" fill="outline">
+              <ion-input type="text" style="text-align: left;
+              border: solid 1px;
+              border-radius: 25px;" formControlName="group_name"> </ion-input>
+             
+            </ion-row>
+             <ion-button style="float: right;" slot="end" shape="round" size="small" (click)="addOption()">
+                {{'HEADER.CREATE' | translate }}
+              </ion-button>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-popover> -->
+
+      <div [class.invalid]="ItemForm.get('item_name').invalid && ItemForm.get('item_name').touched">
+        <ion-label class="labelhead">{{'HEADER.ITEM NAME' | translate}} :<span class="required">*</span></ion-label>
+        <ion-input class="custom-input inputcc" formControlName="item_name"></ion-input>
+
+        <span class="text-danger"
+          *ngIf="ItemForm.controls['item_name'].hasError('required') && (ItemForm.controls['item_name'].dirty || ItemForm.controls['item_name'].touched)">
+          {{'HEADER.ITEM NAME REQUIRED' | translate}}</span>
+
+      </div>
+
+      <div *ngIf="!itemcode_value"
+        [class.invalid]="ItemForm.get('item_code').invalid && ItemForm.get('item_code').touched">
+        <ion-label class="labelhead">{{'HEADER.ITEM CODE' | translate}} :<span class="required">*</span></ion-label>
+        <ion-input class="custom-input inputcc" formControlName="item_code" type="text"></ion-input>
+
+        <span class="text-danger"
+          *ngIf="ItemForm.controls['item_code'].hasError('required') && (ItemForm.controls['item_code'].dirty || ItemForm.controls['item_code'].touched)">
+          {{'HEADER.ITEM CODE REQUIRED' | translate}}</span>
+      </div>
+
+      <!-- <div>
+      <ion-button class="labelhead" id="auto-trigger">multiple item code</ion-button>
+    </div> -->
+
+      <div>
+        <ion-label class="labelhead">{{'HEADER.ITEM DESCRIPTION' | translate}} :</ion-label>
+        <ion-textarea class="custom-input inputcc" formControlName="item_description" type="text"></ion-textarea>
+      </div>
+      <div>
+        <ion-row>
+          <ion-col size="6">
+            <ion-label class="labelhead">{{'HEADER.UNIT' | translate}}</ion-label>
+            <ion-select class="unit" interface="popover" placeholder="UNIT" formControlName="unit"
+              (ionChange)="other($event)">
+              <ion-select-option *ngFor="let lc of Unit" [value]="lc.id">{{lc.unit}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+
+          <ion-col size="6">
+            <div>
+              <ion-label class="labelhead">{{'HEADER.OPENING STOCK' | translate}}<span
+                  class="required">*</span></ion-label>
+              <ion-input class="custom-input inputcc" formControlName="opening_stock" type="number"
+                (click)="$event.target.select()"></ion-input>
+            </div>
+            <span class="text-danger"
+              *ngIf="ItemForm.controls['opening_stock'].hasError('required') && (ItemForm.controls['opening_stock'].dirty || ItemForm.controls['opening_stock'].touched)">
+              {{'HEADER.ITEM CODE REQUIRED' | translate}}</span>
+
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div *ngIf="otherUnit">
+        <ion-label class="labelhead">Add other unit</ion-label>
+        <ion-input class="custom-input inputcc" type="text" formControlName="other_unit" maxlength="5"></ion-input>
+      </div>
+
+      <ion-item [disabled]="otherUnit">
+        <ion-label class="labelhead">{{'HEADER.ADD ALTERNATIVE UNIT' | translate}}</ion-label>
+        <ion-toggle slot="end" color="primary" (ionChange)="conversion()" formControlName="conversionrate"></ion-toggle>
+      </ion-item>
+
+      <ion-row *ngIf="!otherUnit">
+        <ion-row *ngIf="ItemForm.value.conversionrate">
+          <ion-col size="6">
+            <div>
+              <ion-label>{{'HEADER.ALTERNATIVE UNIT' | translate}} :</ion-label>
+              <ion-select style="border: solid 1px #b5a7a7;border-radius: 25px;margin-top: 5px;" interface="popover"
+                placeholder="select" formControlName="alternative_unit">
+                <ion-select-option *ngFor="let lc of Unit" [value]="lc.id">{{lc.unit}}</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-col>
+
+          <ion-col size="6">
+            <div>
+              <ion-label>{{'HEADER.CONVERSION VALUE' | translate}} :<span class="required">*</span></ion-label>
+              <ion-input class="custom-input inputcc" formControlName="conversion_value" type="number"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+
+
+      <div>
+        <ion-label class="labelhead">{{'HEADER.AS OF DATE' | translate}}<span class="required">*</span></ion-label>
+        <ion-input style="width: 313px;margin-left: 4px;" class="custom-input inputcc" type="date"
+          formControlName="as_of_date"></ion-input>
+      </div>
+
+      <ion-grid>
+        <ion-row fill="outline" style="border: solid 1px #b5a7a7;border-radius: 30px;margin-top: 2px;">
+          <ion-col size="12">
+            <ion-accordion-group>
+              <ion-accordion value="first" style="border-radius: 30px;">
+                <ion-item slot="header" color="light">
+                  <ion-label>Pricing Details</ion-label>
+                </ion-item>
+
+                <ion-item slot="content">
+                  <ion-label>For Multiple GST Rates</ion-label>
+                  <ion-checkbox slot="end" [checked]="isChecked" (ionChange)="checked()"></ion-checkbox>
+                </ion-item>
+
+                <div slot="content">
+                  <ion-row *ngIf="isChecked">
+                    <ion-row *ngFor="let i of multiple; let n=index">
+                      <ion-col size="4">
+                        <ion-label style="text-align: center;">From</ion-label><span class="required">*</span>
+                        <ion-input class="custom-input inputcc" type="number"
+                          style="background-color: #f4f0df;height: 30px; width:90px;padding-left:3px"
+                          formControlName="from_rate"></ion-input>
+                      </ion-col>
+                      <ion-col size="4">
+                        <ion-label style="text-align: center;">To</ion-label>
+                        <ion-input class="custom-input inputcc"
+                          style="background-color: #f4f0df;height: 30px; width:90px; padding-left:3px"
+                          formControlName="to_rate" type="number"></ion-input>
+                      </ion-col>
+                      <ion-col size="4">
+                        <ion-label> GST rate</ion-label>
+
+                        <ion-select class="gstselect" interface="popover" placeholder="select" formControlName="tax">
+                          <ion-select-option *ngFor="let lc of gstrate"
+                            [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+                        </ion-select>
+
+                      </ion-col>
+                      <ion-row>
+                        <ion-button fill="clear" shape="round" (click)="deleteRange(n)">
+                          <ion-icon name="trash-outline"></ion-icon>
+                        </ion-button>
+                      </ion-row>
+                    </ion-row>
+
+                    <ion-row>
+                      <ion-button fill="clear" shape="round" (click)="toggleRow()">
+                        Add Row
+                      </ion-button>
+                    </ion-row>
+                  </ion-row>
+                </div>
+
+                <div slot="content">
+                  <ion-label margin="10px">{{'HEADER.SALES PRICE' | translate}} :<span
+                      class="required">*</span></ion-label>
+                  <ion-row class="custom-input inputcc">
+                    <ion-col size="6">
+                      <ion-input formControlName="sales_prices" type="number" (click)="$event.target.select()" required>
+                      </ion-input>
+                    </ion-col>
+                    <ion-col size="6">
+                      <div *ngIf="showGst">
+                        <ion-select formControlName="sales_types" interface="popover" placeholder="Select One">
+                          <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+                          <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+                        </ion-select>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+
+                <div slot="content">
+                  <ion-label margin="10px">{{'HEADER.PURCHASE PRICE' | translate}} : <span
+                      class="required">*</span></ion-label>
+                  <ion-row class="custom-input inputcc">
+                    <ion-col size="6">
+                      <ion-input formControlName="purchase_prices" type="number" (click)="$event.target.select()"
+                        required></ion-input>
+                    </ion-col>
+                    <ion-col size="6">
+                      <div *ngIf="showGst">
+                        <ion-select formControlName="purchase_types" interface="popover" placeholder="Select One">
+                          <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+                          <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+                        </ion-select>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+
+                <div slot="content">
+                  <ion-item>
+                    <ion-label>{{'Enable width & Height' | translate}}</ion-label>
+                    <ion-toggle slot="end" [checked]="square_calculation"
+                      formControlName="square_calculation"></ion-toggle>
+                  </ion-item>
+                </div>
+              </ion-accordion>
+            </ion-accordion-group>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div>
+        <ion-label>{{'HEADER.HSN CODE' | translate}} :</ion-label>
+        <ion-input class="custom-input inputcc" type="number" formControlName="hsn_code"
+          (ionInput)="filterOptions(hsn_code)" autocomplete="on" (click)="$event.target.select()"></ion-input>
+      </div>
+      <ion-list *ngIf="sdata">
+        <ion-item *ngFor="let option of filteredOptions" (click)="selectOption(option)" style="border-radius: 8px;
+      padding: 2px 5px;
+      border: 1px solid #bdbdbd;
+      box-shadow: 1px 2px 3px 2px #afafaf;">
+          {{option.hsn}} {{ option.d }}
+        </ion-item>
+      </ion-list>
+
+      <ion-row *ngIf="showGst">
+
+        <ion-col size="6">
+          <ion-label style="margin-left: 32px;">{{'HEADER.GST TAX RATE' | translate}} %</ion-label>
+          <div>
+            <ion-select class="custom-input inputcc" interface="popover" placeholder="Select Gst%"
+              formControlName="Gst_tax_rate">
+              <ion-select-option *ngFor="let lc of gstrate " [value]="lc.id ">{{lc.gst_tax_rate }} </ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-label style="margin-left: 32px;"> {{'HEADER.CESS TAX RATE' | translate}} % </ion-label>
+          <div>
+            <ion-select class="custom-input inputcc" interface="popover" placeholder="Select Cess%"
+              formControlName="cess_tax_rate">
+              <ion-select-option *ngFor="let lc of cessData" [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="cardd" *ngIf="ItemForm.get('item_type').value == 2">
+      <!-- <form [formGroup]="ItemForm" (ngSubmit)="submitData()"> -->
+      <div>
+        <ion-label>{{'HEADER.SERVICE NAME' | translate}} :<span class="required">*</span></ion-label>
+        <ion-input class="custom-input inputcc" type="text" formControlName="item_name"></ion-input>
+      </div>
+
+      <div>
+        <ion-label>{{'HEADER.RATE' | translate}} :<span class="required">*</span></ion-label>
+        <ion-row class="custom-input inputcc">
+          <ion-col size="6">
+            <ion-input formControlName="sales_prices" type="number" (click)="$event.target.select()"></ion-input>
+          </ion-col>
+          <ion-col size="6">
+            <div *ngIf="showGst">
+              <ion-select formControlName="sales_types" interface="popover" placeholder="Select One">
+                <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+                <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div>
+        <ion-label>{{'HEADER.SERVICE DESCRIPTION' | translate}} </ion-label>
+        <ion-input class="custom-input inputcc" formControlName="item_description"></ion-input>
+      </div>
+
+      <div *ngIf="!servicecode_value">
+        <ion-label>{{'HEADER.SERVICE CODE'| translate}} :</ion-label>
+        <ion-input class="custom-input inputcc" type="text" formControlName="item_code"></ion-input>
+      </div>
+
+      <div>
+        <ion-label>{{'HEADER.SAC CODE' | translate}} :</ion-label>
+        <ion-input class="custom-input inputcc" type="number" formControlName="hsn_code"
+          (ionInput)="filterOptions(hsn_code)" autocomplete="on" (click)="$event.target.select()"></ion-input>
+      </div>
+      <ion-list *ngIf="sdata">
+        <ion-item *ngFor="let option of filteredOptions" (click)="selectOption(option)" style="border-radius: 8px;
+      padding: 2px 5px;
+      border: 1px solid #bdbdbd;
+      box-shadow: 1px 2px 3px 2px #afafaf;">
+          {{option.hsn}} {{ option.d }}
+        </ion-item>
+      </ion-list>
+
+      <ion-row *ngIf="showGst">
+        <ion-col size="6">
+          <ion-label style="margin-left: 32px;">{{'HEADER.GST TAX RATE' | translate}} %</ion-label>
+          <div>
+            <ion-select class="custom-input inputcc" interface="popover" placeholder="Select Gst%"
+              formControlName="Gst_tax_rate">
+              <ion-select-option *ngFor="let lc 
+          of gstrate " [value]="lc.id ">{{lc.gst_tax_rate }} </ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-label style="margin-left: 32px;"> {{'HEADER.CESS TAX RATE' | translate}} % </ion-label>
+          <div>
+            <ion-select class="custom-input inputcc" interface="popover" placeholder="Select Cess%"
+              formControlName="cess_tax_rate">
+              <ion-select-option *ngFor="let lc of cessData" [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-item slot="content">
+        <ion-label>For Multiple GST Rates</ion-label>
+        <ion-checkbox slot="end" [checked]="isChecked" (ionChange)="checked()"></ion-checkbox>
+      </ion-item>
+
+      <div slot="content">
+        <ion-row *ngIf="isChecked">
+          <ion-row *ngFor="let i of multiple; let n=index">
+            <ion-col size="4">
+              <ion-label style="text-align: center;">From</ion-label><span class="required">*</span>
+              <ion-input class="custom-input inputcc" type="number"
+                style="background-color: #f4f0df;height: 30px; width:90px;padding-left:3px"
+                formControlName="from_rate"></ion-input>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label style="text-align: center;">To</ion-label>
+              <ion-input class="custom-input inputcc"
+                style="background-color: #f4f0df;height: 30px; width:90px; padding-left:3px" formControlName="to_rate"
+                type="number"></ion-input>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label> GST rate</ion-label>
+
+              <ion-select class="gstselect" interface="popover" placeholder="select" formControlName="tax">
+                <ion-select-option *ngFor="let lc of gstrate" [value]="lc.id">{{lc.gst_tax_rate}}</ion-select-option>
+              </ion-select>
+
+            </ion-col>
+            <ion-row>
+              <ion-button fill="clear" shape="round" (click)="deleteRange(n)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-row>
+          </ion-row>
+
+          <ion-row>
+            <ion-button fill="clear" shape="round" (click)="toggleRow()">
+              Add Row
+            </ion-button>
+          </ion-row>
+        </ion-row>
+      </div>
+    </div>
+  </form>
+
+  <ion-popover trigger="auto-trigger" size="auto">
+    <ng-template>
+      <ion-content>
+        <ion-label style="text-align: center;">
+          <h2>Multiple Sr. No.</h2>
+        </ion-label>
+        <ion-row style="margin-top: 13px;">
+          <ion-row *ngFor="let i of exp1; let j=index;">
+            <!-- *ngFor="let i of item.srNumber.slice(0,2);let g=index;" -->
+            <ion-col size="5" style="margin-left: 10px;">
+              <ion-input class="custom-input inputcc" placeholder="Sr.No" type="number" [(ngModel)]="i.SrNo"
+                style="height: 30px;width: 90px;border: solid 1px;"></ion-input>
+            </ion-col>
+
+            <ion-col size="5" style="margin-left: -13px;">
+              <ion-input class="custom-input inputcc" placeholder="Qty" [(ngModel)]="i.Qyt"
+                style="height: 30px;width: 97px;margin-left: 10px;border: solid 1px;" type="number"></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-button fill="clear" shape="round" style="margin-left: -11px;" (click)="deleteRow1(i)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <ion-button fill="clear" shape="round" (click)="addrow()"> Add Row </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button fill="clear" shape="round" (click)="addrow()"> Done </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-row>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+
+  <ion-modal trigger="itemsetting" [initialBreakpoint]="1" [breakpoints]="[0, 0.25, 0.5, 0.75]" handleBehavior="cycle">
+    <ng-template>
+      <ion-content>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-back-button></ion-back-button>
+            </ion-buttons>
+            <ion-title>Item Setting</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content>
+          <form action="" [formGroup]="itemSettings" (ngSubmit)="update()">
+            <div style="padding: 25px;">
+              <ion-item>
+                <ion-checkbox id="checked" formControlName="disable_item_code" (ionChange)="onChange()"></ion-checkbox>
+                <label class="form-check-label" for="SwitchCheckSizemd">Disable Item Code </label>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox id="checked1" formControlName="disable_service_code"
+                  (ionChange)="onChange()"></ion-checkbox>
+                <label class="form-check-label" for="SwitchCheckSizemd">Disable Service Code</label>
+              </ion-item>
+            </div>
+
+            <ion-item>
+              <!-- <ion-col size="8"> -->
+              <ion-label style="text-align: center;font-size: larger;color: blue;" (click)="loadOptions()"><b> View
+                  {{'HEADER.ITEM CATEGORY' | translate}}</b></ion-label>
+              <!-- </ion-col>
+              <ion-col size="4"> -->
+              <!-- <ion-label style="text-align: left; font-size: larger; color: blue;" (click)="loadOptions()"><b>View Categortys</b></ion-label> -->
+              <!-- </ion-col> -->
+            </ion-item>
+
+            <ion-item *ngFor="let option of options" style="border: solid 1px;
+              margin: 7px;
+              padding: 0px;
+              border-radius: 15px;">
+              <ion-label>{{ option.group_name}}</ion-label>
+
+              <ion-icon *ngIf="option.id!=1" name="trash-sharp" (click)="deleteCategoryGroup(option.id)"
+                style="color: red;"></ion-icon>
+            </ion-item>
+
+            <ion-item>
+              <ion-button slot="end" type="submit" expand="block" fill="outline">{{ 'HEADER.SUBMIT' |
+                translate}}</ion-button>
+            </ion-item>
+
+          </form>
+        </ion-content>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>AttendancePermission</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ 
+  <ion-list>
+    <ion-item *ngFor="let staff of matchedStaff">
+      <ion-label>{{ staff.staffDetails.first_name }}</ion-label>
+      <ion-label  *ngIf="staff.role == 'Admin'" 
+      style="background: #c0d8ee;
+    text-align: center;
+    margin: 13px;
+    padding: 4px;">ADMIN</ion-label>
+      <ion-toggle 
+        *ngIf="staff.role !== 'Admin'" 
+        [(ngModel)]="staff.attendance_permission" 
+        (ionChange)="submitPermissions(staff)">
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
+  
+</ion-content>

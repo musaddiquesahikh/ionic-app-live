@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="height: 25px;">
+    <ion-title class="title">{{'HEADER.BANK TRANSFER' | translate}}
+      <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="bankTransfer"  (ngSubmit)="submitForm()">
+      <ion-row class=" custom-input" style=" margin-left: 6px;width: 96%;margin-top: 10px;">
+        <!-- <ion-label>{{'HEADER.FROM BANK' | translate}}: <span class="required">*</span></ion-label> -->
+        <ion-select style="--placeholder-opacity: 1; " interface="popover" formControlName="bank" placeholder="{{'HEADER.FROM BANK' | translate}}:">
+          <ion-select-option *ngFor="let lc of bankList" [value]="lc.id">{{lc.bank_name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-row>
+      <span class="text-danger"
+        *ngIf="bankTransfer.controls['bank'].hasError('required') && (bankTransfer.controls['bank'].dirty || bankTransfer.controls['bank'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}:</span>
+
+        <ion-row class=" custom-input" style=" margin-left: 6px;width: 96%;margin-top: 11px;">
+        <!-- <ion-label>{{'HEADER.TO BANK' | translate}}: <span class="required">*</span></ion-label> -->
+        <ion-select style="--placeholder-opacity: 1; " interface="popover" formControlName="to_bank" placeholder="{{'HEADER.TO BANK' | translate}}:">
+          <ion-select-option *ngFor="let lc of bankList" [value]="lc.id">{{lc.bank_name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-row>
+
+      <span class="text-danger"
+        *ngIf="bankTransfer.controls['to_bank'].hasError('required') && (bankTransfer.controls['to_bank'].dirty || bankTransfer.controls['to_bank'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+
+      <div>
+        <!-- <ion-label>{{'HEADER.AMOUNT' | translate}}: </ion-label> -->
+        <ion-input class=" custom-input" type="number" formControlName="amount" placeholder="{{'HEADER.AMOUNT' | translate}}:">
+        </ion-input>
+      </div>
+      <span class="text-danger"
+        *ngIf="bankTransfer.controls['amount'].hasError('required') && (bankTransfer.controls['amount'].dirty || bankTransfer.controls['amount'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}:</span>
+
+      <div>
+        <ion-label class="ion-margin"> {{'HEADER.DATE' | translate}}: <span class="required">*</span></ion-label>
+        <ion-input class=" custom-input" type="date" formControlName="date"></ion-input>
+      </div>
+      <span class="text-danger"
+        *ngIf="bankTransfer.controls['date'].hasError('required') && (bankTransfer.controls['date'].dirty || bankTransfer.controls['date'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}:</span>
+
+      <ion-button type="submit" expand="full" [disabled]="!bankTransfer.valid" (click)="submitForm()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </form>
+</ion-content>

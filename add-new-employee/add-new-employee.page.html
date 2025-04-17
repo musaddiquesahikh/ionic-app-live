@@ -1,0 +1,250 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">Employee Details</ion-label>
+    </ion-buttons>
+    <!-- <ion-button fill="clear" style="margin-left:70px" (click)="setting()"><ion-icon name="settings-outline"></ion-icon></ion-button> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-segment value="personal" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="personal">
+      <ion-label>Personal Details</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="salary">
+      <ion-label>Salary Structure</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <div >
+
+    <form [formGroup]="employee_form">
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating">Name : <span class="required">*</span></ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['name'].hasError('required') && (employee_form.controls['name'].dirty || employee_form.controls['name'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating">Email : </ion-label>
+        <ion-input type="text" formControlName="email"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['email'].hasError('required') && (employee_form.controls['email'].dirty || employee_form.controls['email'].touched)">This
+        field is required</span>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['email'].hasError('pattern') && (employee_form.controls['email'].dirty || employee_form.controls['email'].touched)">Please
+        enter valid email </span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating">Mobile No : <span class="required">*</span></ion-label>
+        <ion-input type="number" formControlName="mobile"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['mobile'].hasError('required') && (employee_form.controls['mobile'].dirty || employee_form.controls['mobile'].touched)">This
+        field is required</span>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['mobile'].hasError('pattern') && (employee_form.controls['mobile'].dirty || employee_form.controls['mobile'].touched)">Please
+        enter valid phone number</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> PAN : </ion-label>
+        <ion-input type="text" formControlName="pan" (ionInput)="forUppercase()" value={{result}}>
+        </ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['pan'].hasError('required') && (employee_form.controls['pan'].dirty || employee_form.controls['pan'].touched)">This
+        field is required</span>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['pan'].hasError('pattern') && (employee_form.controls['pan'].dirty || employee_form.controls['pan'].touched)">Please
+        enter valid PAN number</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> State : <span class="required">*</span></ion-label>
+        <ion-select interface="action-sheet" placeholder="select"
+          formControlName="state" [value]="0">
+          <ion-select-option *ngFor="let lc of state" [value]="lc.id">{{lc.place_of_supply}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['state'].hasError('required') && (employee_form.controls['state'].dirty || employee_form.controls['state'].select)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> City : </ion-label>
+        <ion-input type="text" formControlName="city"></ion-input>
+      </ion-item>
+      <!-- <span class="text-danger"
+        *ngIf="employee_form.controls['city'].hasError('required') && (employee_form.controls['city'].dirty || employee_form.controls['city'].touched)">This
+        field is required</span> -->
+<!-- 
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> Address : <span class="required">*</span></ion-label>
+        <ion-input type="text" formControlName="address"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['address'].hasError('required') && (employee_form.controls['address'].dirty || employee_form.controls['address'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> Pincode: <span class="required">*</span></ion-label>
+        <ion-input type="number" formControlName="pincode"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['pincode'].hasError('required') && (employee_form.controls['pincode'].dirty || employee_form.controls['pincode'].touched)">This
+        field is required</span>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['pincode'].hasError('pattern') && (employee_form.controls['pincode'].dirty || employee_form.controls['pincode'].touched)">Please
+        enter valid pincode number</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> Department : <span class="required">*</span></ion-label>
+        <ion-input type="text" formControlName="department"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['department'].hasError('required') && (employee_form.controls['department'].dirty || employee_form.controls['department'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> Designation : <span class="required">*</span></ion-label>
+        <ion-input type="text" formControlName="designation"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['designation'].hasError('required') && (employee_form.controls['designation'].dirty || employee_form.controls['designation'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> Leaves Allowed : <span class="required">*</span></ion-label>
+        <ion-input type="number" formControlName="leaves_allowed"></ion-input>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['leaves_allowed'].hasError('required') && (employee_form.controls['leaves_allowed'].dirty || employee_form.controls['leaves_allowed'].touched)">This
+        field is required</span> -->
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label position="floating"> Gender : <span class="required">*</span></ion-label>
+        <ion-select  interface="action-sheet" placeholder="select"
+          formControlName="gender">
+          <ion-select-option [value]="1">Male</ion-select-option>
+          <ion-select-option [value]="2">Female</ion-select-option>
+          <ion-select-option [value]="3">Other</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="employee_form.controls['gender'].hasError('required') && (employee_form.controls['gender'].dirty || employee_form.controls['gender'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label> Joining Date </ion-label>
+        <ion-input type="date" formControlName="joining_date"></ion-input>
+      </ion-item>
+
+      <div class="col-md-12">
+        <ion-button type="submit" class="btn btn-primary" expand="full" (click)="Submit()">Submit</ion-button>
+      </div>
+    </form>
+  </div>
+
+
+<!-- 
+
+  <div *ngIf="selectSegment == 'salary'">
+
+    <form [formGroup]="salary_form">
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-col>
+          <ion-label>Monthly Salary : <span class="required">*</span></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="number" class="hij" formControlName="monthly_salary" (click)="$event.target.select()"
+            (keyup)="do()">
+          </ion-input>
+        </ion-col>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="salary_form.controls['monthly_salary'].hasError('required') && (salary_form.controls['monthly_salary'].dirty || salary_form.controls['monthly_salary'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-col>
+          <ion-label>Basic Salary : <span class="required">*</span></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="number" class="hij" (keyup)="do()" formControlName="basic_salary" (keyup)="do()"
+            (click)="$event.target.select()"></ion-input>
+        </ion-col>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="salary_form.controls['basic_salary'].hasError('required') && (salary_form.controls['basic_salary'].dirty || salary_form.controls['basic_salary'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-col size="6">
+          <ion-label>House Rent Allowance : <span class="required">*</span></ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-input class="hij" type="number" (keyup)="do()" formControlName="house_rent_allowance" (keyup)="do()"
+            (click)="$event.target.select()"></ion-input>
+        </ion-col>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="salary_form.controls['house_rent_allowance'].hasError('required') && (salary_form.controls['house_rent_allowance'].dirty || salary_form.controls['house_rent_allowance'].touched)">This
+        field is required</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-col>
+          <ion-label>Special Allowance : <span class="required">*</span></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="number" class="hij" (keyup)="do()" formControlName="special_allowance" (keyup)="do()"
+            (click)="$event.target.select()"></ion-input>
+        </ion-col>
+      </ion-item>
+      <span class="text-danger"
+        *ngIf="salary_form.controls['special_allowance'].hasError('required') && (salary_form.controls['special_allowance'].dirty || salary_form.controls['special_allowance'].touched)">This
+        field is required</span>
+
+      <ion-button (click)="dataAdd()" fill="clear">+ Add Custom Field</ion-button>
+      <div *ngIf="custom">
+
+        <ion-item *ngFor="let data of exp1" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+          <ion-col size="5">
+            <ion-input fill="outline" type="text" placeholder="Enter salary head here" (keyup)="do()"
+              [(ngModel)]="data.custom_name" [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-col>
+          <ion-col size="5">
+            <ion-input type="number" [(ngModel)]="data.custom_value" (keyup)="do()" class="hij"
+              [ngModelOptions]="{standalone: true}" (click)="$event.target.select()"></ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button (click)="delete()" fill="clear">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-item>
+      </div>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label>Total : <span class="required">*</span></ion-label>
+        <ion-input type="number" style="text-align: end;" (ionInput)="do()" formControlName="total"
+          value="{{this.salary_form.value.total}}"></ion-input>
+      </ion-item>
+      <span *ngIf="msg">{{msg}}</span>
+
+      <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+        <ion-label> Start Date : <span class="required">*</span></ion-label>
+        <ion-input type="date" formControlName="start_date"></ion-input>
+      </ion-item>
+
+      <div class="col-md-12">
+        <ion-button type="submit" class="btn btn-primary" expand="full" (click)="submitData()">Submit</ion-button>
+      </div>
+    </form>
+  </div> -->
+</ion-content>

@@ -1,0 +1,152 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.MANAGE MONEY' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <ion-item> -->
+  <ion-segment mode="ios" style="background-color: #fff;
+  margin-top: 7px;
+  width: 96%;
+  margin-left: 7px;" value="bank" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="bank">
+      <ion-label style=" font-size: 15px;">{{'HEADER.BANK BALANCE' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="cash">
+      <ion-label style=" font-size: 15px;">{{'HEADER.CASH BALANCE' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <!-- </ion-item> -->
+
+  <div *ngIf="selectSegment == 'bank'">
+
+    <ion-row style="margin-top: 10px;margin-bottom: 10px;">
+      <ion-button id="cw" fill="outline" size="small" style="font-size: 12px; margin-left: 5px;"
+        (click)="cashWithdrow($event)">
+        {{'HEADER.CASH WITHDRAW' | translate}}
+      </ion-button>
+
+      <ion-button id="cd" fill="outline" size="small" style="font-size: 12px; margin-left: 3px;"
+        (click)="cashDeposit($event)">
+        {{'HEADER.CASH DEPOSIT' | translate}}
+      </ion-button>
+
+      <ion-button id="bb" fill="outline" size="small" style="font-size: 12px; margin-left: 3px;"
+        (click)="bankTransfer($event)">
+        {{'HEADER.BANK TO BANK TRANSFER' | translate}}
+      </ion-button>
+
+      <ion-button id="bank" fill="clear" size="small" style="font-size: 12px;" (click)="createNewBank()"> +
+        {{'HEADER.ADD BANK' |
+        translate}}</ion-button>
+    </ion-row>
+
+    <ion-card *ngFor="let item of payment" style="border-radius: 15px;
+    margin: 10px;
+    box-shadow: 0px 0px 0px 1px #c5c5c5;">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="8" style="font-weight: 600;">{{item.bank_name | titlecase}}</ion-col>
+
+          <ion-col size="4" style="font-weight: 600;text-align: right;">₹{{item.current_balance | number : '1.2-2'}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align: right;">
+            <ion-button fill="clear" (click)="presentModal(item)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="viewBankTransaction(item.id)">
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="paymentIn()">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="paymentOut()">
+              <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="deleteBank(item.id)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+    <div style="text-align: center;margin-top: 141px">
+      <ion-label style="font-size: 25px;
+        font-weight: 500;
+        color: #aa8462;">{{b}}</ion-label>
+    </div>
+
+  </div>
+
+  <div *ngIf="selectSegment == 'cash'">
+    <ion-row style="margin-top: 10px;margin-bottom: 10px;">
+      <ion-button fill="outline" size="small" style="font-size: 12px; margin-left: 5px;" (click)="cashWithdrow()">
+        {{'HEADER.CASH WITHDRAW' | translate}}
+      </ion-button>
+
+      <ion-button fill="outline" size="small" style="font-size: 12px; margin-left: 3px;" (click)="cashDeposit()">
+        {{'HEADER.CASH DEPOSIT' | translate}}
+      </ion-button>
+
+      <ion-button fill="outline" size="small" style="font-size: 12px; margin-left: 3px;" (click)="bankTransfer()">
+        {{'HEADER.BANK TO BANK TRANSFER' | translate}}
+      </ion-button>
+
+      <div style="font-size: 12px;text-align: right;">
+        <ion-button fill="clear" style="font-size: 12px;" (click)="addCashLedger()"> + {{'HEADER.ADD CASH LEDGER' |
+          translate}}</ion-button>
+      </div>
+    </ion-row>
+    <ion-card *ngFor="let item of cash" style="border-radius: 15px;
+    margin: 10px;
+    box-shadow: 0px 0px 0px 1px #c5c5c5;">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="8" style="font-weight: 600;">{{item.ledger_name | titlecase}}</ion-col>
+
+          <ion-col size="4" style="font-weight: 600;text-align: right;">₹{{item.current_balance | number : '1.2-2'}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+
+          <ion-col style="text-align: right;">
+            <ion-button fill="clear" (click)="editCashModal(item)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="viewCashTransaction(item.id)">
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="paymentIn()">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="paymentOut()">
+              <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="deleteCash(item.id)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-card>
+
+    <div style="text-align: center;margin-top: 141px">
+      <ion-label style="    font-size: 25px;
+      font-weight: 500;
+      color: #aa8462;">{{msg}}</ion-label>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,18 @@
+
+<ion-content>
+  <div class="center logo">
+    <img src="assets/icon/logo.png" class="margin-top25"/>
+  </div>
+  <div class="center width80 margin-left-right-auto margin-top25pcnt" style="margin-top: 60px; color: white;" >
+    <p class="lbl-mobile" class="center gray-color">Enter your mobile number to receive a verification code</p>
+    <ion-item>
+      <ion-label slot="start" class="color-white">+91</ion-label>
+      <ion-input type="tel" maxlength="10"  class="color-white" name="mobile-no" [(ngModel)]="user.mobileno" required ></ion-input>
+    </ion-item>
+    <div class="right margin-top10px">
+      <a routerLink='/login' routerLinkActive="active" class="color-white" class="font12 std-color">Already Registered? Login</a>
+    </div>
+    <ion-button class="margin-top10 common-btn"  (click)="submitData()">Get OTP</ion-button>
+  </div>
+</ion-content>
+

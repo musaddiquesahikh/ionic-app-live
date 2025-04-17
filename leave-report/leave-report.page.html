@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="modalDismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Employee Report</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button *ngIf="length" fill="clear" (click)="excel()">
+        <ion-icon name="cloud-download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-searchbar type="text" (ionInput)="getItems($event)" class="search"></ion-searchbar>
+  <ion-list>
+    <ion-row *ngFor="let employee of item" class="row">
+      <ion-col size="10" (click)="openEmployeeModal(employee)" class="col">
+        {{ employee.name }}
+        <ion-ripple-effect type="bounded"></ion-ripple-effect>
+      </ion-col>
+      <ion-col *ngIf="this.admin == 'Admin'" size="2" class="col1" style="color: red;">
+        <ion-icon name="trash-outline" (click)="deleteInvoice(employee.id)"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,117 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.GSTR-3B REPORTS' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="length" fill="clear" (click)="excel()">
+        <ion-icon name="cloud-download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-card>
+
+  <ion-item>
+    <ion-label>{{'HEADER.SELECT PERIOD' | translate}}:</ion-label>
+    <ion-select [(ngModel)]="item.quarter" interface="popover">
+      <ion-select-option [value]="0">{{'HEADER.MONTHLY' | translate}}</ion-select-option>
+      <ion-select-option [value]="1">{{'HEADER.QUARTERLY' | translate}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item *ngIf="item.quarter == 0">
+    <ion-label>{{'HEADER.SELECT MONTH' | translate}} :</ion-label>
+    <ion-input type="Month" name="dateF" required="" [(ngModel)]="item.start"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="item.quarter == 1">
+    <ion-label>{{'HEADER.SELECT QUARTER' | translate}}:</ion-label>
+    <ion-select placeholder="select" [(ngModel)]="item.start" interface="popover">
+      <ion-select-option value="04-06">Apr-Jun</ion-select-option>
+      <ion-select-option value="07-09">Jul-Sep</ion-select-option>
+      <ion-select-option value="10-12">Oct-Dec</ion-select-option>
+      <ion-select-option value="01-03">Jan-Mar</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item *ngIf="item.quarter == 1">
+    <ion-label>{{'HEADER.SELECT YEAR' | translate}} :</ion-label>
+    <ion-select placeholder="select" [(ngModel)]="item.year" interface="popover">
+      <ion-select-option value="2019">2019-20</ion-select-option>
+      <ion-select-option value="2020">2020-21</ion-select-option>
+      <ion-select-option value="2021">2021-22</ion-select-option>
+      <ion-select-option value="2022">2022-23</ion-select-option>
+      <ion-select-option value="2022">2023-24</ion-select-option>
+      <ion-select-option value="2022">2024-25</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Select Invoice Type</ion-label>
+    <ion-select [(ngModel)]="item.invoice" interface="popover">
+      <ion-select-option [value]="0">{{'HEADER.SALES' | translate}}</ion-select-option>
+      <ion-select-option [value]="1">{{'HEADER.PURCHASE' | translate}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button (click)="submit()" expand="full">{{'HEADER.DONE' | translate}}</ion-button>
+</ion-card>
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{salesData.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+<ion-content>
+  <ion-card *ngFor="let item of salesData">
+    <ion-card-header style="background: #dfdfdf;">
+      <ion-card-subtitle>
+        <ion-col size="6">{{'HEADER.INVOICE NO' | translate}} : {{item.invoice_no}} </ion-col>
+        <ion-col size="6" style="text-align: right;">{{'HEADER.INVOICE DATE' | translate}} -
+          {{item.invoice_date}}</ion-col>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.PARTY' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;"> {{item.party_name}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.GSTIN' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;"> {{item.gstin}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.TAXABLE AMOUNT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.taxable_amount}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">IGST</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.igst}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">CGST</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.cgst}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">SGST</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.sgst}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.CESS AMOUNT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.cess}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.TOTAL TAX AMOUNT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.total_amount}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

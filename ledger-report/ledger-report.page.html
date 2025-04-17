@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="modalCtrl.dismiss()">
+      <ion-back-button defaultHref="" [routerLink]="['/view-report']"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.LEDGER REPORTS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngFor="let item of ledger_list" (click)="selectedLedger(item)">
+    <ion-item>
+      <ion-col>
+        <ion-label>{{item.name}}</ion-label>
+      </ion-col>
+      <ion-col style="text-align: end;">
+        <ion-label>{{item.current_balance}}</ion-label>
+      </ion-col>
+    </ion-item>
+  </ion-list>
+
+  <ion-modal [isOpen]="model" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+    <ng-template>
+      <ion-content>
+        <ion-list>
+          <ion-row text-center nowrap>
+            <ion-col col-6>{{'HEADER.DATE' | translate}}</ion-col>
+            <ion-col col-6>{{'HEADER.REFERANCE NO' | translate}}</ion-col>
+            <ion-col col-6>{{'HEADER.PARTICULARS' | translate}}</ion-col>
+            <ion-col col-6>{{'HEADER.DEBIT' | translate}}</ion-col>
+            <ion-col col-6>{{'HEADER.CREADIT' | translate}}</ion-col>
+            <ion-col col-6>{{'HEADER.BALANCE' | translate}}</ion-col>
+            <!-- <ion-col col-6>Action</ion-col> -->
+          </ion-row>
+        </ion-list>
+
+        <ion-card color="gray" *ngFor="let item of LedgerData" (click)="getLedger(item)">
+          <ion-row text-center nowrap>
+            <ion-col col-6>{{item.invoice_date}}</ion-col>
+            <ion-col col-6>{{item.invoice_no}}</ion-col>
+            <ion-col col-6>{{item.particular}}</ion-col>
+            <ion-col col-6>{{item.debit}}</ion-col>
+            <ion-col col-6>{{item.credit}}</ion-col>
+            <ion-col col-6>{{item.balance}}</ion-col>
+            <ion-col col-6 >
+              <ion-icon name="create-outline" color="danger"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

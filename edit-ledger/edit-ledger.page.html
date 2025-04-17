@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="modalCtrl.dismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.EDIT' | translate}} {{'HEADER.LEDGER' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+  <ion-item>
+    <ion-label position="floating">{{'HEADER.LEDGER NAME' | translate}}:</ion-label>
+    <ion-input [(ngModel)]="ledger.ledger_name" type="text" #ledger_name="ngModel" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{'HEADER.UNDER' | translate}}: </ion-label>
+    <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="ledger.selected_value"
+      (ngModelChange)="optionChange(ledger.selected_value)" #selected_value="ngModel" required>
+      <ion-select-option [value]="0" selected="" (click)="getledger()">Select</ion-select-option>
+      <ion-select-option *ngFor="let lc of ledgerCategory" [value]="lc">{{lc.payment_under_name}}</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{'HEADER.OPENING BALANCE' | translate}} :</ion-label>
+    <ion-input [(ngModel)]="ledger.opening_balance" type="number" #opening_balance="ngModel" required
+    (click)="$event.target.select()"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} :</ion-label>
+    <ion-select [(ngModel)]="ledger.payment_type" interface="popover">
+      <ion-select-option value="Debit">{{'HEADER.DEBIT' | translate}}</ion-select-option>
+      <ion-select-option value="Credit">{{'HEADER.CREDIT' | translate}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{'HEADER.AS ON' | translate}} :</ion-label>
+    <ion-input type="date" name="as_on_date" required [(ngModel)]="ledger.as_on_date" #as_on_date="ngModel" required>
+    </ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="editLedger()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+</ion-card>
+</ion-content>

@@ -1,0 +1,41 @@
+span{
+    color: red;
+    margin-left: 5px;
+    }
+div{
+    padding-left: 10px
+  }
+
+  .paddingLeft16{
+    padding-left: 16px;
+  }
+  .custom-input {
+    border: 1px solid #b5a7a7; /* This sets a 2px solid blue border */
+    border-radius: 25px; /* This adds rounded corners to the border */
+    margin: 5px 5px 4px -4px;
+    
+  }
+  .custom-input1 {
+     /* This sets a 2px solid blue border */
+    border-radius: 25px; /* This adds rounded corners to the border */
+    margin: 5px 5px 4px -4px;
+    text-align: center;
+    margin-left: 6px;
+    background-color: #014796;
+    box-shadow: 0 0 0 1px #d5d5d5
+    
+  }
+  .custom-input2 {
+    /* This sets a 2px solid blue border */
+    border-radius: 25px; /* This adds rounded corners to the border */
+    margin: 5px 5px 4px -4px;
+    text-align: center;
+    background-color: #fdfdfd; 
+    margin-left: 16px; 
+    box-shadow: rgb(200 209 219) 0px 0px 0px 1px;
+  }
+  .invalid {
+    ion-input {
+      border-color: red; /* Change the border color to indicate error */
+    }
+  }

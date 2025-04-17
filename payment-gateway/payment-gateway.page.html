@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Payment-Gateway</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+<ion-item>
+  <ion-label>Merchant Id</ion-label>
+  <ion-input [(ngModel)]="user.merchant_id_pg"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label>Merchant Key</ion-label>
+  <ion-input [(ngModel)]="user.merchant_key_pg"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label>Payment Mode</ion-label>
+  <ion-select [(ngModel)]="user.payment_mode_pg" interface="popover" [value]='3'>
+  <ion-select-option *ngFor="let lc of paymentModeData" [value]="lc.id">{{lc.payment_mode}}</ion-select-option>
+</ion-select>
+</ion-item>
+
+<ion-item>
+  <ion-label>Website</ion-label>
+  <ion-input [(ngModel)]="user.website_pg"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label>Industry Type</ion-label>
+  <ion-input [(ngModel)]="user.industry_type_pg"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label>Channel Web Id</ion-label>
+  <ion-input [(ngModel)]="user.channel_id_web_pg"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label>Channel Wap Id</ion-label>
+  <ion-input [(ngModel)]="user.channel_id_wap_pg"></ion-input>
+</ion-item>
+
+<ion-button (click)="paymentGateway()" expand="full">Submit</ion-button>
+</ion-card>
+</ion-content>

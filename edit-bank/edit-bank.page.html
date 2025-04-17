@@ -1,0 +1,52 @@
+<ion-content>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{'HEADER.EDIT BANK' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.BANK NAME' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.bank_name" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.BRANCH' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.bank_branch" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.ACCOUNT NO' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.account_no" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.IFSC CODE' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.ifsc_code" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.ACCOUNT HOLDER NAME' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.user" type="text" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.ADDRESS' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.address" type="text" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.OPENING BALANCE'| translate}} :</ion-label>
+      <ion-input [(ngModel)]="data1.opening_balance" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.AS ON' | translate}} :</ion-label>
+      <ion-input type="date" name="date" [(ngModel)]="data1.as_on" required></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="editBankAccount()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </ion-card>
+</ion-content>

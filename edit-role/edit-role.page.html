@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.EDIT ROLE' |translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">{{'HEADER.ROLE' | translate}} :</ion-label>
+    <ion-select interface="popover" [(ngModel)]="default_dict.role_name" (ionChange)="roleInfo(default_dict.role_name)">
+      <ion-select-option *ngFor="let r of rolesData" [value]="r.id">{{r.role}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <!-- <ion-item>
+    <ion-input type="text" placeholder="Rename Role"  [(ngModel)]="showData" ></ion-input>
+    <ion-button style="margin-left: 60px;" fill="clear" (click)="submit()" >submit</ion-button>
+  </ion-item> -->
+  <ion-card *ngIf="showCard">
+    <ion-item>
+      <ion-input type="text" placeholder="Rename Role" [(ngModel)]="showData.role_name"></ion-input>
+      <ion-button style="margin-left: 60px;" fill="clear" (click)="submit()">{{'HEADER.SUBMIT' |
+        translate}}</ion-button>
+    </ion-item>
+    <div *ngFor="let data of showData.data">
+      <h2>
+        <ion-label style="margin-left: 10px">{{data.page_name}}</ion-label>
+      </h2>
+      <ion-row class="ion-text-center">
+
+        <ion-col size="3">
+          <ion-label>View</ion-label>
+          <ion-item>
+            <ion-checkbox [(ngModel)]="data.actions.view"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="3">
+          <ion-label>Create</ion-label>
+          <ion-item>
+            <ion-checkbox [(ngModel)]="data.actions.create"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="3">
+          <ion-label>edit</ion-label>
+          <ion-item>
+            <ion-checkbox [(ngModel)]="data.actions.edit"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="3">
+          <ion-label>Delete</ion-label>
+          <ion-item>
+            <ion-checkbox [(ngModel)]="data.actions.delete"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+    </div>
+  </ion-card>
+
+</ion-content>

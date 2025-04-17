@@ -1,0 +1,12 @@
+.toolbar-background{
+    background-color: red !important;
+}
+.gradeback{
+    background: rgb(47,83,99);
+    //background: linear-gradient(90deg, rgba(47,83,99,1) 32%, rgba(74,94,99,1) 49%, rgba(130,117,98,1) 74%, rgba(170,134,98,1) 100%, rgba(49,84,99,1) 100%);
+}
+ion-header ion-toolbar{
+    --background:rgb(47,83,99);
+    --color:#fff;
+}
+

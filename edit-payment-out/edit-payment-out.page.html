@@ -1,0 +1,309 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="modaldismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit {{'HEADER.PAYMENT OUT' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label name="receipeNo">{{'HEADER.PAYMENT NO' | translate}} : <span class="required">*</span></ion-label>
+      <ion-input [(ngModel)]="payment.receipt_no" #receipt_no="ngModel" required></ion-input>
+    </ion-item>
+    <div *ngIf="receipt_no.touched && receipt_no.invalid" class="alert">
+      <div *ngIf="receipt_no.errors?.required">
+        {{'HEADER.PAYMENT NO REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label name="receiptDate">{{'HEADER.PAYMENT DATE' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input type="date" name="date" [(ngModel)]="payment.receipt_date" #receipt_date="ngModel" required>
+      </ion-input>
+    </ion-item>
+    <div *ngIf="receipt_date.touched && receipt_date.invalid" class="alert">
+      <div *ngIf="receipt_date.errors?.required">
+        {{'HEADER.PAYMENT DATE REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'HEADER.PAID FOR' | translate}} : <span class="required">*</span></ion-label>
+      <ion-label>{{payment.received_for}}</ion-label>
+    </ion-item>
+
+    <div>
+      <ion-item *ngIf="categoryId == 18">
+        <ion-label>{{'HEADER.PARTY NAME' | translate}} :<span class="required">*</span> </ion-label>
+        <ion-label>{{payment.Party_name1}}</ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="categoryId != 18">
+        <ion-label>{{'HEADER.PAID FOR' | translate}} {{received_for}} :<span class="required">*</span></ion-label>
+        <ion-label>{{payment.ledger_name}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label name="amount">{{'HEADER.AMOUNT' | translate}} :<span class="required">*</span></ion-label>
+        <ion-input type="number" (click)="$event.target.select()" [(ngModel)]="payment.amount" #amount="ngModel"
+          required></ion-input>
+      </ion-item>
+      <div *ngIf="amount.touched && amount.invalid" class="alert">
+        <div *ngIf="amount.errors?.required">
+          {{'HEADER.ENTER AMOUNT' | translate}}
+        </div>
+      </div>
+
+      <!-- <ion-item>
+        <ion-label class="paymentType">{{'HEADER.PAYMENT TYPE' | translate}} <span class="required">*</span></ion-label>
+        <br>
+      </ion-item>
+      <ion-item>
+        <ion-button id="cash1" (click)="cash()" size="small" fill="outline" style="width:100px">{{'HEADER.CASH'
+          | translate}}
+        </ion-button>
+
+        <ion-modal [isOpen]="isModalOpen" trigger="cash1" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+          <ng-template>
+            <div style="margin:4px">
+              <ion-item fill="outline" style="margin-top:20px">
+                <ion-label position="floating">{{'HEADER.LEDGER NAME' | translate}} :</ion-label>
+                <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.handover_to"
+                  (ngModelChange)="select(payment.handover_to)">
+                  <ion-select-option [value]="0" selected="">Select</ion-select-option>
+                  <ion-select-option *ngFor="let item of cashLedger" [value]="item.id">{{item.ledger_name}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <ion-item fill="outline" style="margin-top:20px">
+                <ion-label>{{'HEADER.DATE' | translate}} :</ion-label>
+                <ion-input type="date" name="date" required="" [(ngModel)]="payment.cleared_date"></ion-input>
+              </ion-item>
+              <ion-button expand="full" (click)="cashDetails()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+            </div>
+          </ng-template>
+        </ion-modal>
+
+        <ion-button id="cheque1" (click)="detailsInCheque()" size="small" fill="outline" style="width:100px">
+          {{'HEADER.CHEQUE' | translate}}
+        </ion-button>
+
+        <ion-modal [isOpen]="isModalOpen" trigger="cheque1" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+          <ng-template>
+            <div style="margin:4px">
+              <ion-item fill="outline" style="margin-top:12px">
+                <ion-label position="floating">{{'HEADER.CHEQUE NO' | translate}} :</ion-label>
+                <ion-input [(ngModel)]="payment.cheque_no" (click)="$event.target.select()"></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline" style="margin-top:12px">
+                <ion-label> Date Received :</ion-label>
+                <ion-input type="date" name="issued_date" required="" [(ngModel)]="payment.issued_date"></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline" style="margin-top:12px">
+                <ion-label>Date Cleared :</ion-label>
+                <ion-input type="date" name="cleared_date" required="" [(ngModel)]="payment.cleared_date">
+                </ion-input>
+              </ion-item>
+
+              <ion-item fill="outline" style="margin-top:12px">
+                <ion-label>{{'HEADER.SELECT BANK' | translate}} :</ion-label>
+                <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.bank">
+                  <ion-select-option [value]="0" selected="">Select</ion-select-option>
+                  <ion-select-option *ngFor="let item of bankList" [value]="item.id">{{item.bank_name}}
+                  </ion-select-option>
+                </ion-select>
+                <ion-button (click)="createNewBank()">{{'HEADER.ADD BANK' | translate}}</ion-button>
+              </ion-item>
+
+              <ion-button expand="full" (click)="chequeDetails()" style="margin-top:20px">Done</ion-button>
+            </div>
+          </ng-template>
+        </ion-modal>
+
+        <ion-button id="bank1" (click)="detailsBankTransfer()" size="small" style="width:120px" fill="outline">
+          {{'HEADER.BANK TRANSFER' | translate}}
+        </ion-button>
+
+        <ion-modal [isOpen]="isModalOpen" trigger="bank1" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+          <ng-template>
+
+            <div style="margin:4px">
+              <ion-item fill="outline" style="margin-top:20px">
+                <ion-label position="floating"> {{'HEADER.REFERANCE NO' | translate}} :</ion-label>
+                <ion-input [(ngModel)]="payment.reference_no" (click)="$event.target.select()">
+                </ion-input>
+              </ion-item>
+
+              <ion-item fill="outline" style="margin-top:20px">
+                <ion-label>{{'HEADER.DATE' | translate}} :</ion-label>
+                <ion-input type="date" name="date" required="" [(ngModel)]="payment.cleared_date"></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline" style="margin-top:20px">
+                <ion-label>{{'HEADER.SELECT BANK' | translate}} :</ion-label>
+                <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="payment.bank">
+                  <ion-select-option [value]="0" selected="">Select</ion-select-option>
+                  <ion-select-option *ngFor="let item of bankList" [value]="item.id">{{item.bank_name}}
+                  </ion-select-option>
+                </ion-select>
+
+                <ion-button (click)="createNewBank()" style="margin-top:20px">{{'HEADER.ADD BANK' | translate}}
+                </ion-button>
+              </ion-item>
+
+              <ion-button expand="full" (click)="bankTransferDetails()">{{'HEADER.DONE' | translate}}</ion-button>
+            </div>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+
+      <div *ngIf="payment.payment_type == 1">
+        <ion-item>
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CASH' | translate}} </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="payment.payment_type == 2">
+        <ion-item>
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CHEQUE' | translate}}</ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="payment.payment_type == 3">
+        <ion-item>
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.BANK TRANSFER' | translate}}</ion-label>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label>{{'HEADER.NOTES' | translate}} : </ion-label>
+        <ion-input [(ngModel)]="payment.notes"></ion-input>
+      </ion-item> -->
+      <div *ngIf="payment.Party_name1 && payment.amount && categoryId == 18" style="padding-left: 0px;">
+        <ion-item style="font-size: small;">
+          <ion-label>{{'HEADER.RECEIVED AGAINST' | translate}} <span class="required">*</span></ion-label>
+          <ion-select [(ngModel)]="payment.payment_for" (ionChange)="Function(payment.payment_for)" [multiple]="true"
+            interface="popover" style="padding: 0px;">
+            <ion-select-option [value]="1" *ngIf="one">{{'HEADER.ADVANCE' | translate}}</ion-select-option>
+            <ion-select-option [value]="2">{{'HEADER.AGAINST INVOICE' | translate}}</ion-select-option>
+            <ion-select-option [value]="3" *ngIf="three">{{'HEADER.ON ACCOUNT' | translate}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Total Of all Invoice</ion-label>
+          <ion-label style="text-align: right;">{{ calculateTotalOldValue() | number:'2.1-2' }}</ion-label>
+        </ion-item>
+
+        <ion-list style="padding: 0px;">
+          <ion-item *ngFor="let item of invoiceList" style="font-size: small;">
+            <ion-checkbox value="item" [checked]="item.checked1" (ionChange)="onChange($event,item)"
+              [disabled]="item.checked1" name="item">
+            </ion-checkbox>
+            <ion-label style="margin-left: 15px;">{{item.invoice_no}}</ion-label>
+            <ion-label>{{item.invoice_date}}</ion-label>
+            <ion-label style="text-align: right;">{{item.old_value}}</ion-label>
+            <ion-label style="text-align: right;">{{item.remaining_amt}}</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <div style="margin: 0px; border: solid 1px;">
+          <ion-row style="font-size: small; border: solid 1px;">
+            <ion-col size="2" style="border-right: solid 1px;"><ion-label>{{'HEADER.INVOICE NO' |
+                translate}}</ion-label></ion-col>
+            <ion-col size="3" style="border-right: solid 1px;"> <ion-label>{{'HEADER.DATE' |
+                translate}}</ion-label></ion-col>
+            <ion-col size="4" style="border-right: solid 1px;"> <ion-label>{{'HEADER.AMOUNT' |
+                translate}}</ion-label></ion-col>
+            <ion-col size="3"> <ion-label>Recieving</ion-label></ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let ii of invData; let i=index" style="font-size: small; border: solid 1px;">
+            <ion-col size="2" style="border-right: solid 1px;"><ion-label> {{ii.invoice_no}}</ion-label><br></ion-col>
+            <ion-col size="3" style="border-right: solid 1px;"><ion-label>{{ii.invoice_date}}</ion-label></ion-col>
+            <ion-col size="4" style="border-right: solid 1px;"><ion-label style="text-align: right;">{{ii.old_value |
+                currency:'INR'}}</ion-label><br>
+              <ion-label *ngIf="ii.old_value!=ii.inv_amt" style="color: red;">(₹ {{(ii.old_value)-(ii.inv_amt) |
+                number:'2.1-2'}}
+                pending )</ion-label>
+            </ion-col>
+            <ion-col size="3"><ion-label style="text-align: right;">{{ii.inv_amt}}</ion-label></ion-col>
+            <!-- <ion-col size="3"><ion-input style="background-color: #f4f0df;height: 30px; border-radius: 7px;padding-left:3px; text-align: right;"
+                [(ngModel)]="ii.inv_amt" [value]="ii.inv_amt" type="number" max="{{ii.inv_amt}}" (keyup)="chheck()">
+              </ion-input>
+            </ion-col> -->
+          </ion-row>
+        </div>
+        <ion-row style="margin: 7px 12px 0px 0px;
+          float: right;
+          font-weight: bold;
+          font-size: large;">
+          <ion-label>{{'HEADER.REMAIN' | translate}} : </ion-label>
+          <ion-label>{{payment.balance_amt | number:'2.1-2'}}</ion-label>
+        </ion-row>
+
+        <div *ngIf="payment.payment_type == 1" style="font-weight: bold;
+          font-size: large;
+          margin: 6px 0px 0px 6px;
+          background: #b3d8ff;">
+          <!-- <ion-item> -->
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CASH' | translate}} </ion-label>
+          <!-- </ion-item> -->
+        </div>
+
+        <div *ngIf="payment.payment_type == 2">
+          <!-- <ion-item> -->
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CHEQUE' | translate}}</ion-label>
+          <!-- </ion-item> -->
+        </div>
+
+        <div *ngIf="payment.payment_type == 3">
+          <!-- <ion-item> -->
+          <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.BANK TRANSFER' | translate}}</ion-label>
+          <!-- </ion-item> -->
+        </div>
+      </div>
+
+      <ion-item>
+        <ion-label class="paymentType">Payment Mode<span class="required">*</span></ion-label>
+        <br>
+      </ion-item>
+
+      <ion-item>
+        <ion-button (click)="CashModel()" id="cashModel" size="small" fill="outline"
+          style="width:100px;">{{'HEADER.CASH'| translate}}
+        </ion-button>
+
+        <ion-button id="chequeModel" (click)="ChequeModel()" size="small" fill="outline" style="width:100px;">
+          {{'HEADER.CHEQUE' | translate}}
+        </ion-button>
+
+        <ion-button (click)="BankTransferModel()" id="bankModel" size="small" fill="outline" style="width:120px;">
+          {{'HEADER.BANK TRANSFER' | translate}}
+        </ion-button>
+      </ion-item>
+
+      <ion-card *ngIf="cashModel">
+        <app-cash [data]="payment" (parentFunction)="parentFunction1($event)"> </app-cash>
+      </ion-card>
+
+      <ion-card *ngIf="chequeModel">
+        <app-cheque [data]="payment" (parentFunction)="parentFunction($event)"> </app-cheque>
+      </ion-card>
+
+      <ion-card *ngIf="bankModel">
+        <app-bank [data]="payment" (parentFunction)="parentFunction2($event)"> </app-bank>
+      </ion-card>
+
+
+      <ion-button expand="full" type="submit" (click)="editPaymentOut()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+    </div>
+  </ion-card>
+</ion-content>

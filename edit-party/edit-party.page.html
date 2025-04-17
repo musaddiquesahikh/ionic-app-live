@@ -1,0 +1,133 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="dismissmodel()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.EDIT PARTY' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveParty()">
+        <!-- <ion-icon slot="start" name="add"></ion-icon> -->
+        <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label>{{'HEADER.PARTY NAME' | translate}} : <span class="required">*</span></ion-label>
+      <ion-input [(ngModel)]="partyList.Party_name" #Party_name="ngModel" required></ion-input>
+    </ion-item>
+    <div *ngIf="Party_name.touched && Party_name.invalid" class="alert">
+      <div *ngIf="Party_name.errors?.required">
+        {{'HEADER.PARTY NAME REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'HEADER.MOBILE NUMBER' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input [(ngModel)]="partyList.mobile_number" type="number" pattern="[6-9]{1}[0-9]{9}" id="mobile_number"
+        #mobile_number="ngModel" required>
+        +91-</ion-input>
+    </ion-item>
+    <div *ngIf="mobile_number.touched && mobile_number.invalid" class="alert">
+      <div *ngIf="mobile_number.errors?.required">
+        {{'HEADER.MOBILE NO REQUIRED' | translate}}
+      </div>
+      <div *ngIf="mobile_number.errors?.pattern">
+        {{'HEADER.MOBILE NUMBER IS INVALID' | translate}}
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'HEADER.EMAIL' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input [(ngModel)]="partyList.email" type="email" #email="ngModel" required
+        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})">
+      </ion-input>
+    </ion-item>
+    <div *ngIf="email.errors?.pattern">
+      {{'HEADER.INVALID EMAIL' | translate}}
+    </div>
+
+
+    <ion-item>
+      <ion-label>{{'HEADER.PARTY TYPE' | translate}} :</ion-label>
+      <ion-select [(ngModel)]="partyList.party_type" interface="popover">
+        <ion-select-option [value]='1'>{{'HEADER.CUSTOMER' | translate}}</ion-select-option>
+        <ion-select-option [value]='2'>{{'HEADER.SUPPLIER' | translate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.SHIPPING ADDRESS' | translate}} :<span class="required">*</span>
+      </ion-label>
+      <ion-textarea [(ngModel)]="partyList.shipping_address" (keyup)="onAddressSame()"> </ion-textarea>
+    </ion-item>
+
+    <ion-input style="margin-left: 5%"><input id="checkbox" type="checkbox" name="sendemail" [(ngModel)]="isChecked"
+        checked>
+      <ion-label>{{'HEADER.SHIPPING ADDRESS' | translate}} {{'HEADER.SAME AS BILLING ADDRESS' | translate}} </ion-label>
+    </ion-input>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.BILLING ADDRESS' | translate}} :</ion-label>
+      <ion-textarea [(ngModel)]="partyList.billing_address" value="{{partyList.billing_address}}"> </ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.STATE' | translate}} :</ion-label>
+      <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="partyList.place_of_supply">
+        <ion-select-option *ngFor="let lc of stateData;let i=index;" value="{{lc.id}}">{{'STATE.'+lc.place_of_supply | translate}}
+        </ion-select-option>
+      </ion-select>
+
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.CITY' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="partyList.city"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>GSTIN (Optional):</ion-label>
+      <ion-input name="gstIn" pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" #gstin="ngModel"
+        [(ngModel)]="partyList.gstin" required (keyup)="gstFunction()"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.PAN' | translate}} :</ion-label>
+      <ion-input pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" [(ngModel)]="partyList.pan">{{result}} </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.CREDIT PERIOD' | translate}} (Days) : </ion-label>
+      <ion-input [(ngModel)]="partyList.credit_period"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.CREDIT LIMIT' | translate}} (₹) : </ion-label>
+      <ion-input [(ngModel)]="partyList.credit_limit"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Collect/Pay</ion-label>
+      <ion-select [(ngModel)]="partyList.payment_type" interface="popover">
+        <ion-select-option value="Debit">{{'HEADER.TO COLLECT' | translate}}</ion-select-option>
+        <ion-select-option value="Credit">{{'HEADER.TO PAY' | translate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'HEADER.OPENING BALANCE' | translate}} :</ion-label>
+      <ion-input type="number" [(ngModel)]="partyList.opening_balance"> </ion-input>
+    </ion-item>
+  </ion-card>
+
+    <ion-footer class="ion-no-border">
+      <ion-toolbar>
+
+      </ion-toolbar>
+    </ion-footer>
+</ion-content>

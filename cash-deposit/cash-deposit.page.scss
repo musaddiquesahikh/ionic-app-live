@@ -1,0 +1,24 @@
+span{
+    margin-left: 10px;
+    color: red;
+}
+.custom-input {
+    // border: 1px solid #b5a7a7; /* This sets a 2px solid blue border */
+    // border-radius: 25px; /* This adds rounded corners to the border */
+    margin: 11px 5px 4px -5px;
+    border: 1px solid #b5a7a7;
+    border-radius: 25px;
+    width: 101%;
+    height: 39px;
+    --placeholder-opacity: 1;  
+    
+  }
+  div{
+    padding-left: 10px ;
+  }
+  .title{
+    font-size: 15px;
+    color: #014796;
+    margin-bottom: 29px;
+    text-align: center;
+   }

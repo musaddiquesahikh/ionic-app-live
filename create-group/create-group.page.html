@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="height: 25px;">
+    <ion-title class="title">{{'HEADER.CREATE GROUP' | translate}}
+      <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="groupForm" (ngSubmit)="createGroup()">
+  <div fill="outline" style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px; margin-right: 10px;">
+    <!-- <ion-label>{{'HEADER.GROUP NAME' | translate}} : <span class="required">*</span></ion-label> -->
+    <ion-input class="custom-input" formControlName="ledger_name" placeholder="{{'HEADER.GROUP NAME' | translate}}:"></ion-input>
+    <span class="text-danger"
+    *ngIf="groupForm.controls['ledger_name'].hasError('required') && (groupForm.controls['ledger_name'].dirty || groupForm.controls['ledger_name'].touched)">
+    {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+  </div>
+
+  <ion-row class=" custom-input" style=" margin-left: 12px;width: 91%;margin-top: 10px;">
+  <ion-col size="6" style="margin-top: 6px;">
+    <ion-label class="ion-margin">{{'HEADER.UNDER' | translate}}: <span class="required">*</span></ion-label>
+  </ion-col>
+  <ion-col size="6">
+    <ion-select style="--placeholder-opacity: 1;margin: -4px 0px 2px -32px; "  placeholder="{{'HEADER.SELECT LEDGER' | translate}}" 
+    interface="popover"formControlName="ledger_under">
+      <ion-select-option *ngFor="let lc of ledgerCategory" [value]="lc.id">{{lc.payment_under_name}}</ion-select-option>
+    </ion-select>
+  </ion-col>
+  <span class="text-danger"
+  *ngIf="groupForm.controls['ledger_under'].hasError('required') && (groupForm.controls['ledger_under'].dirty || groupForm.controls['ledger_under'].touched)">
+  {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+  </ion-row>
+
+  <ion-button expand="full" type="submit" [disabled]="!groupForm.valid" (click)="createGroup()">{{'HEADER.CREATE' | translate}}</ion-button>
+</form>
+</ion-content>

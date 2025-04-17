@@ -1,0 +1,52 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar style="height: 25px;">
+      <ion-title class="title">{{'HEADER.CREATE NEW LEDGER' | translate}}
+        <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="ledgerForm" >
+    <div id="ledgerName">
+      <ion-input class="custom-input" formControlName="ledger_name" type="text" placeholder="{{'HEADER.LEDGER NAME' | translate}}:"></ion-input>
+    </div>
+    <span class="text-danger"
+        *ngIf="ledgerForm.controls['ledger_name'].hasError('required') && (ledgerForm.controls['ledger_name'].dirty || ledgerForm.controls['ledger_name'].touched)">
+        ledger name required</span>
+
+    <ion-row class=" custom-input" style=" margin-left: 6px;width: 96%;margin-top: 10px;">
+      <ion-select style="--placeholder-opacity: 1; "  placeholder="{{'HEADER.SELECT LEDGER' | translate}}:"interface="popover"formControlName="ledger_under"
+        (ionChange)="categoryChange(ledgerForm.value.ledger_under)" id="under">
+        <ion-select-option >Select</ion-select-option>
+        <ion-select-option *ngFor="let lc of ledgerCategory" [value]="lc">{{lc.payment_under_name}}</ion-select-option>
+      </ion-select>
+    </ion-row>
+
+    <div id="balance">
+      <ion-input class="custom-input" formControlName="opening_balance" type="number">
+      <ion-label class="ion-margin">{{'HEADER.OPENING BALANCE' | translate}} : <span class="required">*</span></ion-label>
+      </ion-input>
+    </div>
+    <span class="text-danger"
+    *ngIf="ledgerForm.controls['opening_balance'].hasError('required') && (ledgerForm.controls['opening_balance'].dirty || ledgerForm.controls['opening_balance'].touched)">
+    {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}</span>
+
+    <ion-row class="custom-input" style=" margin-left: 6px;width: 96%;margin-top: 10px;">
+      <ion-select formControlName="payment_type" style="--placeholder-opacity: 1; "  placeholder="{{'HEADER.PAYMENT TYPE' | translate}}:"interface="popover" id="Ptype" >
+        <ion-select-option value="Debit">{{'HEADER.DEBIT' | translate}}</ion-select-option>
+        <ion-select-option value="Credit">{{'HEADER.CREADIT' | translate}}</ion-select-option>
+      </ion-select>
+    </ion-row>
+
+    <div>
+      <ion-input class="custom-input" id="ledgerdate" type="date" name="as_on_date" formControlName="as_on_date">
+      <ion-label class="ion-margin">{{'HEADER.AS ON' | translate}} :<span class="required">*</span></ion-label>
+    </ion-input>
+    </div>
+    <span class="text-danger"
+    *ngIf="ledgerForm.controls['as_on_date'].hasError('required') && (ledgerForm.controls['as_on_date'].dirty || ledgerForm.controls['as_on_date'].touched)">
+    {{'HEADER.AS ON DATE IS REQUIRED' | translate}}</span>
+
+    <ion-button expand="full" (click)="createLedger()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </form>
+</ion-content>

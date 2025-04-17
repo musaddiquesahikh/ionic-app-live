@@ -1,0 +1,445 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button style="color:rgb(255, 255, 255);" (click)="modal()" id="open-model">
+        <ion-icon slot="end" name="arrow-down"></ion-icon>
+        {{latestCompany.slice(0, 20) | titlecase}}
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button style="color:rgb(255, 255, 255)" (click)="modal1($event)" slot="end">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+      <ion-button style="color:rgb(255, 255, 255)" [routerLink]="['/settings']" id="setting1">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+      <ion-button style="color:rgb(255, 255, 255)" (click)="presentPopover($event)">
+        <ion-icon name="help"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" overflow-scroll="true" class="has-header" style="background: #D6F3FF;">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshDashBoard()" [pageContent]="contentId">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div>
+    <ion-grid style="margin-top: 10px;margin-left: 4px;margin-right: 4px;text-align: center;">
+      <ion-row fill="outline"
+        style="border-radius: 30px;background: white;box-shadow: 0 0 5px 1px #e0e0e0;padding: 10px;">
+        <ion-row style="width:100%">
+          <ion-col>
+            <div class="ion-activatable ripple-parent" [routerLink]="['/sales-invoice']" id="step3">
+              <img src="assets/icon/invoice_icon.png" class="iconImage">
+
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            {{'HEADER.SALES INVOICE' | translate}}
+          </ion-col>
+          <ion-col [routerLink]="['/add-new-item']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/item_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            {{'HEADER.ADD ITEM' | translate}}
+          </ion-col>
+          <ion-col [routerLink]="['/create-new-party']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/party_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            {{'HEADER.ADD PARTIES' | translate}}
+          </ion-col>
+          <ion-col>
+            <div class="ion-activatable ripple-parent" [routerLink]="['/purchase-invoice']">
+              <img src="assets/icon/invoice_iconp.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            {{'HEADER.PURCHASE INVOICE' | translate}}
+          </ion-col>
+        </ion-row>
+      </ion-row>
+    </ion-grid>
+
+    <div>
+      <ion-grid>
+        <ion-row fill="outline"
+          style="border-radius: 15px;margin-top: 2px;box-shadow: 0 0 5px 1px #e0e0e0; width: 97%;margin-left: 5px;background: #fff;">
+          <ion-col size="12">
+            <ion-accordion-group>
+              <ion-accordion value="first" style="border-radius: 15px;">
+                <ion-item slot="header" style="--ion-item-background:#fff">
+                  <ion-label>
+                    <h3 *ngIf="loading" style="height: 15px;margin-bottom: -18px;">
+                      <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+                    </h3>
+                    ₹{{bank_balance | number:'1.2-2'}}
+                    <br>
+                    <ion-label style="color: rgb(1 71 150);
+                  font-size: 13px;"> Bank Balance<br></ion-label>
+                  </ion-label>
+                </ion-item>
+                <div slot="content">
+                  <div class="line"></div>
+                  <ion-item slot="header" *ngFor="let item of payment" style="--ion-item-background:#fff">
+                    <ion-label style="margin-right: 0px;color: rgb(1 71 150);
+                  font-size: 13px;">{{item.bank_name.toUpperCase()}}</ion-label>
+                    <ion-label class="right-align" style="font-size: 13px;
+                  color: #007514;">₹{{item.current_balance | number : '1.2-2'}}</ion-label>
+                  </ion-item>
+                </div>
+              </ion-accordion>
+            </ion-accordion-group>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row fill="outline"
+          style="border-radius: 15px;margin-top: 2px;box-shadow: 0 0 5px 1px #e0e0e0;width: 97%;margin-left: 5px;background: #fff;">
+          <ion-col size="12">
+            <ion-accordion-group>
+              <ion-accordion value="first" style="border-radius: 15px;">
+                <ion-item slot="header" style="--ion-item-background:#fff">
+                  <ion-label>
+                    <h3 *ngIf="loading" style="height: 15px;margin-bottom: -18px;">
+                      <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+                    </h3>
+                    ₹{{cash_balance | number:'1.2-2'}} <br>
+                    <ion-label style="color: rgb(1 71 150);
+                  font-size: 13px;"> Cash Balance<br>
+                    </ion-label>
+                  </ion-label>
+                </ion-item>
+                <div slot="content">
+                  <div class="line"></div>
+                  <ion-item slot="header" *ngFor="let item of cash | slice:0:show1;" style="--ion-item-background:#fff">
+                    <ion-label style="margin-right: 0px;color: rgb(1 71 150);
+                  font-size: 13px;">{{item.ledger_name.toUpperCase()}}</ion-label>
+                    <ion-label class="right-align" style="font-size: 13px;
+                  color: #007514;">₹{{item.current_balance | number : '1.2-2'}}</ion-label>
+                  </ion-item>
+                  <div style="padding:10px;text-align: center;font-weight: 500;
+                color: #006fed;background: white;" *ngIf="show1 !== cash.length" (click)="getLength2()">View All
+                  </div>
+                  <div style="padding:10px;text-align: center;font-weight: 500;
+               color: #006fed;background: white;" *ngIf="show1 == cash.length" (click)="showLess2()">View Less
+                  </div>
+                </div>
+              </ion-accordion>
+            </ion-accordion-group>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="attendance ">
+      <h2 style="text-align: center;margin-bottom: 0px;">ATTENDANCE</h2>
+      <ion-row class="row1">
+        <ion-col size="6" *ngIf="!showPunchOut " style="padding: 7px;">
+          <p style="margin-top: 10px;">Working Time: {{ elapsedTime }}</p>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button *ngIf="showPunchOut" (click)="onClick()" fill="clear" shape="round">
+            <ion-icon name="person-add-outline" style="color: green;font-size: x-large;margin-left: -23px;"></ion-icon>
+            Punch-in
+          </ion-button>
+          <ion-button *ngIf="!showPunchOut" (click)="onClick1()" fill="clear" shape="round">
+            <ion-icon name="power-outline" style="color: red;font-size: x-large;margin-left: -23px;"></ion-icon>
+            Punch-out
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-grid style="margin-left: 4px;margin-right: 4px;">
+        <ion-row fill="outline"
+          style="border-radius: 30px;background: white;box-shadow: 0 0 5px 1px #e0e0e0;font-size: 13px;padding: 10px;">
+          <ion-row style="margin: -10px;margin-bottom: 1px;">
+            <ion-col style="padding:5px;text-align: center;" [routerLink]="['/add-new-employee']">
+              <div class="ion-activatable ripple-parent">
+                <!-- <img src="../../assets/icon/journal_voucher.png" class="iconImage"> -->
+                <!-- <ion-icon name="add-circle-outline"></ion-icon> -->
+                <ion-icon name="add-circle" style="font-size: xxx-large;color: #6386b7;"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+              <ion-lable>Create employee</ion-lable>
+            </ion-col>
+
+            <ion-col style="padding:5px;text-align: center;" [routerLink]="['/leave-report']">
+              <div class="ion-activatable ripple-parent">
+                <!-- <img src="../../assets/icon/invoice_icon.png" class="iconImage"> -->
+                <ion-icon name="people-circle-outline" style="font-size: xxx-large;color: #6386b7;"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+              <ion-lable>All employees</ion-lable>
+            </ion-col>
+
+            <ion-col style="padding:5px;text-align: center;" [routerLink]="['/employee-attendence-modal']">
+              <div class="ion-activatable ripple-parent">
+                <!-- <img src="../../assets/icon/payment_in.png" class="iconImage"> -->
+                <!-- <ion-icon name="person-add-outline"></ion-icon> -->
+                <ion-icon name="person-add" style="font-size: xxx-large;color: #6386b7;"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+              <ion-lable>Employee attendance</ion-lable>
+            </ion-col>
+
+            <ion-col style="padding:5px;text-align: center;" [routerLink]="['/employee-attendance']">
+              <div class="ion-activatable ripple-parent">
+                <!-- <img src="../../assets/icon/expense_icon.png" class="iconImage"> -->
+                <ion-icon name="receipt" style="font-size: xxx-large;color: #6386b7;"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+              <ion-lable>Employee report</ion-lable>
+            </ion-col>
+
+            <ion-col style="padding:5px;text-align: center;" [routerLink]="['/attendance-report']">
+              <div class="ion-activatable ripple-parent">
+                <!-- <img src="../../assets/icon/invoice_icon.png" class="iconImage"> -->
+                <ion-icon name="reader" style="font-size: xxx-large;color: #6386b7;"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+              <ion-lable>Staff report</ion-lable>
+            </ion-col>
+          </ion-row>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <ion-grid style="margin-left: 4px;margin-right: 4px;">
+      <ion-row fill="outline"
+        style="border-radius: 30px;background: white;box-shadow: 0 0 5px 1px #e0e0e0;font-size: 13px;padding: 10px;">
+        <ion-row>
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/view-report']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/journal_voucher.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.REPORTS' |translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/profoma-invoice']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/invoice_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.PROFORMA INVOICE' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/payment-in']" id="paymentin1">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/payment_in.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.PAYMENT IN' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/expense']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/expense_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.EXPENSES' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/sales-return']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/invoice_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.RECORD SALES RETURN' | translate}}</ion-lable>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col style="text-align: center;" [routerLink]="['/paymentout']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/payment_out.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.PAYMENT OUT' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/quatation']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/invoice_iconp.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.CREATE QUOTATION' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/journal-vouchers']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/journal_voucher.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.JOURNAL VOUCHER' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="text-align: center;" [routerLink]="['/purchase-order']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/payment_out.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable>{{'HEADER.PURCHASE ORDER' | translate}}</ion-lable>
+
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/purchase-return']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/invoice_iconp.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.PURCHASE RETURN' | translate}}</ion-lable>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="showMoreTab">
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/alter-ledger']" id="ledger1">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/ledger_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.CREATE LEDGER' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/show-staff-list']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/staff_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable>{{'HEADER.MANAGE STAFF' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/inventory']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/expense_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.MANAGE INVENTORY' | translate}}</ion-lable>
+          </ion-col>
+
+          <ion-col style="padding:5px;text-align: center;" [routerLink]="['/delivery-challan']">
+            <div class="ion-activatable ripple-parent">
+              <img src="../../assets/icon/invoice_icon.png" class="iconImage">
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-lable> {{'HEADER.CREATE CHALLAN' | translate}}</ion-lable>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+
+      <div style="text-align: center;color:#006fed;padding-top: 8px;" (click)="showMore()" *ngIf="!showMoreTab">
+        Show More <ion-icon name="chevron-up-outline"></ion-icon>
+      </div>
+      <div style="text-align: center;color:#006fed;padding-top: 8px;" (click)="showLess1()" *ngIf="showMoreTab">
+        Show Less <ion-icon name="chevron-down-outline"></ion-icon>
+      </div>
+    </ion-grid>
+
+    <ion-modal [isOpen]="isModalOpen" trigger="reports">
+      <ng-template>
+        <ion-content>
+          <app-view-report></app-view-report>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <div style="padding: 0;">
+      <ion-card style="border-radius: 15px;
+           box-shadow: 0 0 5px 1px #e0e0e0;background: #fff;padding-top: 10px;">
+        <ion-label class="ion-margin">Sales Chart</ion-label>
+        <ion-card-content>
+          <canvas id="lineChart"></canvas>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div>
+      <ion-grid style="margin-left: 4px;margin-right: 4px;">
+        <ion-row fill="outline"
+          style="border-radius: 30px;background: white;box-shadow: 0 0 5px 1px #e0e0e0;padding: 10px;">
+          <ion-col>
+            <label for="" style="color: #014796;">Recent Transactions</label><br>
+            <ion-row style="border-bottom: 1px solid #d0d0d0;"
+              *ngFor="let t of recent_transcation |slice:0:show;let s=index" (click)="Transaction(t)">
+              <ion-col size="2" style="align-self: center;
+              text-align: center;">
+                <ion-icon *ngIf="t.type=='Sale'" name="bag-handle-outline"
+                  style="font-size: 28px;color: rgb(0, 163, 8);"></ion-icon>
+                <ion-icon *ngIf="t.type=='Purchase'" name="archive-outline"
+                  style="font-size: 28px;color: #f45c5c;"></ion-icon>
+                <ion-icon *ngIf="t.type=='Payment In'" name="arrow-down-outline"
+                  style="font-size: 28px;color: rgb(0, 163, 8);"></ion-icon>
+                <ion-icon *ngIf="t.type=='Payment Out'" name="arrow-up-outline"
+                  style="font-size: 28px;color: #f45c5c;"></ion-icon>
+                <ion-icon *ngIf="t.type=='Expense'" name="newspaper-outline"
+                  style="font-size: 28px;color: #f45c5c;"></ion-icon>
+                <img class="rcent" *ngIf="t.type=='Purchase Return'" src="../../assets/icon/purchase-return.png">
+                <ion-ripple-effect></ion-ripple-effect>
+                <img class="rcent" *ngIf="t.type=='Sale Return'" src="../../assets/icon/purchase-return.png">
+                <img class="rcent" *ngIf="t.type=='Purchase Order'" src="../../assets/icon/purchase_order.png">
+              </ion-col>
+              <ion-col size="7">
+                <ion-label style="color: #a0a0a0;"> {{t.date}}</ion-label><br>
+                <ion-label style="font-size: 15px;
+               color: #014796;">{{t.party_name}}{{t.ledger_name}}</ion-label>
+
+              </ion-col>
+              <ion-col size="3" style="text-align: right;font-size: 14px;align-self: center;">
+                <ion-label style="color: #4cc14e;"
+                  *ngIf="t.type=='Sale' || t.type=='Payment In' || t.type=='Purchase Return'">₹{{t.amount | number :
+                  '1.2-2'}}/-</ion-label>
+                <ion-label *ngIf="t.type=='Purchase Order'">₹{{t.amount | number : '1.2-2'}}/-</ion-label>
+                <ion-label style="color: #f45c5c;"
+                  *ngIf="t.type=='Purchase' || t.type=='Payment Out' || t.type=='Expense' || t.type=='Sale Return' ">₹{{t.amount
+                  | number : '1.2-2'}}/-</ion-label><br>
+                <ion-label style="color: #a0a0a0;"> {{t.type}}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <div style="padding:10px;text-align: center;font-weight: 500;
+      color: #006fed;" *ngIf="show !== recent_transcation.length" (click)="getLength()">{{'HEADER.VIEW ALL TRANSACTION'
+          | translate}}
+        </div>
+        <div style="padding:10px;text-align: center;font-weight: 500;
+     color: #006fed;" *ngIf="show == recent_transcation.length" (click)="showLess()">{{'HEADER.SHOW LESS TRANSACTIONS'
+          | translate}}
+        </div>
+      </ion-grid>
+    </div>
+
+    <ion-modal [isOpen]="trigger_button" #modal *ngIf="trigger_button" trigger="open-model"
+      [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+      <ng-template>
+        <ion-content>
+          <div class="modal_area">
+            <div>
+              <ion-button (click)="appLogout()" fill="clear" (click)="modal.dismiss()">{{'HEADER.LOGOUT' | translate}}
+              </ion-button>
+            </div>
+            <ion-list>
+              <ion-item>
+                <ion-label (click)="modal.dismiss()" [routerLink]="['/show-company-list']">{{'HEADER.CHANGE COMPANY' |
+                  translate}}</ion-label>
+              </ion-item>
+            </ion-list>
+            <ion-list *ngFor="let item of latestCompany1">
+              <ion-item>
+                <ion-col>
+                  <ion-label (click)="editCompany(item)" (click)="modal.dismiss()">{{item.business_name}}</ion-label>
+                </ion-col>
+                <ion-col style="text-align:end">
+                  <ion-button fill="clear" (click)="editCompany(item)">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    <!-- </ion-content> -->

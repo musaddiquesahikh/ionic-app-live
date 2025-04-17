@@ -1,0 +1,215 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="height: 25px;">
+    <ion-title class="title">Add new bank
+      <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+    </ion-title>
+    <!-- <ion-icon (click)="back()" name="close-outline"></ion-icon> -->
+   
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.ADD BANK' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card> -->
+    <form [formGroup]="BankForm">
+    <div style="margin-bottom: 10px;">
+      <ion-input placeholder="{{'HEADER.BANK NAME' | translate}}" class="custom-input"formControlName="bank_name" type="text">
+      <!-- <ion-label class="ion-margin">{{'HEADER.BANK NAME' | translate}}: <span class="required">*</span></ion-label> -->
+      </ion-input>
+    </div>
+    <!-- <div *ngIf="bank_name.touched && bank_name.invalid" class="alert">
+      <div *ngIf="bank_name.errors?.required">
+        {{'HEADER.BANK NAME IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <div style="margin-bottom: 10px;">
+      <ion-input placeholder="{{'HEADER.BRANCH' | translate}} " class="custom-input"formControlName="bank_branch" type="text" >
+      <!-- <ion-label class="ion-margin">{{'HEADER.BRANCH' | translate}} : <span class="required">*</span></ion-label> -->
+    </ion-input>
+    </div>
+    <!-- <div *ngIf="bank_branch.touched && bank_branch.invalid" class="alert">
+      <div *ngIf="bank_branch.errors?.required">
+        {{'HEADER.BRANCH IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <ion-grid>
+      <ion-row  style="border: solid 1px #b5a7a7;border-radius: 30px;margin-top: 2px;">
+        <ion-col size="12">
+          <ion-accordion-group>
+            <ion-accordion value="first" style="border-radius: 30px;">
+              <ion-item slot="header" color="light">
+                <ion-label>Account Details</ion-label>
+              </ion-item>
+             
+              <div slot="content">
+                <div >
+                  <!-- <ion-label class="ion-margin">{{'HEADER.ACCOUNT NO' | translate}} :<span class="required">*</span></ion-label> -->
+                  <ion-input placeholder="{{'HEADER.ACCOUNT NO' | translate}}" class="custom-input1" formControlName="account_no" type="number" #account_no="" required>
+                </ion-input>
+                </div>
+                <div *ngIf="account_no.touched && account_no.invalid" class="alert">
+                  <div *ngIf="account_no.errors?.required">
+                    {{'HEADER.ACCOUNT NO. IS REQUIRED' | translate}}
+                  </div>
+                </div>
+              </div>
+              
+              <div slot="content">
+                <div >
+                  <!-- <ion-label class="ion-margin">{{'HEADER.IFSC CODE' | translate}} : <span class="required">*</span></ion-label> -->
+                  <ion-input placeholder="{{'HEADER.IFSC CODE' | translate}}" class="custom-input1" formControlName="ifsc_code" type="text" #ifsc_code="" maxlength="11" required>
+                </ion-input>
+                </div>
+                <div *ngIf="ifsc_code.touched && ifsc_code.invalid" class="alert">
+                  <div *ngIf="ifsc_code.errors?.required">
+                    {{'HEADER.IFSC CODE IS REQUIRED' | translate}}
+                  </div>
+                </div>
+              </div>
+
+              <div slot="content">
+                <div >
+      
+                  <!-- <ion-label class="ion-margin">{{'HEADER.ACCOUNT HOLDER NAME' | translate}} :<span class="required">*</span></ion-label> -->
+                  <ion-input placeholder="{{'HEADER.ACCOUNT HOLDER NAME' | translate}}" class="custom-input1" formControlName="user" type="text" #user="" required>
+                  </ion-input>
+                </div>
+                <div *ngIf="user.touched && user.invalid" class="alert">
+                  <div *ngIf="user.errors?.required">
+                    {{'HEADER.NAME OF ACCOUNT HOLDER REQUIRED' | translate}}
+                  </div>
+                </div>
+              </div>
+
+              <div slot="content">
+                <div >
+                  <!-- <ion-label class="ion-margin">{{'HEADER.ADDRESS' | translate}} :<span class="required">*</span></ion-label> -->
+                  <ion-input placeholder="{{'HEADER.ADDRESS' | translate}}" class="custom-input1" formControlName="address" type="text" #address="" required>
+                  </ion-input>
+                </div>
+                <div *ngIf="address.touched && address.invalid" class="alert">
+                  <div *ngIf="address.errors?.required">
+                    {{'HEADER.ADDRESS IS REQUIRED' | translate}}
+                  </div>
+                </div>
+              </div>
+
+              <div slot="content">
+                <div >
+      
+                  <!-- <ion-label class="ion-margin">{{'HEADER.OPENING BALANCE'| translate}} :<span class="required">*</span></ion-label> -->
+                  <ion-input placeholder="{{'HEADER.OPENING BALANCE' | translate}}" class="custom-input1" formControlName="opening_balance" type="number" #opening_balance="" required (click)="$event.target.select()">
+                  </ion-input>
+                </div>
+                <div *ngIf="opening_balance.touched && opening_balance.invalid" class="alert">
+                  <div *ngIf="opening_balance.errors?.required">
+                    {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}
+                  </div>
+                </div>
+              </div>
+
+              <div slot="content">
+                <div >
+                  <!-- <ion-label class="ion-margin">{{'HEADER.AS ON' | translate}} :<span class="required">*</span></ion-label> -->
+                  <ion-input placeholder="{{'HEADER.AS ON' | translate}}" class="custom-input1" type="date" name="date" formControlName="as_on" #as_on="" (ionInput)="dateChange()" required>
+                  </ion-input>
+                </div>
+                <div *ngIf="as_on.touched && as_on.invalid" class="alert">
+                  <div *ngIf="as_on.errors?.required">
+                    {{'HEADER.AS ON DATE IS REQUIRED' | translate}}
+                  </div>
+                </div>
+              </div>
+
+              
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+    <!-- <div style="margin-bottom: 10px;">
+      <ion-input class="custom-input" formControlName="account_no" type="number" #account_no="" required>
+      <ion-label class="ion-margin">{{'HEADER.ACCOUNT NO' | translate}} :<span class="required">*</span></ion-label>
+    </ion-input>
+    </div>
+    <div *ngIf="account_no.touched && account_no.invalid" class="alert">
+      <div *ngIf="account_no.errors?.required">
+        {{'HEADER.ACCOUNT NO. IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <!-- <div style="margin-bottom: 10px;">
+      <ion-input class="custom-input" formControlName="ifsc_code" type="text" #ifsc_code="" maxlength="11" required>
+      <ion-label class="ion-margin">{{'HEADER.IFSC CODE' | translate}} : <span class="required">*</span></ion-label>
+    </ion-input>
+    </div>
+    <div *ngIf="ifsc_code.touched && ifsc_code.invalid" class="alert">
+      <div *ngIf="ifsc_code.errors?.required">
+        {{'HEADER.IFSC CODE IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <!-- <div style="margin-bottom: 10px;">
+      
+      <ion-input class="custom-input" formControlName="user" type="text" #user="" required>
+      <ion-label class="ion-margin">{{'HEADER.ACCOUNT HOLDER NAME' | translate}} :<span class="required">*</span></ion-label>
+      </ion-input>
+    </div>
+    <div *ngIf="user.touched && user.invalid" class="alert">
+      <div *ngIf="user.errors?.required">
+        {{'HEADER.NAME OF ACCOUNT HOLDER REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <!-- <div style="margin-bottom: 10px;">
+      <ion-input class="custom-input" formControlName="address" type="text" #address="" required>
+      <ion-label class="ion-margin">{{'HEADER.ADDRESS' | translate}} :<span class="required">*</span></ion-label>
+      </ion-input>
+    </div>
+    <div *ngIf="address.touched && address.invalid" class="alert">
+      <div *ngIf="address.errors?.required">
+        {{'HEADER.ADDRESS IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <!-- <div style="margin-bottom: 10px;">
+      
+      <ion-input class="custom-input" [()]="opening_balance" type="number" #opening_balance="" required (click)="$event.target.select()">
+      <ion-label class="ion-margin">{{'HEADER.OPENING BALANCE'| translate}} :<span class="required">*</span></ion-label>
+      </ion-input>
+    </div>
+    <div *ngIf="opening_balance.touched && opening_balance.invalid" class="alert">
+      <div *ngIf="opening_balance.errors?.required">
+        {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+
+    <!-- <div style="margin-bottom: 10px;">
+      <ion-input class="custom-input" type="date" name="date" [()]="as_on" #as_on="" (ionInput)="dateChange()" required>
+      <ion-label class="ion-margin">{{'HEADER.AS ON' | translate}} :<span class="required">*</span></ion-label>
+      </ion-input>
+    </div>
+    <div *ngIf="as_on.touched && as_on.invalid" class="alert">
+      <div *ngIf="as_on.errors?.required">
+        {{'HEADER.AS ON DATE IS REQUIRED' | translate}}
+      </div>
+    </div> -->
+
+    <ion-button expand="full" type="submit" (click)="addBankAccount()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+    </form>
+  <!-- </ion-card>
+
+</ion-content> -->

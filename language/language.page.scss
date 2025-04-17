@@ -1,0 +1,8 @@
+.popover-content {
+    /* Define your custom popover size */
+    --top: calc(55px + var(--offset-y, 0px)) !important;
+    --left: 202px !important;
+    --transform-origin: right top !important;
+    --width: 146px !important;
+  }
+  

@@ -1,0 +1,171 @@
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    padding: 10px;
+  }
+  
+  .calendar-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius:7px;
+    position: relative; /* For the inner status label */
+    font-weight: bold;
+    text-align: center;
+    border: solid 1px;
+  }
+  .calendar-day ion-select {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    padding: 5px;
+  }
+  .calendar-day.selected {
+    background-color: #3880ff;
+    color: #ffffff;
+  }
+  
+  .calendar-day.empty {
+    visibility: hidden;
+  }
+  
+  .present {
+    background-color: #2bb92b; /* Green for present */
+    color: white;
+  }
+  .sick-leave {
+    background-color: #ff69b4; /* Green for present */
+    color: white;
+  }
+  .comp-off {
+    background-color: #8A2BE2; /* Green for present */
+    color: white;
+  }
+  .late {
+    background-color: #ffb329; /* Green for present */
+    color: white;
+  }
+  .week-off {
+    background-color: grey; /* Green for present */
+    color: white;
+  }
+  .casual-leave {
+    background-color: #ffa07a; /* Green for present */
+    color: white;
+  }
+  
+  .absent {
+    background-color: #ff5252; /* Red for absent */
+    color: white;
+  }
+  .half-day {
+    background-color: #FFDAB9; /* Gray */
+    
+  }
+  .legend {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .legend-item {
+    // display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 4px;
+  }
+  
+  .legend-item span {
+    display: inline-block;
+    width: 20px; /* Width of the color box */
+    height: 20px; /* Height of the color box */
+    margin-right: 10px;
+    // border-radius: 50%; /* Makes it a circle */
+    /* Add the colors for each status */
+  }
+  
+  .present span {
+    background-color: #2bb92b; /* Green */
+  }
+  
+  .absent span {
+    background-color: #ff5252; /* Red */
+  }
+  
+  .sick-leave span {
+    background-color: #ff69b4; /* Yellow */
+  }
+  
+  .comp-off span {
+    background-color: #8A2BE2; /* Teal */
+  }
+  
+  .late span {
+    background-color: #ffb329; /* Orange */
+  }
+  
+  .week-off span {
+    background-color: gray; /* Purple */
+  }
+  
+  .casual-leave span {
+    background-color: #ffa07a; /* Blue */
+  }
+  
+  .half-day span {
+    background-color: #FFDAB9; /* Gray */
+  }
+  .search{
+    --border: solid 1px;
+    --border-radius: 9px;
+    padding: 0px;
+    height: 7%;
+    width: 96%;
+    margin: 14px 0px 7px 7px;
+    --background: aliceblue;
+}
+.row{
+    margin: auto;
+    // border: solid 1px gray;
+    width: 96%;
+    height: 50px;
+    // font-size: large;
+    // color: #527fa5;
+    font-family: system-ui;
+    // padding: 7px;
+    margin-top: 7px;
+    border-radius: 8px;
+    box-shadow: 1px 2px 7px -3px #1f89d8;
+}
+.col{
+   
+    font-size: large;
+    color: #527fa5;
+    font-family: system-ui;
+    padding: 14px;
+}
+.col1{
+    font-size: large;
+    font-family: system-ui;
+    padding: 19px;
+}
+.h1{
+    text-align: center;
+    border: solid 1px;
+    width: 97%;
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 8px;
+    background: aliceblue;
+}

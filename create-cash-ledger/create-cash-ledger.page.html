@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.CREATE' | translate}} {{'HEADER.CASH LEDGER' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label>{{'HEADER.LEDGER NAME' | translate}} :<span class="required">*</span></ion-label>
+      <ion-input [(ngModel)]="cash.ledger_name" #ledger_name="ngModel" required></ion-input>
+    </ion-item>
+    <div *ngIf="ledger_name.touched && ledger_name.invalid" class="alert">
+      <div *ngIf="ledger_name.errors?.required">
+        {{'MESSAGE.LEDGER NAME REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'HEADER.OPENING BALANCE' | translate}} : <span class="required">*</span></ion-label>
+      <ion-input type="number" [(ngModel)]="cash.opening_balance" #opening_balance="ngModel" required></ion-input>
+    </ion-item>
+    <div *ngIf="opening_balance.touched && opening_balance.invalid" class="alert">
+      <div *ngIf="opening_balance.errors?.required">
+        {{'HEADER.OPENING BALANCE IS REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'HEADER.AS ON' | translate}} : <span class="required">*</span></ion-label>
+      <ion-input type="date" [(ngModel)]="cash.as_on" #as_on="ngModel" required></ion-input>
+    </ion-item>
+    <div *ngIf="as_on.touched && as_on.invalid" class="alert">
+      <div *ngIf="as_on.errors?.required">
+        {{'HEADERAS ON DATE IS REQUIRED' | translate}}
+      </div>
+    </div>
+
+    <ion-button (click)="submitCashLedger()" type="submit" expand="full">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </ion-card>
+</ion-content>

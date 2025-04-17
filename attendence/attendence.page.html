@@ -1,0 +1,206 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">Attendance</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="details">
+    <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label>Month & Year:</ion-label>
+      <ion-input type="Month" formControlName="start"></ion-input>
+    </ion-item>
+    
+    <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-button id="search" (click)="submit()">Search</ion-button>
+      <ion-button id="btn" type=reset (click)="clear()">clear search</ion-button>
+    </ion-item>
+  </form>
+
+  <form *ngIf="empd">
+    <ion-toolbar>
+      <ion-label style="padding-left:13px;font-size:19px;">Employee Details</ion-label>
+      <ion-buttons slot="end" (click)="addNewEmployee()">
+        <ion-icon name="add-outline" style="font-size: 20px; margin-right: 20px;"></ion-icon>
+        </ion-buttons>
+      <ion-buttons slot="end" (click)="confirm()">
+      <ion-icon name="checkmark-done-outline" style="font-size: 20px; margin-right: 20px;"></ion-icon>
+      </ion-buttons>
+      <ion-buttons slot="end" (click)="end1()">
+        <ion-icon name="close-outline" style="font-size: 20px; margin-right: 10px;"></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+    <div class="transaction_div">
+      <ion-list *ngFor="let item of empData; let i= index">
+        <ion-card class="transaction_card">
+
+          <ion-row>
+            <ion-col>
+              <ion-card-header class="transaction_header">
+                <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
+              </ion-card-header>
+            </ion-col>
+            <ion-col push="2">
+              <ion-button fill="clear" (click)="editEmp(item.d)">
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-card-content class="transaction_matter">
+              Dept: {{item.department}} &nbsp; Designation:{{item.designation}}
+              &nbsp;Joining-Date:{{item.joining_date}}
+            </ion-card-content>
+          </ion-row>
+         </ion-card>
+      </ion-list>
+    </div>
+  </form>
+
+  <form [formGroup]="attDetails" *ngIf="attd">
+    <ion-toolbar>
+      <ion-label style="padding-left:13px;font-size:19px;">Attendance Details</ion-label>
+      <ion-buttons slot="end" (click)="Attendence()">
+        <ion-icon name="checkmark-done-outline" style="font-size: 20px; margin-right: 20px;"></ion-icon>
+        </ion-buttons>
+      <ion-buttons slot="end" (click)="end()">
+        <ion-icon name="close-outline"  style="font-size: 20px; margin-right: 10px;"></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+    <!-- <ion-label>Import from CSV :</ion-label>
+    <ion-item>
+      <ion-label class="myFakeUploadButton" for="myFileInput"></ion-label>
+      <ion-input type="file" id="myFileInput"></ion-input>
+    </ion-item> -->
+
+    <div class="transaction_div">
+      <ion-list *ngFor="let item of empAtt; let i= index">
+        <ion-card class="transaction_card">
+          <ion-card-header class="transaction_header">
+          <ion-row>
+            <ion-label>{{item.employee_name}}</ion-label>
+          </ion-row>
+          </ion-card-header>
+          <ion-card-content class="transaction_matter">
+            <ion-row>
+              <ion-col size="4">
+                <ion-input [(ngModel)]="item.total_days" [ngModelOptions]="{standalone: true}" readonly>Total Days :
+                </ion-input>
+              </ion-col>
+              <ion-col size="4">
+                <ion-label>Absent :</ion-label>
+                <ion-input type="number"
+                  style="background-color: #f4f0df;height: 30px;border-radius: 5px; text-align: right;"
+                  [(ngModel)]="item.absent" [ngModelOptions]="{standalone: true}" (keyup)="total()"></ion-input>
+              </ion-col>
+              <ion-col size="4">
+                <ion-input [(ngModel)]="item.working_days" (keyup)="total()" [ngModelOptions]="{standalone: true}"
+                  readonly> Working Days : </ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-list>
+    </div>
+
+  </form>
+  <form *ngIf="salD">
+    <ion-toolbar>
+      <ion-label style="padding-left:13px;font-size:19px;">Salary Details</ion-label>
+      <ion-buttons slot="end" (click)="end2()">
+        <ion-icon name="close-outline"  style="font-size: 20px; margin-right: 10px;"></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-segment value="1" [(ngModel)]="user.accept" (ionChange)="segmentChanged($event)"
+      [ngModelOptions]="{standalone: true}">
+      <ion-segment-button value="1">
+        <ion-label>Summary</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-label>Details</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <form *ngIf="selectSegment == '2'">
+      <!-- <ion-list *ngFor="let item of empData">
+        <ion-card class="transaction_div">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-card-header class="transaction_header">
+                  <ion-card-subtitle>{{item.employee_name}} </ion-card-subtitle>
+                </ion-card-header>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">Designaton:- {{item.designation}}</ion-col>
+              <ion-col size="6">Gross-Salary:- {{item.gross_salary}} </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">Basic Salary:{{item.basic_salary}}</ion-col>
+              <ion-col size="6">HRA:{{item.house_rent_allowance}}</ion-col>
+            </ion-row>
+            <ion-row>Special Allowance:-{{item.special_allowance}}</ion-row>
+            <ion-row>Other Allowance:- {{item.other_allowance}}</ion-row>
+            <ion-row>Net Payable:- {{item.net_payable}}</ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-list>
+      <ion-button (click)="exportToCsv()">Export To CSV</ion-button>
+      <ion-button (click)="closeFile()">Close</ion-button> -->
+
+
+      <ion-accordion-group  *ngFor="let item of empData">
+        <ion-accordion value="first" >
+          <ion-item slot="header" color="light" >
+            <ion-label>{{item.employee_name}} </ion-label>
+            <ion-label>{{item.designation}} </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-row>Department:-{{item.department}}</ion-row>
+            <ion-row>Basic Salary:{{item.basic_salary}}</ion-row>
+            <ion-row>HRA:{{item.house_rent_allowance}}</ion-row>
+            <ion-row>Special Allowance:-{{item.special_allowance}}</ion-row>
+            <ion-row>Other Allowance:- {{item.other_allowance}}</ion-row> 
+            <ion-row>Gross Salary:- {{item.gross_salary}}</ion-row>
+            <ion-row>Net Payable:- {{item.net_payable}}</ion-row>
+          </div>
+        </ion-accordion>
+        </ion-accordion-group>
+    </form>
+
+    <form *ngIf="selectSegment == '1'">
+      <ion-list *ngFor="let item of empData">
+        <ion-card class="transaction_div">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-card-header class="transaction_header">
+                  <ion-card-subtitle>{{item.employee_name}} </ion-card-subtitle>
+                </ion-card-header>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-row>
+                <ion-col size="6">
+                  Department :- {{item.department}}</ion-col>
+                <ion-col size="6"> Designation :- {{item.designation}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">Gross-Salary :- {{item.gross_salary}}</ion-col>
+                <ion-col size="6">Net Payable :- {{item.net_payable}}</ion-col>
+              </ion-row>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-list>
+
+      <ion-button (click)="exportToCsv()">Export To CSV</ion-button>
+      <ion-button (click)="closeFile()">Close</ion-button>
+    </form>
+  </form>
+</ion-content>

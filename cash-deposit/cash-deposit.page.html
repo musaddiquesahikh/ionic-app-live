@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="height: 25px;">
+    <ion-title class="title">{{'HEADER.CASH DEPOSIT' | translate}}
+      <ion-icon style="float: right;font-size: x-large;" (click)="back()" name="close-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="cashDeposit" (ngSubmit)="submitForm()">
+    <!-- <ion-card> -->
+      <ion-row class=" custom-input" style=" margin-left: 6px;width: 96%;margin-top: 10px;">
+        <!-- <ion-label class="ion-margin" >{{'HEADER.BANK NAME' | translate}}: <span class="required">*</span></ion-label> -->
+        <ion-select style="--placeholder-opacity: 1; " interface="popover" formControlName="bank" placeholder="{{'HEADER.BANK NAME' | translate}}:">
+          <ion-select-option  *ngFor="let lc of bankList" [value]="lc.id">{{lc.bank_name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-row>
+      <span class="text-danger"
+        *ngIf="cashDeposit.controls['bank'].hasError('required') && (cashDeposit.controls['bank'].dirty || cashDeposit.controls['bank'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+
+      <ion-row class=" custom-input" style=" margin-left: 6px;width: 96%;">
+        <!-- <ion-label class="ion-margin">{{'HEADER.LEDGER NAME' | translate}}: <span class="required">*</span></ion-label> -->
+        <ion-select style="--placeholder-opacity: 1; " interface="popover" formControlName="ledger" placeholder="{{'HEADER.LEDGER NAME' | translate}}:">
+          <ion-select-option  *ngFor="let lc of cashLedger" [value]="lc.id">{{lc.ledger_name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-row >
+      <span class="text-danger"
+        *ngIf="cashDeposit.controls['ledger'].hasError('required') && (cashDeposit.controls['ledger'].dirty || cashDeposit.controls['ledger'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+
+      <div>
+        <ion-input class="custom-input" type="Number" formControlName="amount" placeholder="{{'HEADER.AMOUNT' | translate}}:">
+        <!-- <ion-label class="ion-margin">{{'HEADER.AMOUNT' | translate}}: <span class="required">*</span></ion-label> -->
+      </ion-input>
+      </div>
+      <span class="text-danger"
+        *ngIf="cashDeposit.controls['amount'].hasError('required') && (cashDeposit.controls['amount'].dirty || cashDeposit.controls['amount'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+
+      <div>
+        <ion-input class="custom-input" type="date" formControlName="date" placeholder="{{'HEADER.DATE' | translate}}:">
+        <!-- <ion-label class="ion-margin">{{'HEADER.DATE' | translate}}: <span class="required">*</span></ion-label> -->
+        </ion-input>
+      </div>
+      <span class="text-danger"
+        *ngIf="cashDeposit.controls['date'].hasError('required') && (cashDeposit.controls['date'].dirty || cashDeposit.controls['date'].touched)">
+        {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+      <ion-button type="submit" expand="full" [disabled]="!cashDeposit.valid" (click)="submitForm()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+
+    <!-- </ion-card> -->
+  </form>
+</ion-content>

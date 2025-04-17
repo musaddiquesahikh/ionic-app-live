@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-buttons slot="end"> -->
+
+      <!-- <ion-button fill="clear" slot="end">
+        <ion-icon name="Close" (click)="dismiss()"></ion-icon>
+      </ion-button> -->
+        <!-- <ion-back-button defaultHref="" (click)="modalController.dismiss()"></ion-back-button> -->
+    <!-- </ion-buttons> -->
+     <ion-label style="padding-left:13px;font-size:19px;">Edit Employee</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="employee_form">
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked">Name : <span class="required">*</span></ion-label>
+      <ion-input type="text" class="form-control" formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked">Email : </ion-label>
+      <ion-input type="text" class="form-control" formControlName="email">  </ion-input>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked">Mobile No : <span class="required">*</span></ion-label>
+      <ion-input type="number" class="form-control" formControlName="mobile"> 
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked"> PAN </ion-label>
+      <ion-input type="text" class="form-control pancard" formControlName="pan" (ionInput)="forUppercase()">
+        {{employee_form.value.pan}} </ion-input>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <!-- <ion-label position="stacked"> State</ion-label>
+      <ion-select interface="action-sheet" placeholder="select" formControlName="state" [value]="0">
+        {{employee_form.value.state}}
+        <ion-select-option *ngFor="let lc of state" [value]="lc.id">{{lc.place_of_supply}}
+        </ion-select-option>
+      </ion-select> -->
+      <ion-label>State <span class="required">*</span></ion-label>
+      <ion-select placeholder="select" formControlName="state">
+       
+        <ion-select-option *ngFor="let lc of state_data" [value]="lc.id"> {{lc.place_of_supply }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked"> City : <span class="required">*</span></ion-label>
+      <ion-input type="text" class="form-control" formControlName="city"> </ion-input>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked"> Gender : <span class="required">*</span></ion-label>
+      <ion-select interface="action-sheet" placeholder="select" formControlName="gender" >
+        <ion-select-option value="1">Male</ion-select-option>
+        <ion-select-option value="2">Female</ion-select-option>
+        <ion-select-option value="3">Other</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="form-group" fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+      <ion-label position="stacked"> Joining Date</ion-label>
+      <ion-input type="date" class="form-control" formControlName="joining_date">
+      </ion-input>
+    </ion-item>
+<ion-button (click)="submit()" expand="block" >
+ Update Employee
+</ion-button>
+  </form>
+
+</ion-content>

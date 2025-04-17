@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>PermissionReport</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <!-- <ion-label *ngFor="let staff1 of staffData">{{ staff1.first_name }}</ion-label> -->
+    <ion-item *ngFor="let staff of itemData">
+      <ion-label>{{ staff.staffName }}</ion-label>
+      <ion-toggle 
+        *ngIf="staff.role !== 'Admin'" 
+        [(ngModel)]="staff.attendance_permission" 
+        (ionChange)="updatePermission(staff)">
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

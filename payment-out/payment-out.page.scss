@@ -1,0 +1,31 @@
+span{
+    color: red;
+}
+div{
+    padding-left: 10px;
+   
+  }
+  .show{
+      display: block;
+  }
+  .hide{
+      display: none;
+  }
+  .showCheque{
+      display: block;
+  }
+  .hideCheque{
+      display:none
+  }
+  .showBank{
+    display: block;
+}
+.hideBank{
+    display:none
+}
+.custom-input {
+    border: 1px solid #b5a7a7; /* This sets a 2px solid blue border */
+    border-radius: 25px; /* This adds rounded corners to the border */
+    margin: 5px 5px 4px -4px;
+    
+  }

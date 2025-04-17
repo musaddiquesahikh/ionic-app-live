@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1" auto-hide="false"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.INVOICE TEMPLATE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content>
+  <ion-segment [value]="invoice_now" scrollable="true" (ionChange)="segmentChanged($event)" mode="md">
+    <ion-segment-button value="1" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE1' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE2' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="3" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE3' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="4" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE4' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="5" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE5' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="6" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE6' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="7" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE7' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="8" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE8' |translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="9" mode="md">
+      <ion-label>{{'HEADER.TEMPLATE9' |translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-card>
+    <ion-img [src]="templateImage"></ion-img>
+  </ion-card>
+
+  <ion-button (click)="saveInvoice()" expand="block" fill="clear" shape="round">
+    {{'HEADER.SAVE TEMPLATES' | translate}}
+  </ion-button>
+
+</ion-content>

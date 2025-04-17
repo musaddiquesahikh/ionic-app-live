@@ -1,0 +1,18 @@
+<ion-item fill="outline" style="margin-top:20px">
+  <ion-label position="floating">{{'HEADER.LEDGER NAME' | translate}} :</ion-label>
+
+  <ion-select interface="action-sheet" placeholder="select" [(ngModel)]="user.handover_to">
+    <ion-select-option *ngFor="let item of cashLedger" [value]="item.id">{{item.ledger_name}}
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+
+<ion-item fill="outline" style="margin-top:20px">
+  <ion-label>{{'HEADER.DATE' | translate}} :</ion-label>
+  <ion-input type="date" name="date" required="" [(ngModel)]="user.cleared_date"></ion-input>
+</ion-item>
+
+<ion-button (click)="createCashledger()" size="small">{{'HEADER.ADD CASH LEDGER' | translate}}</ion-button>
+
+<ion-button expand="full" (click)="cashDetails()" type="submit" style="margin-top:20px">{{'HEADER.SUBMIT' | translate}}
+</ion-button>

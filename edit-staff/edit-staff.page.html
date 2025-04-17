@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">{{'HEADER.EDIT STAFF' | translate}}</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.FIRST NAME' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="staffList.first_name" type="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.LAST NAME' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="staffList.last_name" type="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.MOBILE NUMBER' | translate}} :</ion-label>
+      <ion-input [(ngModel)]="staffList.mobile_num" type="tel" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.EMAIL' | translate}} : </ion-label>
+      <ion-input [(ngModel)]="staffList.email" type="email" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'HEADER.ROLE' | translate}} :</ion-label>
+      <ion-select [(ngModel)]="staffList.role_id" interface="popover">
+        <!-- <ion-select-option value="Admin">Admin</ion-select-option>
+        <ion-select-option value="Advocate/Accountant">Advocate/Accountant</ion-select-option>
+        <ion-select-option value="Partner">Partner</ion-select-option>
+        <ion-select-option value="Salesman">Salesman</ion-select-option> -->
+        <ion-select-option *ngFor="let r of rolesData" value="{{r.id}}">{{r.role}}</ion-select-option>
+
+      </ion-select>
+    </ion-item>
+
+    <ion-button (click)="editStaffData()" id="editdata" expand="full">{{'HEADER.DONE' | translate}} </ion-button>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-searchbar  class="custom"  [(ngModel)]="searchTerm" (ionChange)="filterItems()"></ion-searchbar>
+  <ion-list *ngFor="let searchItem of items">
+    <ion-content>
+   <div> 
+    <ion-label (click)="clickinvoice();dissmiss()" [routerLink]="['/tabs/tab1']">{{searchItem.name1}}</ion-label>
+    <ion-label (click)="clickledger();dissmiss()">{{searchItem.name2}}</ion-label>
+    <ion-label (click)="clickpaymentIn();dissmiss()">{{searchItem.name3}}</ion-label>
+    <ion-label (click)="clickrepoets();dissmiss();">{{searchItem.name4}}</ion-label>
+    <ion-label (click)="clicksetting();dissmiss()">{{searchItem.name5}}</ion-label>
+    <ion-label (click)="clickeditinvoice();dissmiss()">{{searchItem.name6}}</ion-label>
+    <ion-label (click)="clickManageMony();dissmiss()">{{searchItem.name7}}</ion-label>
+  </div>
+    </ion-content>
+  </ion-list>
+</ion-content>

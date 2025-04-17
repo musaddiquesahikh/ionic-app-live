@@ -1,0 +1,207 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="modelDismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.EDIT EXPENSE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-grid fixed fill="outline">
+      <ion-row>
+        <ion-col size="6">
+          <ion-select [(ngModel)]="user.is_tax" interface="popover" [value]="1" (ionChange)="do($event)">
+            <ion-select-option [value]='1'>{{'HEADER.WITH TAX' | translate}}</ion-select-option>
+            <ion-select-option [value]='2'>{{'HEADER.WITHOUT TAX' | translate}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <ion-input *ngIf="user.is_tax == 1" [(ngModel)]="user.gst" placeholder="enter tax"
+            (click)="$event.target.select()" (ionChange)="do($event)"
+            style="background-color: #f4f0df;height: 30px;border-radius: 5px; text-align: right;">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+    <ion-card>
+      <ion-label position="stacked" style="margin-left:20px" color="dark">{{'HEADER.EXPENSE CATEGORY' | translate}} <span
+          class="required">*</span> </ion-label>
+      <ion-select interface="action-sheet" placeholder="select"
+        [(ngModel)]="user.expense_category" name="category" ngDefaultControl>
+        <ion-select-option [value]="0" selected="">Select</ion-select-option>
+        <ion-select-option *ngFor="let lc of expenseCategory" [value]="lc.id">{{lc.category}}</ion-select-option>
+      </ion-select>
+      <ion-button id="create-expense-category" expand="full" size="small">{{'HEADER.CREATE NEW CATEGORY' | translate}} </ion-button>
+
+    </ion-card>
+
+    <!-- <ion-button id="create-expense-category" expand="full" fill="clear">Create New Category </ion-button> -->
+
+    <ion-modal [isOpen]="isModalOpen" trigger="create-expense-category" [breakpoints]="[0.1, 0.5, 1]"
+      [initialBreakpoint]="0.5">
+      <ng-template>
+        <ion-header [translucent]="true">
+          <ion-toolbar>
+            <ion-buttons slot="start" (click)="modalCtrl.dismiss()">
+              <ion-back-button defaultHref=""></ion-back-button>
+            </ion-buttons>
+            <ion-title>Create Category</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-item>
+            <ion-label position="floating">{{'HEADER.CATEGORY NAME' | translate}}</ion-label>
+            <ion-input [(ngModel)]="exp.category" required name="category" ngDefaultControl></ion-input>
+          </ion-item>
+          <ion-button expand="full" (click)="addNewExpenseCategory()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+
+    <ion-card>
+      <ion-label position="stacked" style="margin-left:20px" color="dark">{{'HEADER.PARTY' | translate}}</ion-label>
+      <ion-select interface="popover" placeholder="select" [(ngModel)]="user.party_name"
+        (ionChange)="calculatePartygst(user)" (ionChange)="do($event)">
+        <ion-select-option *ngFor="let lc of party_List" [value]="lc.id">{{lc.Party_name}}</ion-select-option>
+      </ion-select>
+      <ion-button (click)="addParty()" expand="full" size="small">+ {{'HEADER.ADD PARTIES' | translate}}</ion-button>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-label color="dark">{{'HEADER.INVOICE NO' | translate}} :</ion-label>
+        <ion-input name="invoice_no" [(ngModel)]="user.invoice_no"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">{{'HEADER.INVOICE DATE' | translate}} :</ion-label>
+        <ion-input type="Date" name="name" ngDefaultControl required="" [(ngModel)]="user.invoice_date"></ion-input>
+      </ion-item>
+    </ion-card>
+    
+    <ion-card>
+      <ion-label style="margin-left:20px" color="dark">{{'HEADER.PAYMENT TYPE' | translate}} <span class="required">*</span></ion-label><br>
+
+      <ion-item>
+        <ion-button (click)="CashModel()" id="cashModel" size="small" fill="outline" style="width:100px;">{{'HEADER.CASH' | translate}}
+        </ion-button>
+
+        <ion-button id="chequeModel" (click)="ChequeModel()" size="small" fill="outline" style="width:100px;">{{'HEADER.CHEQUE' | translate}}
+        </ion-button>
+
+        <ion-button (click)="BankTransferModel()" id="bankModel" size="small" fill="outline" style="width:120px;">{{'HEADER.BANK TRANSFER' | translate}}
+        </ion-button>
+      </ion-item>
+
+    </ion-card>
+    <ion-card *ngIf="cashModel">
+      <app-cash [data]="user" (parentFunction)="parentFunction1($event)"> </app-cash>
+    </ion-card>
+
+    <ion-card *ngIf="chequeModel">
+      <app-cheque [data]="user" (parentFunction)="parentFunction($event)"> </app-cheque>
+    </ion-card>
+
+    <ion-card *ngIf="bankModel">
+      <app-bank [data]="user" (parentFunction)="parentFunction2($event)"> </app-bank>
+    </ion-card>
+
+    <div *ngIf="user.payment_type == 1">
+      <ion-item>
+        <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CASH' | translate}}</ion-label>
+      </ion-item>
+    </div>
+
+    <div *ngIf="user.payment_type == 2">
+      <ion-item>
+        <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.CHEQUE' | translate}}</ion-label>
+      </ion-item>
+    </div>
+
+    <div *ngIf="user.payment_type == 3">
+      <ion-item>
+        <ion-label>{{'HEADER.PAYMENT TYPE' | translate}} : {{'HEADER.BANK TRANSFER' | translate}}</ion-label>
+      </ion-item>
+    </div>
+    <ion-item>
+      <ion-label position="stacked">{{'HEADER.PAYMENT DATE' | translate}}<span class="required">*</span> </ion-label>
+      <ion-input type="Date" name="date" ngDefaultControl required="" [(ngModel)]="user.payment_date"></ion-input>
+    </ion-item>
+
+
+
+    <ion-item *ngFor="let data1 of exp1; let i=index;">
+      <ion-label>{{i+1}}</ion-label>
+      <ion-input type="text" name="desc" placeholder="Enter Desription" [(ngModel)]="data1.desc"
+        style="text-align: center;"></ion-input>
+      <ion-input type="Number" name="amt" placeholder="Enter Amount" (click)="$event.target.select()"
+        [(ngModel)]="data1.amt" (ionChange)="do($event)" style="text-align: right;"></ion-input>
+    </ion-item>
+
+    <ion-button fill="clear" (click)="ClickNewRow()">
+      <ion-icon class="add1" name="add-circle-outline"></ion-icon>{{'HEADER.ADD ROW' | translate}}
+    </ion-button>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class="right_part global_dark_c" position="fixed">{{'HEADER.SUB TOTAL' | translate}} : </ion-label>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <ion-label position="fixed">₹{{user.totalamount | number:'2.1-2'}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label position="fixed">IGST</ion-label>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <ion-label position="fixed">₹{{user.igst | number:'2.1-2'}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label position="fixed">CGST</ion-label>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <ion-label position="fixed">₹{{user.cgst | number:'2.1-2'}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label position="fixed">SGST</ion-label>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <ion-label position="fixed">₹{{user.sgst | number:'2.1-2'}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class="right_part global_dark_c" position="fixed">{{'HEADER.TOTAL' | translate}} :</ion-label>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <ion-label position="fixed">₹{{total_amount | number:'2.1-2'}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="full" (click)="expense()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </ion-card>
+</ion-content>

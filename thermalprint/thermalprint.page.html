@@ -1,0 +1,154 @@
+<!-- <button printSectionId="demo" ngxPrint id="printThermal">print</button> -->
+<ion-button (click)="printDocument()" id="printThermal"> Thermal Print</ion-button>
+
+<ion-content id="demo">
+
+    <style>
+      @media print {
+        @page {
+          
+          size: 80cm; 
+          
+          margin: 0;  /* Remove the default page margins */
+        }
+        /* Add your own styles here to style the invoice */
+        body {
+          /* font-family: Arial, sans-serif; */
+          font-family: monospace;
+          font-size: 12px;
+        }
+        .invoice-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+        .invoice-logo {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+        }
+        .invoice-info {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .invoice-details {
+          margin-bottom: 20px;
+        }
+        .invoice-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .invoice-table td,
+        .invoice-table th {
+          border: 1px solid #ddd;
+          /* padding: 8px; */
+          /* overflow-wrap: break-word; */
+        }
+        .invoice-table th {
+          text-align: left;
+          background-color: #eee;
+        }
+        .invoice-total {
+          font-size: 14px;
+          font-weight: bold;
+          margin-top: 20px;
+          text-align: right;
+        }
+      }
+      /* Add responsive styles for different paper sizes */
+      @media print and (max-width: 80cm) {
+        /* Styles for paper sizes up to 80cm wide */
+      }
+      @media print and (max-width: 58cm) {
+        /* Styles for paper sizes up to 58cm wide */
+      }
+    </style>
+ 
+  <div style="font-family: monospace;">
+    <!-- Add your invoice content here -->
+    <div class="invoice-header">
+      <!-- <img src="logo.jpg" class="invoice-logo" alt="Company logo"> -->
+      <div class="invoice-info" style="text-align: center;">
+        <b>[{{companyDetails.business_name}}]</b><br>
+        {{companyDetails.billing_address}}<br>
+        Mobile: {{companyDetails.company_phone_no}}<br>
+        Invoice #{{invoice.invoice.invoice_no}}<br>
+        ------------------<br>
+        Date: {{invoice.invoice.invoice_date}}
+      </div>
+    </div>
+    <div class="invoice-details">
+      <p><b>Bill To:</b> [{{invoice.party.Party_name}}]</p>
+      
+    </div>
+    <table class="invoice-table" style="width: 100%;max-width: 80mm;">
+      <tr>
+        <th style="text-align: left;" colspan="4" >Product</th>
+        <!-- <th>Item</th> -->
+        <!-- <th>X QTY</th> -->
+        <!-- <th>Rate</th> -->
+        
+      </tr>
+      <tr>
+        <th style="text-align: left;">Rate</th>
+        <th style="text-align: right;">QTY</th>
+        <th style="text-align: center;">Tax</th>
+        <th colspan="2" style="text-align: right;">Total</th>
+      </tr>
+      <ng-container *ngFor="let t of invoice.item;let i=index">
+        <tr>
+          <td style="text-align: left;" colspan="4">{{t.item_name}} </td>
+          
+        </tr>
+        <tr>
+          <td>{{t.rate}}</td>
+          <td style="text-align: right;"> X {{t.quantity}} </td>
+          <td style="text-align: center;">@{{t.Gst_tax_rate}}%</td>
+          <td style="text-align: right;" >{{t.sales_prices}}</td>
+
+        </tr>
+        <!-- ------------ -->
+
+      </ng-container>
+     
+      <tr>
+        
+        <td colspan="3">Total Taxable Amount</td>
+        <td style="text-align: right;">{{invoice.invoice.taxable_amount}}</td>
+      </tr>
+      <tr>
+        
+        <td colspan="3">IGST</td>
+        <td style="text-align: right;">{{invoice.invoice.Igst}}</td>
+      </tr>
+      <tr>
+        
+        <td colspan="3">CGST</td>
+        <td style="text-align: right;">{{invoice.invoice.cgst}}</td>
+      </tr>
+      <tr>
+        
+        <td colspan="3">SGST</td>
+        <td style="text-align: right;">{{invoice.invoice.sgst}}</td>
+      </tr>
+      <tr>
+        
+        <td colspan="3">Discount</td>
+        <td style="text-align: right;">{{invoice.invoice.discountTotal}}</td>
+      </tr>
+      <tr>
+        
+        <th colspan="3" style="text-align: left;">Total Amount</th>
+        <td style="text-align: right;font-size: 16px;">{{invoice.invoice.total_amount}}</td>
+      </tr>
+   
+    </table>
+    
+   <div style="text-align: center;">
+    -----------<br>Thankyou..! Visit Again</div>
+
+
+   </div>
+ 
+</ion-content>

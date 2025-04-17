@@ -1,0 +1,27 @@
+<ion-title style="margin-top: 8px;">Multiple Sr. No.</ion-title>
+<ion-content>
+  <ion-row style="margin-top: 13px;">
+    <ion-row *ngFor="let i of item.srNumber.slice(0,2);let g=index;">
+      <ion-col size="4" >
+        <ion-input class="custom-input inputcc" placeholder="Sr.No" type="number" [(ngModel)]="i.srNumber" 
+          style="height: 30px;width: 90px;border: solid 1px;"></ion-input>
+      </ion-col>
+
+      <ion-col size="4">
+        <ion-input class="custom-input inputcc" placeholder="Qty" [(ngModel)]="i.qty"
+          style="height: 30px;width: 97px;margin-left: 10px;border: solid 1px;" type="number"></ion-input>
+      </ion-col>
+
+      <ion-col size="4">
+        <ion-button fill="clear" shape="round" (click)="deleteRange(n)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-button fill="clear" shape="round" (click)="toggleRow()"> Add Row </ion-button>
+    </ion-row>
+  </ion-row>
+
+</ion-content>

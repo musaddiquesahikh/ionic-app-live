@@ -1,0 +1,233 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="myBackButton()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.TRIAL BALANCE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card style="border: solid 1px;border-radius: 20px;">
+    <ion-item>
+      <ion-label position="stacked">{{'HEADER.FROM' | translate}} :</ion-label>
+      <ion-input type="date" name="dateF" [(ngModel)]="user.start_date"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{'HEADER.TO' | translate}}:</ion-label>
+      <ion-input type="date" name="dateT" [(ngModel)]="user.end_date"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-button (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+    </ion-item>
+  </ion-card>
+
+  <!-- <ion-card *ngFor="let item of trailData" (click)="trailBalanceData(item)">
+    <ion-card-header style="background: #dfdfdf;">
+      <ion-card-subtitle>{{item.party_account}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label style="color: #000;">{{'HEADER.OPENING BALANCE' | translate}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.dr_op}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.cr_op}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label style="color: #000;">{{'HEADER.TRANSACTION' | translate}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.dr_trn}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.cr_trn}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label style="color: #000;">{{'HEADER.CLOSING BALANCE' | translate}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.dr_cl}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+          <ion-col size="6" style="text-align: right;">₹ {{item.cr_cl}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card> -->
+
+  <ion-modal [isOpen]="trBalDetails" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.6">
+    <ng-template>
+      <ion-content>
+        <ion-card *ngFor="let item of trailBalData" (click)="partucularTrail(item)">
+
+          <ion-card-header style="background: #dfdfdf;">
+            <ion-card-subtitle>{{item.party_account}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label style="color: #000;">{{'HEADER.OPENING BALANCE' | translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.dr_op}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.cr_op}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label style="color: #000;">{{'HEADER.TRANSACTION' | translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.dr_trn}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.cr_trn}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label style="color: #000;">{{'HEADER.CLOSING BALANCE' | translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.dr_cl}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.cr_cl}}</ion-col>
+              </ion-row>
+
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="particularTr" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.6">
+    <ng-template>
+      <ion-content>
+        <ion-card *ngFor="let item of particularTrail" (click)="selectTransaction(item)">
+          <ion-card-header style="background: #dfdfdf;">
+            <ion-card-subtitle>
+              <ion-col size="6">{{'HEADER.INVOICE NO' | translate}} : {{item.invoice_no}}</ion-col>
+              <ion-col size="6" style="text-align: right;">Dated : {{item.invoice_date}}</ion-col>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.PARTY NAME' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">{{item.party_name}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.PARTICULARS' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">{{item.particular}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.DEBIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.debit}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">{{'HEADER.CREDIT' | translate}}</ion-col>
+                <ion-col size="6" style="text-align: right;">₹ {{item.credit}}</ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-list *ngIf="loading">
+    <ion-item>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <div style="overflow-x: auto;" *ngIf="!loading">
+    <table style="width:100%; margin-bottom: 10px; margin-top: 10px; border-collapse: collapse; white-space: nowrap;">
+      <thead fixed style="border: solid 1px;">
+        <tr style="border-bottom: solid 1px gray;" >
+          <th style="text-align: left;"></th>
+          <th style="text-align: right;border-left: solid 1px;">Opening Balance</th>
+          <th style="text-align: center;border-right: solid 1px;"></th>
+          <th style="text-align: right;">Transaction</th>
+          <th style="text-align: left;border-right: solid 1px;"></th>
+          <th style="text-align: right;">Closing Balance</th>
+          <th style="text-align: left;"></th>
+        </tr>
+      </thead>
+      <thead fixed>
+        <tr style="border-bottom: solid 1px gray;" >
+          <th style="text-align: left;">Party Account</th>
+          <th style="text-align: center;border-left: solid 1px;border-right: solid 1px;">Debit</th>
+          <th style="text-align: center;border-right: solid 1px;">Credit</th>
+          <th style="text-align: center;border-right: solid 1px;">Debit</th>
+          <th style="text-align: left;border-right: solid 1px;">Credit</th>
+          <th style="text-align: left;border-right: solid 1px;">Debit</th>
+          <th style="text-align: left;">Credit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of trailData" >
+          <tr style="border-bottom: solid 1px gray;"(click)="trailBalanceData(item)">
+            <td>{{item.party_account}}</td>
+            <td style="text-align: center;border-left: solid 1px;border-right: solid 1px;">{{item.dr_op}}</td>
+            <td style="text-align: center;border-right: solid 1px;">{{item.cr_op}}</td>
+            <td style="text-align: center;border-right: solid 1px;">{{item.dr_trn}}</td>
+            <td style="text-align: center;border-right: solid 1px;">{{item.dr_trn}}</td>
+            <td style="text-align: left;border-right: solid 1px;">{{item.dr_cl}}</td>
+            <td style="text-align: left;">{{item.cr_cl | number:'2.1-2'}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+</ion-content>

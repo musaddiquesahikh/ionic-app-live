@@ -1,0 +1,50 @@
+.disabled-text {
+    text-align: center;
+    font-style: italic;
+  }
+  ion-item ion-select {
+    min-width: 120px;
+  }
+  
+  ion-select[disabled] {
+    opacity: 0.5;
+  }
+
+  ion-card-title {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #4a4a4a;
+  }
+  
+  .calendar-container {
+    text-align: center;
+    padding: 0px;
+    margin: -10px;
+  }
+  
+  ion-datetime {
+    --min-height: 200px;
+    --min-width: 100%;
+  }
+  
+  ion-button[color="medium"] {
+    color: black;
+  }
+  
+  .present-button {
+    --background: #28a745;
+    --color: #ffffff;
+    border-radius: 8px;
+    background: #c7d9e8;
+  }
+  
+  .absent-button {
+    --background: #dc3545;
+    --color: #ffffff;
+    --border-radius: 8px;
+    background: #c7d9e8;
+  }
+  .disabled-label {
+    color: gray;
+  }
+  

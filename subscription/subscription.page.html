@@ -1,0 +1,283 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="show-company-list" (click)="closeModal()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.SUBSCRIBE PLAN' | translate}}</ion-title>
+    <!-- <ion-button fill="clear" slot="end">
+      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+    </ion-button> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="pricing py-5" >
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <ion-radio-group [(ngModel)]="durationValue" (ionChange)="planNow()" >
+          <ion-row id="duration">
+            <ion-col col-6 >
+              <ion-item class="border">
+                <ion-label>{{'HEADER.YEARLY' | translate}}</ion-label>
+                <ion-radio slot="start" value="yearly"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col col-6 >
+              <ion-item class="border">
+                <ion-label>{{'HEADER.MONTHLY' | translate}}</ion-label>
+                <ion-radio slot="start" value="monthly"></ion-radio>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-radio-group>
+      </div>
+      <div>
+        <div style="padding-bottom: 20px;" *ngIf="!this.data">
+          <div>
+            <ion-label for="voucher_code" class="ion-padding">{{'HEADER.COUPON CODE' | translate}}</ion-label>
+          </div>
+          <ion-row>
+            <ion-col size="8">
+              <ion-input  id="coup" class="input" [(ngModel)]="voucher_code" style="text-align: left;padding: 9px;"> </ion-input>
+            </ion-col>
+            <ion-col size="4">
+              <ion-button *ngIf="!applied" (click)="getDiscount(voucher_code)" fill="outline" shape="round"
+                size="small">
+                {{'HEADER.APPLY' | translate}}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-label *ngIf="discountgot" style="color: rgb(233, 70, 6);margin-left: 30px;">{{'HEADER.INVALID CODE' |
+            translate}}.!</ion-label>
+
+          <ion-label *ngIf="applied" style="color: green; text-align: center; padding-bottom: 20px;">
+            {{this.receivedDiscount}}% {{'HEADER.DISCOUNT APPLIED' | translate}} !</ion-label>
+          <h4 class="ion-text-center">OR</h4>
+          <div *ngIf="activation">
+            <ion-label class="ion-padding">{{'HEADER.ACTIVATE PLAN WITH LICENSE KEY' | translate}}</ion-label>
+
+            <ion-row>
+              <ion-col size="8">
+                <ion-input (keyup)="disabled(license_key)" [(ngModel)]="license_key" class="input"
+                  style="text-align: left;padding: 9px;"> </ion-input>
+              </ion-col>
+              <ion-col size="4">
+                <ion-button [disabled]="!dis" (click)="activateAccount(license_key)" shape="round" size="small">
+                  {{'HEADER.ACTIVATE' | translate}}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+<!-- <ion-item> -->
+        <div *ngIf="!this.data">
+          <ion-segment  style="background-color: #fff;width: 96%;margin-left: 6px;" value="premium" mode="ios" (ionChange)="segmentChanged($event)">
+
+            <ion-segment-button value="premium" id="choose1" (ionChange)="segmentChanged($event)">
+              <ion-label style=" font-size: 20px;">{{'HEADER.PREMIUM' | translate}}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="freedom" id="step3">
+              <ion-label style=" font-size: 20px;">{{'HEADER.FREEDOM' | translate}}</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-card *ngIf="selectSegment == 'premium'">
+            <div class="col-lg-4">
+              <div class="card mb-5 mb-lg-0">
+                <div style="text-align: center;
+          color: #fff;
+          background: #014796;
+          padding: 16px;
+          font-size: 23px;">{{'HEADER.PREMIUM' | translate}}</div>
+                <div class="card-body">
+
+                  <h6 class="card-price" style="text-align: center">{{defaultPricing[0].price | currency :'INR'}}
+                    <span *ngIf="defaultPricing[0].duration=='yearly'" class="period">/{{'HEADER.YEAR' | translate}}</span>
+                    <span *ngIf="defaultPricing[0].duration=='monthly'"class="period">/{{'HEADER.MONTH' | translate}}</span></h6>
+                  <!-- <hr> -->
+                  <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>5 {{'HEADER.USERS + ADMIN' |translate}}
+                    </li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>3 {{'HEADER.BUSINESS' | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>{{'HEADER.MOBILE ACCESS (IOS & ANDROID)'
+                      | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[0].duration=='yearly'">1000</span><span
+                        *ngIf="defaultPricing[0].duration=='monthly'">90</span>{{'HEADER.E-WAY BILLS'| translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[0].duration=='yearly'">1000</span><span
+                        *ngIf="defaultPricing[0].duration=='monthly'">90</span>{{'HEADER.E-INVOICING BILLS' |translate}}
+                    </li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[0].duration=='yearly'">1000</span><span
+                        *ngIf="defaultPricing[0].duration=='monthly'">90</span> SMS</li>
+                  </ul>
+                  <div style="text-align: center;" *ngIf="!this.plan" >
+                    <!-- <a href="javascript:void(0)" (click)="next(premium,true)" id="freeTrile" >
+                    {{'HEADER.AVAIL 30 DAYS FREE TRIAL.!! ABSOLUTELY FREE. CLICK HERE' | translate}}
+                    </a> -->
+                   
+                  </div>
+                  <div style="text-align: center;" >
+                    <ion-button id="freeTrile" (click)="openModel(defaultPricing[0],false)" style="width:200px; margin-bottom: 20px;">
+                      {{'MESSAGE.BUY NOW' | translate}}
+                    </ion-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-card>
+          <ion-card *ngIf="selectSegment == 'freedom'">
+            <div class="col-lg-4">
+              <div class="card mb-5 mb-lg-0">
+                <div style="text-align: center;
+          color: #fff;
+          background: #014796;
+          padding: 16px;
+          font-size: 23px;">{{'HEADER.FREEDOM' | translate}}</div>
+
+                <div class="card-body">
+                  <h6 class="card-price" style="text-align: center">{{defaultPricing[1].price | currency :'INR'}}<span
+                      *ngIf="defaultPricing[1].duration=='yearly'" class="period">/{{'HEADER.YEAR' |translate}}
+                    </span><span *ngIf="defaultPricing[1].duration=='monthly'"
+                      class="period">/{{'HEADER.MONTH' | translate}}</span></h6>
+                  <!-- <hr> -->
+                  <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>25 {{'HEADER.USERS + ADMIN' |translate}}
+                    </li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span> {{'HEADER.UNLIMITED' | translate}}
+                      {{'HEADER.BUSINESS' | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>{{'HEADER.MOBILE ACCESS (IOS & ANDROID)'
+                      | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[1].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[1].duration=='monthly'">420</span> {{'HEADER.E-WAY BILLS'| translate}}
+                    </li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[1].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[1].duration=='monthly'">420</span>{{'HEADER.E-INVOICING BILLS'
+                      |translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[1].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[1].duration=='monthly'">420</span> SMS</li>
+                  </ul>
+                  <div style="text-align: center;" *ngIf="!this.plan">
+                    <!-- <a href="javascript:void(0)" (click)="next(freedom,true)" id="step4"> 
+                      {{'HEADER.AVAIL 30 DAYS FREE TRIAL.!! ABSOLUTELY FREE. CLICK HERE' | translate}}
+                    </a> -->
+                  </div>
+                  <div style="text-align: center;">
+                    <ion-button (click)="openModel(defaultPricing[1],false)" style="width:200px; margin-bottom: 20px;" id="step4">
+                      {{'MESSAGE.BUY NOW' | translate}}
+                    </ion-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-card>
+
+        </div>
+<!-- </ion-item> -->
+        <div *ngIf="this.data">
+
+          <!-- Plus Tier -->
+          <ion-card *ngIf="this.subPlan == 1">
+            <div class="col-lg-4">
+              <div class="card mb-5 mb-lg-0">
+                <div  style="text-align: center;
+          color: #fff;
+          background: #014796;
+          padding: 16px;
+          font-size: 23px;">{{'HEADER.FREEDOM' | translate}}</div>
+
+                <div class="card-body">
+                  <h6 class="card-price" style="text-align: center">{{defaultPricing1[0].price | currency :'INR'}}<span
+                    *ngIf="defaultPricing[1].duration=='yearly'" class="period">/{{'HEADER.YEAR' |
+                      translate}}</span><span *ngIf="defaultPricing[0].duration=='monthly'"
+                      class="period">/{{'HEADER.MONTH' | translate}}</span></h6>
+                  <!-- <hr> -->
+                  <ul class="fa-ul">
+                    <li><span class="fa-li"></span>25 {{'HEADER.USERS + ADMIN' |translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>{{'HEADER.UNLIMITED' | translate}}
+                      {{'HEADER.BUSINESS' | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>{{'HEADER.MOBILE ACCESS (IOS & ANDROID)'
+                      | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[0].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[0].duration=='monthly'">420</span>{{'HEADER.E-WAY BILLS'| translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[0].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[0].duration=='monthly'">420</span>{{'HEADER.E-INVOICING BILLS'
+                      |translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[0].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[0].duration=='monthly'">420</span> SMS</li>
+                  </ul>
+
+                  <div style="text-align: center;">
+                    <ion-button (click)="openModel(defaultPricing[0],false)" style="width:200px; margin-bottom: 20px;">
+                      {{'HEADER.BUY' | translate}}
+                    </ion-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-card>
+          <ion-card *ngIf="this.subPlan == 3 || this.subPlan == 4">
+            <div class="col-lg-4">
+              <div class="card mb-5 mb-lg-0">
+                <div style="text-align: center;
+          color: #fff;
+          background: #014796;
+          padding: 16px;
+          font-size: 23px;">{{'HEADER.FREEDOM' | translate}}</div>
+
+                <div class="card-body">
+                  <h6 class="card-price" style="text-align: center">{{defaultPricing[1].price | currency :'INR'}}<span
+                      *ngIf="defaultPricing[1].duration=='yearly'" class="period">/{{'HEADER.YEAR' |
+                      translate}}</span><span *ngIf="defaultPricing[1].duration=='monthly'"
+                      class="period">/{{'HEADER.MONTH' | translate}}</span></h6>
+                  <!-- <hr> -->
+                  <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>25 {{'HEADER.USERS + ADMIN' |translate}}
+                    </li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>{{'HEADER.UNLIMITED' | translate}}
+                      {{'HEADER.BUSINESS' | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span>{{'HEADER.MOBILE ACCESS (IOS & ANDROID)'
+                      | translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[1].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[1].duration=='monthly'">420</span>{{'HEADER.E-WAY BILLS'| translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[1].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[1].duration=='monthly'">420</span> {{'HEADER.E-INVOICING BILLS'
+                      |translate}}</li>
+                    <li><span class="fa-li"><i class="fas fa-check"></i></span><span
+                        *ngIf="defaultPricing[1].duration=='yearly'">5000</span><span
+                        *ngIf="defaultPricing[1].duration=='monthly'">420</span> SMS</li>
+                  </ul>
+                  <div style="text-align: center;">
+                    <ion-button (click)="openModel(defaultPricing[1],false)" style="width:200px; margin-bottom: 20px;">
+                      {{'HEADER.BUY' | translate}}
+                    </ion-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-card>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <ion-modal #modal trigger="open-modal" [swipeToClose]="true" [presentingElement]="presentingElement"
+  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+  <ng-template>
+    <ion-content class="ion-padding">
+     
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+</ion-content>

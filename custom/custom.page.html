@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>custom</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<ion-card *ngFor="let data of default_dict.data">
+  <h2>
+    <ion-checkbox slot="start" type="text" [(ngModel)]="data.select" value="{{data.select}}"></ion-checkbox>&nbsp;
+    <ion-label>{{data.page_name}}</ion-label>
+  </h2>
+  <ion-row class="ion-text-center">
+
+    <ion-col size="3">
+      <ion-label>View</ion-label>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="data.action.view"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-label>Create</ion-label>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="data.action.create"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-label>edit</ion-label>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="data.action.edit"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-label>Delete</ion-label>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="data.action.delete"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+   
+  </ion-row>
+</ion-card>
+
+  <div class="col-md-12">
+    <ion-button type="submit" expand="full" (click)="submitForm()">Submit</ion-button>
+  </div>
+</ion-content>

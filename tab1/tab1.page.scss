@@ -1,0 +1,220 @@
+.company_button{
+    background: transparent !important;
+    color: #000 !important;
+    padding:5px;
+}
+ion-toolbar{
+    --background: #014796;
+    color:#fff;
+}
+.company_button:hover{
+    transition-duration: 0.1s;
+    background: #dddbdb !important;
+    color: #000;
+    padding:5px;
+}
+.top_div{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.modal_area{
+    padding-top:20px;
+    padding-left:20px;
+}
+.fab_div{
+    padding-left: 311px;
+}
+.button_collect{
+    padding:7px;
+    border-radius: 15px;
+    background: #d0e6ff;
+}
+.button_collect:hover{
+    transform: scale(0.98);
+    box-shadow: -1px 2px 6px rgb(0 0 0 / 11%);
+}
+.down_text{
+    font-size: 11px;
+    color:#589109;
+}
+
+.button_pay{
+    padding:7px;
+    border-radius: 5px;
+    border:1px solid #c54626;
+    box-shadow: 3px 2px 13px 1px rgba(0, 0, 0, 0.24);
+}
+
+.button_pay:hover{
+    transform: scale(0.98);
+    box-shadow: -1px 2px 6px rgb(0 0 0 / 11%);
+    border: 1px solid #d85230;
+}
+.down_text_pay{
+    font-size: 11px;
+    color:#911d09;
+}
+.button_standard{
+    padding:7px;
+    border-radius: 5px;
+    border: 1px solid #aa8462;
+}
+.button_standard:hover{
+    transform: scale(0.98);
+}
+.down_text_standard{
+    font-size: 11px;
+    color:#aa8462;
+}
+.transaction_div{
+    padding-left:10px;
+    padding-right: 10px;
+}
+.transaction_card{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    // background: aliceblue;
+    box-shadow: 0px 0px 0px 1px #c5c5c5;
+}
+.transaction_header{
+    padding-left: 9px;
+    padding-top: 9px;
+    padding-bottom: 0px;
+}
+.transaction_matter{
+    font-size: 11px;
+    padding-left: 9px;
+    padding-top: 2px;
+    padding-bottom: 3px;
+    font-size: 16px;
+}
+.transaction_amount{
+    text-align: right;
+    padding-left: 9px;
+    padding-top: 9px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+}
+.add_buttons{
+    font-size: 40px;
+    width: 60px;
+    height: 50px;
+    background: #fff;
+    padding-top: 7px;
+}
+.add_button_text{
+    text-align: center;
+    font-size: 12px;
+    padding-top: 6px;
+    padding: 0 !important;
+    font-weight: 200;
+}
+.add_icon_col{
+    text-align: center;
+}
+.native-input{
+    padding-top: 6px;
+    padding: 0 !important;
+}
+.ion-activatable {
+    position: relative;
+    overflow: hidden;
+}
+.ion-fab{
+display: flexb;
+width: 3%;
+flex-direction: row;
+justify-content: center;
+font-size:8px;
+}
+.form{
+    font-size: 8px;
+}
+
+.gradeback{
+    background: rgb(47,83,99);
+    height: 50px;
+    color:#fff;
+    padding-top:20px;
+}
+.iconImage{
+    padding: 9px;
+    width: 52px;
+    border-radius: 16px;
+    border: 0.5px solid #00438e8f;
+    box-shadow: 0 0 7px 0px #cecece;
+}
+
+.ripple-parent {
+    position: relative;
+    overflow: hidden;
+  }
+ion-popover{
+    opacity:1;
+}
+.editGrid{
+    border: 0px solid hsl(0deg 0% 59% / 95%);
+    margin: 5px;
+    border-radius: 100%;
+    padding: 2px;
+    background-color: rgb(206, 204, 204);
+  }
+  .row {
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  .line {
+    width: 92%;
+    background-color: #bfbfbf;
+    margin: 1px 0;
+    margin-left: 39px;
+  }
+  .right-align {
+    text-align: right;
+  }
+  .skeleton {
+    height: 17px;
+    width: 80%;
+    border-radius: 15px;
+}
+.ios body {
+    --ion-background-color: #f2f2f6;
+    --ion-toolbar-background: var(--ion-background-color);
+    --ion-item-background: #fff;
+  }
+  
+  .md body {
+    --ion-background-color: #f9f9f9;
+    --ion-toolbar-background: var(--ion-background-color);
+    --ion-item-background: #fff;
+  }
+  
+  ion-item {
+    --transition: none;
+  }
+
+  ion-content{
+       --ion-background-color: #e3f0ff !important;
+  }
+  .rcent{
+    width: 52px;
+  }
+  .row1{
+    border-radius: 15px;
+    box-shadow: 0 0 5px 1px #e0e0e0; 
+    width: 94%;
+    background: #fff;
+    margin: auto;
+    height: fit-content;
+  }

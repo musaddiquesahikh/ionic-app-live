@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.SALES REGISTER' | translate}} Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="length" fill="clear" (click)="excel()">
+        <ion-icon name="cloud-download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-card style="border: solid 1px;border-radius: 20px;">
+  <ion-item id="from">
+    <ion-label position="stacked">{{'HEADER.FROM' | translate}} : </ion-label>
+    <ion-input type="date" name="dateF" required="" [(ngModel)]="item.start_date"></ion-input>
+  </ion-item>
+  <ion-item id="to">
+    <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+    <ion-input type="date" name="dateT" required="" [(ngModel)]="item.end_date"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-button id="submit" (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+  </ion-item>
+</ion-card>
+
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{PartyDataS.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+
+<!-- <div *ngIf="pagination" style="overflow-x: auto;padding: 7px;">
+  <ion-row style="width: 94%;border-radius: 10px;width: 130%;">
+    <ion-col size="2"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;margin-left: 5px;color: black;">Total
+      Invoice <br>
+      {{summary['total Invoices']}} </ion-col>
+    <ion-col size="3"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;color: black;">Total amount
+      <br>
+      {{summary.total_amount | currency:'INR'}} </ion-col>
+    <ion-col size="3"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;color: red;">Unpaid
+      invoice<br>
+      {{summary.Unpaid_invoice}} ({{summary.total_Unpaid | currency:'INR'}})</ion-col>
+    <ion-col size="3"
+      style="border: solid 1px;box-shadow: 1px 0px 5px 0px gray; border-radius: 10px;margin-right: 8px;color: green;">Paid
+      invoice <br>
+      {{summary.paid_invoice}} ({{summary.total_paid | currency:'INR'}})</ion-col>
+  </ion-row>
+</div> -->
+
+<ion-row>
+    <ion-searchbar  class="search" (ionInput)="search($event)" (ionChange)="getSales($event)"></ion-searchbar>
+</ion-row>
+
+<ion-content>
+  <ion-list *ngIf="loading">
+    <ion-item>
+      <ion-label>
+        <h3><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></h3>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+        <p><ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div style="overflow-x: auto;">
+    <table style="width:100%; margin-bottom: 10px; margin-top: 10px; border-collapse: collapse; white-space: nowrap;">
+      <thead fixed>
+        <tr style="border-bottom: solid 1px gray;" *ngIf="!loading">
+          <th>invoice No</th>
+          <th style=" text-align: center;">Date</th>
+          <th style=" text-align: center;">Party</th>
+          <th style="text-align: center;">GSTIN</th>
+          <th style="text-align: center;">State</th>
+          <th style="text-align: left;">Item Name</th>
+          <th style="text-align: center;">HSN</th>
+          <th style="text-align: center;">Quantity</th>
+          <th style="text-align: center;">Unit</th>
+          <th style="text-align: center;">RATE</th>
+          <th style="text-align: center;">GST(%)</th>
+          <th style="text-align: center;">IGST</th>
+          <th style="text-align: center;">CGST</th>
+          <th style="text-align: center;">SGST</th>
+          <th style="text-align: center;">CESS</th>
+          <th style="text-align: center;">Taxable Amount</th>
+          <th style="text-align: center;">Total Amount</th>
+          <th style="text-align: center;">Payment Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of PartyDataS">
+          <tr style="border-bottom: solid 1px gray;">
+            <td>#{{item.invoice_no}}</td>
+            <td style="text-align: center;">{{item.invoice_date | date:'dd MMM, yyyy'}}</td>
+            <td style="text-align: center;">{{item.party_name}}</td>
+            <td style="text-align: center;">{{item.gstin}}
+              <span *ngIf="item.gstin==null">NA</span>
+            </td>
+            <td style="text-align: center;">{{item.state }}</td>
+            <td style="text-align: center;">{{item.item_name }}</td>
+            <td style="text-align: center;">{{item.hsn_code }}</td>
+            <td style="text-align: center;">{{item.quantity }}</td>
+            <td style="text-align: center;">{{item.unit }}</td>
+            <td style="text-align: center;">{{item.rate | number:'1.2-2'}}</td>
+            <td style="text-align: center;"> {{item.GST }}</td>
+            <td style="text-align: center;"> {{item.igst }}</td>
+            <td style="text-align: center;"> {{item.cgst }}</td>
+            <td style="text-align: center;"> {{item.sgst }}</td>
+            <td style="text-align: center;"> {{item.cess }}</td>
+            <td style="text-align: center;"> {{item.taxable_amount }}</td>
+            <td style="text-align: center;"> {{item.total_amount }}</td>
+            <td style="text-align: center;"> {{item.payment_status }}</td>
+            <td> &nbsp; &nbsp;<ion-icon name="create-outline" (click)="selected(item)"
+                style="color: blue;font-size: large;"></ion-icon> &nbsp; &nbsp;
+              <ion-icon name="trash-outline" style="color: red;font-size: large;"
+                (click)="deleteInvoice(item.invoice_id)"></ion-icon> &nbsp; &nbsp;
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

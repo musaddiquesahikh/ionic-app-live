@@ -1,0 +1,39 @@
+<!-- <ion-content>
+  <ion-modal [isOpen]="trigger_button1" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+    <ng-template>
+      <ion-header [translucent]="true">
+        <ion-toolbar>
+
+          <ion-title>Coupen Code</ion-title>
+        </ion-toolbar>
+      </ion-header> -->
+      <ion-content>
+        <ion-header [translucent]="true">
+          <ion-toolbar>
+            <ion-title>{{'HEADER.COUPON CODE' | translate}}</ion-title>
+          </ion-toolbar> 
+        </ion-header>
+        <div style="text-align: center; padding-bottom: 20px;">
+          <ion-item>
+            <ion-label for="coupen1_code">{{'HEADER.ENTER PARTNER CODE FOR 30 DAYS FREE TRIAL' | translate }}<br>(Optional)</ion-label>
+          </ion-item>
+          <ion-item class="input1" fill="outline">
+            <ion-input type="text" [(ngModel)]="coupen_code" style="text-align: left;"> </ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col size="6">
+              <ion-button (click)="modal1(coupen_code)" shape="round">
+                {{'HEADER.SUBMIT' | translate }}
+              </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button fill="outline" shape="round" (click)="SkipTo()">
+                {{'HEADER.SKIP' | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-content>
+    <!-- </ng-template>
+  <!-- </ion-modal> -->
+<!-- </ion-content> --> -->

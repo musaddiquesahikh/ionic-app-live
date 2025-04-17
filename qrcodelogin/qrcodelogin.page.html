@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-button>
+        <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+      </ion-button> -->
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+    </ion-buttons>
+    <ion-title>qrcodelogin</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- (click)="scanBarcode()" -->
+  
+  <img src="../../assets/qrgif.gif" alt="" style="margin-top: 104px;">
+
+  <ion-button [routerLink]="['/settings']" expand="block" fill="clear" shape="round">
+    Close
+  </ion-button>
+  <ion-button (click)="startScanning()" expand="block" fill="clear" shape="round">
+    Start Scanning
+  </ion-button>
+
+  <ion-label *ngIf="stext">{{stext}}</ion-label>
+
+</ion-content>

@@ -1,0 +1,10 @@
+<!-- <ng-template> -->
+  <ion-content side="bottom" alignment="start">
+  <ion-list size="cover">
+    <ion-item *ngFor="let lng of languages" (click)="select(lng.value)" details="false">
+      <ion-label style="color: #014796;">{{lng.text}}</ion-label>
+      <ion-icon slot="end" name="checkmark" *ngIf="lng.value == select"></ion-icon>
+    </ion-item>
+  </ion-list>
+ </ion-content>
+<!-- </ng-template> -->

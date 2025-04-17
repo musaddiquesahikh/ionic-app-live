@@ -1,0 +1,259 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" [routerLink]="['/show-company-list']"></ion-back-button>
+    </ion-buttons>
+    <ion-label style="padding-left:13px;font-size:19px; text-align: center;">{{'HEADER.CREATE COMPANY' | translate}}</ion-label>
+</ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-modal trigger="addlogo" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+      <ng-template>
+        <ion-content>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="addLogo($event)">
+              <ion-icon name="image-outline" size="large"></ion-icon><br>
+              <ion-label>Media</ion-label>
+            </ion-card-header>
+          </ion-card>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="openCamera()">
+              <ion-icon name="camera-outline" size="large"></ion-icon><br>
+              <ion-label>Camera</ion-label>
+            </ion-card-header>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    <ion-modal trigger="addSignature" [breakpoints]="[0.1, 0.5, 1]" [initialBreakpoint]="0.5">
+      <ng-template>
+        <ion-content>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="addSignature($event)">
+              <ion-icon name="image-outline" size="large"></ion-icon><br>
+              <ion-label>Media</ion-label>
+            </ion-card-header>
+          </ion-card>
+          <ion-card>
+            <ion-card-header style="text-align: center;" (click)="openCameras()">
+              <ion-icon name="camera-outline" size="large"></ion-icon><br>
+              <ion-label>Camera</ion-label>
+            </ion-card-header>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    
+
+    <form [formGroup]="login_form">
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.COMPANY NAME' | translate}} : <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="business_name"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['business_name'].hasError('required') && (login_form.controls['business_name'].dirty || login_form.controls['business_name'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.MOBILE NUMBER' | translate}} : <span class="required">*</span></ion-label>
+            <ion-input type="number" class="form-control" formControlName="company_phone_no"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['company_phone_no'].hasError('required') && (login_form.controls['company_phone_no'].dirty || login_form.controls['company_phone_no'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+          <span class="text-danger"
+            *ngIf="login_form.controls['company_phone_no'].hasError('pattern') && (login_form.controls['company_phone_no'].dirty || login_form.controls['company_phone_no'].touched)">
+            {{'HEADER.ENTER VALID PHONE NUMBER' | translate}}</span>
+
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.EMAIL' | translate}} : <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="email"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['email'].hasError('required') && (login_form.controls['email'].dirty || login_form.controls['email'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+          <span class="text-danger"
+            *ngIf="login_form.controls['email'].hasError('pattern') && (login_form.controls['email'].dirty || login_form.controls['email'].touched)">
+            {{'HEADER.PLEASE ENTER VALID EMAIL' | translate}}</span>
+
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.BUSINESS TYPE' | translate}} : <span class="required">*</span></ion-label>
+            <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="select"
+              formControlName="business_type" [value]='1' >
+              <!-- <ion-select-option selected="">Select</ion-select-option> -->
+              <ion-select-option *ngFor="let lc of businessType" [value]="lc.id">{{lc.business_type}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['business_type'].hasError('required') && (login_form.controls['business_type'].dirty || login_form.controls['business_type'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.INDUSTRY TYPE' | translate}} :<span class="required">*</span></ion-label>
+            <ion-select interface="action-sheet" placeholder="select"
+              formControlName="industry_type" [value]="1">
+              <!-- <ion-select-option  selected="">Select</ion-select-option> -->
+              <ion-select-option *ngFor="let lc of industry_type" [value]="lc.id">{{lc.industrytype}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['industry_type'].hasError('required') && (login_form.controls['industry_type'].dirty || login_form.controls['industry_type'].touched)">
+          {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.STATE' | translate}} :<span class="required">*</span></ion-label>
+            <ion-select interface="action-sheet" placeholder="select"
+              formControlName="place_supply" [value]="0" style="padding: 0px;">
+              <ion-select-option *ngFor="let lc of place_of_supply" [value]="lc.id">{{'STATE.'+lc.place_of_supply | translate}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['place_supply'].hasError('required') && (login_form.controls['place_supply'].dirty || login_form.controls['place_supply'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.CITY' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="city"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['city'].hasError('required') && (login_form.controls['city'].dirty || login_form.controls['city'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.ADDRESS' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control" formControlName="billing_address"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['billing_address'].hasError('required') && (login_form.controls['billing_address'].dirty || login_form.controls['billing_address'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.PINCODE' | translate}} :<span class="required">*</span></ion-label>
+            <ion-input type="number" class="form-control" formControlName="pincode"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['pincode'].hasError('required') && (login_form.controls['pincode'].dirty || login_form.controls['pincode'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+          <span class="text-danger"
+            *ngIf="login_form.controls['pincode'].hasError('pattern') && (login_form.controls['pincode'].dirty || login_form.controls['pincode'].touched)">
+            {{'HEADER.ENTER VALID PINCODE NUMBER' | translate}}</span>
+        </div>
+        <div class="form-group">
+          <ion-item>
+            <ion-label>{{'HEADER.START BOOK FORM' | translate}} : <span class="required">*</span></ion-label>
+            <ion-input type="date" class="form-control" formControlName="start_date"></ion-input>
+          </ion-item>
+          <span class="text-danger"
+          *ngIf="login_form.controls['start_date'].hasError('required') && (login_form.controls['start_date'].dirty || login_form.controls['start_date'].touched)">
+          {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+        </div>
+
+        <ion-item>
+          <ion-label>{{'HEADER.DO YOU HAVE GSTIN?' | translate}}</ion-label>
+
+          <ion-radio-group formControlName="gst_register">
+            <ion-item>
+              <ion-label>{{'HEADER.YES' | translate}}</ion-label>
+              <ion-radio slot="start" value="1" (click)="gstn()">Yes</ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>{{'HEADER.NO' | translate}}</ion-label>
+              <ion-radio slot="start" value="0" (click)="pan()" >No</ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-item>
+
+        <div class="form-group" *ngIf="gst">
+          <ion-item>
+            <ion-label> GSTIN :</ion-label>
+            <ion-input type="text" class="form-control" formControlName="gst_number" (keyup)="gstFunction()">
+            </ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['gst_number'].hasError('required') && login_form.controls['gst_number'].touched">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+          <span class="text-danger"
+            *ngIf="login_form.controls['gst_number'].hasError('pattern') && (login_form.controls['gst_number'].dirty || login_form.controls['gst_number'].touched)">
+            {{'HEADER.ENTER VALID GST NO' | translate}}</span>
+
+        </div>
+
+        <div class="form-group" *ngIf="panc">
+          <ion-item>
+            <ion-label>{{'HEADER.PAN' | translate}} : <span class="required">*</span></ion-label>
+            <ion-input type="text" class="form-control pancard" formControlName="pan_card_number" (ionInput)="forUppercase()" value={{result}}>
+            </ion-input>
+          </ion-item>
+          <span class="text-danger"
+            *ngIf="login_form.controls['pan_card_number'].hasError('required') && (login_form.controls['pan_card_number'].dirty || login_form.controls['pan_card_number'].touched)">
+            {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+          <span class="text-danger"
+            *ngIf="login_form.controls['pan_card_number'].hasError('pattern') && (login_form.controls['pan_card_number'].dirty || login_form.controls['pan_card_number'].touched)">
+            {{'HEADER.PLEASE ENTER VALID PAN NUMBER' | translate}}</span>
+        </div>
+        <ion-item>
+          <ion-label>{{'HEADER.ENABLE SMS SERVICE' | translate}}</ion-label>
+          <ion-toggle  slot="end" color="primary"  formControlName="sms_service"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Enable Payment Service</ion-label>
+          <ion-toggle  slot="end" color="primary"  formControlName="pay_gateway_service"></ion-toggle>
+        </ion-item>
+
+            <ion-item>
+              <ion-label>{{'HEADER.E-INVOICE SERVICE' | translate}}</ion-label>
+              <ion-toggle slot="end" color="primary" class="form-control" formControlName="einvoice_service">
+              </ion-toggle>
+            </ion-item>
+    
+            <ion-item>
+              <ion-label>{{'HEADER.E-WAY BILL SERVICE' | translate}}</ion-label>
+              <ion-toggle slot="end" color="primary" class="form-control" formControlName="ewb_service">
+              </ion-toggle>
+            </ion-item>
+
+      </div>
+    </form>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <img src="{{userImg}}" width="100px">
+          <ion-button size="small" id="addlogo"> Add Logo </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <img src="{{signature}}" width="100px">
+          <ion-button size="small" id="addSignature"> Add Signature </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="col-md-12">
+      <ion-button type="submit" class="btn btn-primary" expand="full" (click)="submitForm()" >{{'HEADER.SUBMIT' | translate}}</ion-button>
+    </div>
+  </ion-card>
+</ion-content>

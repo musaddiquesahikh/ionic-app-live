@@ -1,0 +1,25 @@
+ion-grid{
+    width:100%
+}
+.skeleton {
+    height: 50px;
+}
+.custom-alert {
+    .alert-wrapper {
+      max-height: 300px; 
+    }
+  }
+    .search {
+      --border-radius: 25px;
+      --background: #cfcfcf;
+      --box-shadow: inset 0px -1px 2px 1px #C1BFB1;
+      width: 96%;
+      margin-left: 8px;
+    }
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: #014796;
+      color: white;
+    }

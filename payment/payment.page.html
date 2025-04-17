@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+      <ion-label style="padding-left:13px;font-size:19px;">Billing Details</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<div class="row" style="margin:4px">
+
+  <form [formGroup]="formData">
+    
+      <ion-item  fill="outline" style="margin-top:20px">
+        <ion-label>Billing Name :</ion-label>
+        <ion-input type="text" class="form-control" formControlName="billing_name"></ion-input>
+      </ion-item>
+      <span class="text-danger" style="margin-left: 10px;color: red;"
+      *ngIf="formData.controls['billing_name'].hasError('required') && (formData.controls['billing_name'].dirty || formData.controls['billing_name'].touched)">
+      {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+  
+    <ion-item  fill="outline" style="margin-top:20px">
+      <ion-label> {{'HEADER.GSTIN' | translate}} :</ion-label>
+      <ion-input type="text" class="form-control" formControlName="gst_number">
+      </ion-input>
+    </ion-item>
+    <span class="text-danger" style="margin-left: 10px;color: red;"
+      *ngIf="formData.controls['gst_number'].hasError('required') && formData.controls['gst_number'].touched">
+      {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+    <span class="text-danger" style="margin-left: 10px;color: red;"
+      *ngIf="formData.controls['gst_number'].hasError('pattern') && (formData.controls['gst_number'].dirty || formData.controls['gst_number'].touched)">
+     {{'HEADER.ENTER VALID GST NO.' | translate}}</span>
+
+    <ion-item fill="outline" style="margin-top:20px">
+      <ion-label>{{'HEADER.BILLING ADDRESS' | translate}} :</ion-label>
+      <ion-input type="text" class="form-control" formControlName="billing_address">
+      </ion-input>
+    </ion-item>
+    <span class="text-danger" style="margin-left: 10px;color: red;"
+    *ngIf="formData.controls['billing_address'].hasError('required') && (formData.controls['billing_address'].dirty || formData.controls['billing_address'].touched)">
+    {{'HEADER.THIS FIELD REQUIRED' | translate}}</span>
+  </form>
+  <ion-button expand="full" type="submit" (click)="paymentDetails()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+</div>
+</ion-content>

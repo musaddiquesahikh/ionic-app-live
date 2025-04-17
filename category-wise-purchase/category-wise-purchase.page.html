@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)=dismiss()></ion-back-button>
+    </ion-buttons>
+    <ion-title>Category Wise Purchase</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-item id="from">
+  <ion-label position="stacked">{{'HEADER.FROM' | translate}} : </ion-label>
+  <ion-input type="date" name="dateF" required="" [(ngModel)]="item.start_date"></ion-input>
+</ion-item>
+
+<ion-item id="to">
+  <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+  <ion-input type="date" name="dateT" required="" [(ngModel)]="item.end_date"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-button id="submit" (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+</ion-item>
+
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{Itemdata.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+
+<ion-searchbar type="text" (ionInput)="getItems($event)"></ion-searchbar>
+<ion-row style="border-left: solid 1px;
+border-right: solid 1px;
+border-top: solid 1px;
+font-size: x-small;
+background: aliceblue;">
+  <ion-col size="3" style="border-right: solid 1px;">Total Category</ion-col>
+  <ion-col size="3" style="border-right: solid 1px;">Total Inv-Bills</ion-col>
+  <ion-col size="3" 
+  style="border-right: solid 1px;
+  padding: 0;
+  padding-top: 5px;
+  padding-left: 4px;">Total Sell-Amount</ion-col>
+  <ion-col size="3">Total Sell-Items</ion-col>
+</ion-row>
+<ion-row style="border-left: solid 1px;
+border-right: solid 1px;
+border-bottom: solid 1px;
+background: aliceblue;">
+  <ion-col size="3" style="border-right: solid 1px;">{{summary.total_category}}</ion-col>
+  <ion-col size="3" style="border-right: solid 1px;">{{summary.total_inv_bills}}</ion-col>
+  <ion-col size="3" style="border-right: solid 1px;">{{summary.total_selling_items}}</ion-col>
+  <ion-col size="3">{{summary.total_selling_amount | currency:'INR'}}</ion-col>
+</ion-row>
+<ion-content>
+  <!-- <ion-list *ngIf="loading">
+    <ion-item>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" class="skeleton"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list> -->
+  <div >
+    <ion-row style="border: solid 1px;
+    font-size: x-small;
+    margin-top: 17px;">
+      <ion-col size="3" style="border-right: solid 1px;">Category Name</ion-col>
+      <ion-col size="3" style="border-right: solid 1px;">Total Inv-Bills</ion-col>
+      <ion-col size="3" 
+      style="border-right: solid 1px;
+      padding: 0;
+      padding-top: 5px;
+      padding-left: 4px;">Total Purc-Items</ion-col>
+      <ion-col size="3">Total Purc-Amount</ion-col>
+    </ion-row>
+    <ion-list *ngFor="let item of Itemdata">
+
+<ion-row style="background: aliceblue;">
+  <ion-col size="3" style="border-bottom: solid 1px rgb(185, 184, 184);">{{item.category_name}}</ion-col>
+  <ion-col size="3" style="border-bottom: solid 1px rgb(185, 184, 184);">{{item.total_inv_bills}}</ion-col>
+  <ion-col size="3" style="border-bottom: solid 1px rgb(185, 184, 184);">{{item.total_purchase_items}}</ion-col>
+  <ion-col size="3" style="border-bottom: solid 1px rgb(185, 184, 184);">{{item.total_purchase_amount | currency:'INR'}}</ion-col>
+</ion-row>
+
+    </ion-list>
+  </div>
+  
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

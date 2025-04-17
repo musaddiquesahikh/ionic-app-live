@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)=dismiss()></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'HEADER.PARTY WISE SALES' | translate}}</ion-title>
+    <ion-button fill="clear" *ngIf="length" (click)="exportexcel()" slot="end">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-card style="border: solid 1px;border-radius: 20px;">
+<ion-item id="from">
+  <ion-label position="stacked">{{'HEADER.FROM' | translate}} : </ion-label>
+  <ion-input type="date" name="dateF" required="" [(ngModel)]="item1.start_date"></ion-input>
+</ion-item>
+
+<ion-item id="to">
+  <ion-label position="stacked">{{'HEADER.TO' | translate}} :</ion-label>
+  <ion-input type="date" name="dateT" required="" [(ngModel)]="item1.end_date"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-button id="submit" (click)="submit()">{{'HEADER.SUBMIT' | translate}}</ion-button>
+</ion-item>
+</ion-card>
+
+<ion-item *ngIf="pagination">
+  <ion-label>Showing {{Itemdata.length}} of {{pagination.total_data}} results</ion-label>
+</ion-item>
+
+<ion-searchbar type="text" (ionInput)="getItems($event)" class="search"></ion-searchbar>
+
+<ion-content>
+ 
+  <div style="overflow-x: auto;">
+    <table style="width:100%; margin-bottom: 10px; margin-top: 10px; border-collapse: collapse; white-space: nowrap;">
+      <thead fixed>
+        <tr style="border-bottom: solid 1px gray;" *ngIf="!loading">
+          <th style="text-align: left;">Party name</th>
+          <th style="text-align: center;">Item name</th>
+          <th style="text-align: center;">Item code</th>
+          <th style="text-align: center;">Selling Qty</th>
+          <th style="text-align: left;">Total sellingprice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of Itemdata">
+          <tr style="border-bottom: solid 1px gray;">
+            <td>{{item[0].party_name}}</td>
+            <td style="text-align: center;">{{item[0].item_name}}</td>
+            <td style="text-align: center;">{{item[0].item_code}}</td>
+            <td style="text-align: center;">{{item[0].total_quantity}}</td>
+            <td style="text-align: center;">{{item[0].total_amount}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

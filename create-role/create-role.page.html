@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'STATE.CREATE ROLE' | translate}}</ion-title>
+    <ion-button slot="end" fill="clear" (click)="createRole()">{{'HEADER.SAVE' | translate}}</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label style="margin-right: 10px">{{'HEADER.ROLE' | translate}}</ion-label>
+    <ion-input [(ngModel)]="default_dict.role_name"
+      style="background-color: #f4f0df;height: 30px;border-radius: 5px; text-align: right;"></ion-input>
+  </ion-item>
+  <ion-label>Select All</ion-label>
+  <ion-item>
+    <ion-checkbox [(ngModel)]="toggle" (click)="toggleShow1()"></ion-checkbox>
+  </ion-item>
+
+  <ion-card *ngFor="let data of default_dict.data">
+    <h2>
+      <ion-label style="margin-left: 10px">{{data.page_name}}</ion-label>
+    </h2>
+    <ion-row class="ion-text-center">
+  
+      <ion-col size="3">
+        <ion-label>View</ion-label>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="data.actions.view"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+  
+      <ion-col size="3">
+        <ion-label>Create</ion-label>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="data.actions.create"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+  
+      <ion-col size="3">
+        <ion-label>edit</ion-label>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="data.actions.edit"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+  
+      <ion-col size="3">
+        <ion-label>Delete</ion-label>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="data.actions.delete"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+     
+    </ion-row>
+  </ion-card>
+  
+</ion-content>

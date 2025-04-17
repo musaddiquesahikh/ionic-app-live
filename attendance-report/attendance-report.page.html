@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Staff Attendance Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item fill="outline" style="margin-top:7px; margin-left: 5px;margin-right: 5px;">
+    <ion-label>Month & Year:</ion-label>
+    <ion-input type="Month" (ionChange)="onMonthSelect(start_date)" [(ngModel)]="start_date"></ion-input>
+  </ion-item>
+
+  <h2 style="margin: 8px;background: #dae9f6;
+  text-align: center;
+  border: solid 1px;
+  border-radius: 10px;">{{ months[selectedMonth] }} {{ selectedYear }}</h2>
+
+  <div class="calendar-grid">
+    <div class="calendar-day" *ngFor="let day of daysOfWeek">{{ day }}</div>
+  </div>
+
+  <div class="calendar-grid">
+    <div *ngFor="let item of calendarDays; let i = index" class="calendar-day" [class.empty]="!item.day" [ngClass]="{
+      'present': item.status === 'P',
+      'absent': item.status === 'A',
+      'sick-leave': item.status === 'S',
+      'comp-off': item.status === 'CO',
+      'late': item.status === 'L',
+      'week-off': item.status === 'W',
+      'casual-leave': item.status === 'C',
+      'half-day': item.status === 'H'
+    }" (click)="selectDay(item.day)">
+
+      {{ item.day }} <span *ngIf="item.status"></span>
+    </div>
+  </div>
+  <div class="legend">
+    <div style="margin-top: 7px;"><span class="legend-item present">P</span> Present</div>
+    <div style="margin-top: 7px;"><span class="legend-item absent">A</span> Absent</div>
+    <div style="margin-top: 7px;"><span class="legend-item sick-leave">S</span> Sick Leave</div>
+    <div style="margin-top: 7px;"><span class="legend-item comp-off">CO</span> Compensatory Off</div>
+    <div style="margin-top: 7px;"><span class="legend-item late">L</span> Late</div>
+    <div style="margin-top: 7px;"><span class="legend-item week-off">W</span> Week Off</div>
+    <div style="margin-top: 7px;"><span class="legend-item casual-leave">C</span> Casual Leave</div>
+    <div style="margin-top: 7px;"><span class="legend-item half-day">H</span> Half Day</div>
+  </div>
+</ion-content>

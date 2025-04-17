@@ -1,0 +1,16 @@
+<ion-content class="ion-padding">
+  <div>
+    
+      <ion-label>{{'HEADER.CREATE CATEGORY' | translate}}</ion-label>
+
+    <ion-row class="input1" fill="outline">
+      <ion-input type="text" style="text-align: left;
+      border: solid 1px;
+      border-radius: 25px;" [(ngModel)]="CategoryName"> </ion-input>
+     
+    </ion-row>
+     <ion-button style="float: right;" slot="end" shape="round" size="small" (click)="addOption()">
+        {{'HEADER.CREATE' | translate }}
+      </ion-button>
+  </div>
+</ion-content>

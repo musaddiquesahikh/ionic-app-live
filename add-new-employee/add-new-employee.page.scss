@@ -1,0 +1,24 @@
+.alert{
+    color: red;
+}
+
+.required{
+    content:"*";
+    //font-weight:bold;
+    color: red;
+  }
+  span{
+    color: red; 
+    margin-left: 10px;
+  }
+  .hij{
+
+    background-color: #f4f0df;
+    height: 30px; 
+    border-radius: 7px;
+    text-align: right;
+    size:5px
+}
+ion-item{
+  fill:outline
+}

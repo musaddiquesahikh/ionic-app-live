@@ -1,0 +1,56 @@
+view{
+    margin-right: 10%;
+}
+.transaction_div{
+    padding-left:10px;
+    padding-right: 10px;
+   
+}
+ion-card{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top:0px;
+    margin-bottom: 10px;
+}
+.transaction_header{
+    padding-left: 9px;
+    padding-top: 9px;
+    padding-bottom: 0px;
+}
+.transaction_matter{
+    font-size: 11px;
+    padding-left: 9px;
+    padding-top: 2px;
+    padding-bottom: 3px;
+    
+}
+.transaction_amount{
+    text-align: right;
+    padding-left: 9px;
+    padding-top: 9px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+}
+ion-segment-button {
+    --indicator-color: #014796;
+  }
+  
+  ion-segment-button.ios {
+    --color: #000;
+    --color-checked: #fff;
+    --border-radius: 20px;
+  }
+  .alertHeader {
+    //color: #2d14b9 !important;
+    --color: #b52024 !important;
+ }
+ h2.alertHeader {
+  //  color: #b52024 !important;
+  --color: #b52024 !important;
+ }
+ 
+ //this works for alertHeader when inspecting in the browser
+ .alert-sub-title.sc-ion-alert-md, 
+ .alert-title.sc-ion-alert-md {
+   color: #15a03f;
+ }
